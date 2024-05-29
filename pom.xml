@@ -12,7 +12,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
   
- 
  	<dependencies>
 
 		<!--springframework-->
@@ -125,14 +124,42 @@
 		    <artifactId>mysql-connector-j</artifactId>
 		    <version>8.3.0</version>
 		</dependency>
-				  
+		
+		<!-- myBatis  -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>3.5.16</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis-spring</artifactId>
+		    <version>2.1.2</version>
+		</dependency>		
+		
   		<!--이메일 인증 라이브러리-->				
 		<dependency>
 		    <groupId>com.sun.mail</groupId>
 		    <artifactId>javax.mail</artifactId>
 		    <version>1.6.2</version>
 		</dependency>
-
+		
+		<!--암호화 라이브러리-->
+		<dependency>
+		    <groupId>at.favre.lib</groupId>
+		    <artifactId>bcrypt</artifactId>
+		    <version>0.10.2</version>
+		</dependency>
+	  
+		<!--jasypt 라이브러리-->
+	    <!-- https://mvnrepository.com/artifact/org.jasypt/jasypt-spring31 -->
+		<dependency>
+		    <groupId>org.jasypt</groupId>
+		    <artifactId>jasypt-spring31</artifactId>
+		    <version>1.9.2</version>
+		</dependency>	
+		
 		<!--jstl 라이브러리 -->
 		<dependency>
 			<groupId>org.apache.taglibs</groupId>

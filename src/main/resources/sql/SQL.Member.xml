@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.www.user.dao.mybatis.MemberRepository">
+
+	<!-- id : 메서드명 
+	     parameterType : 값이 아니라 타입, 대부분 기본형은 기입하지 않아도 된다. -->
+	<!-- 숫자는 #으로 하면 문법적으로 에러가 되기 때문에 $를 사용해야한다 -->     
+	     
+    <select id="getMemberCnt" parameterType="String">
+	    SELECT count(1) 
+	      FROM member 
+	     WHERE member_id = #{memberId}
+    </select>
+    
+    <select id="getMemberSeq" parameterType="String">
+	    SELECT member_seq 
+	      FROM member 
+	     WHERE member_id = #{memberId}
+    </select>
+    
+    <select id="getMemberInfo" parameterType="String" resultType="MemberDto">
+	    SELECT member_seq, 
+	    	   member_id, 
+	    	   passwd, 
+	    	   member_nm, 
+	    	   email, 
+	    	   auth_yn, 
+	    	   pwd_chng_dtm, 
+	    	   join_dtm
+    	  FROM member 
+		 WHERE member_id = #{memberId}
+		   AND auth_yn = 'Y' 
+    </select>    
+    
+ 	<insert id="join" parameterType="hashMap">
+   		INSERT INTO member (member_id, 
+   		                    passwd,
+   		                    member_nm, 
+   		                    email, 
+   		                    auth_yn, 
+   		                    pwd_chng_dtm, 
+   		                    join_dtm) 
+		            VALUES( #{memberId},
+		            		#{passwd},
+		            		#{memberNm},
+		            		#{email},
+		            		'N',
+		            		'',
+		            		DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') )
+    </insert>    
+    
+    <update id="updateMemberYN" parameterType="Integer"  >
+        UPDATE member
+           SET auth_yn = 'Y'
+         WHERE member_seq = #{memberSeq}
+           AND auth_yn = 'N'
+    </update>
+    
+</mapper>
