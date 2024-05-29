@@ -53,6 +53,17 @@
 		<load-on-startup>2</load-on-startup> </servlet> <servlet-mapping> <servlet-name>pf-rest</servlet-name> 
 		<url-pattern>*.rest</url-pattern> </servlet-mapping> -->
 
+	<!-- 에러처리 -->
+    <error-page>
+      <error-code>404</error-code>
+      <location>/error/400.jsp</location>
+    </error-page>
+
+    <error-page>
+      <error-code>500</error-code>
+      <location>/error/500.jsp</location>
+    </error-page>
+   
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

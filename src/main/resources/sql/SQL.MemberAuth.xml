@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.www.user.dao.mybatis.MemberAuthRepository">
+
+    <select id="getMemberAuth" parameterType="String" resultType="MemberAuthDto">
+	    SELECT auth_seq, 
+	           member_seq, 
+	           auth_num, 
+	           auth_uri, 
+	           reg_dtm, 
+	           expire_dtm, 
+	           auth_yn 
+	      FROM member_auth 
+	     WHERE auth_uri = #{uri}
+	       AND auth_yn = 'N'
+    </select>
+
+ 	<insert id="addMemberAuth" parameterType="MemberAuthDto">
+   		INSERT INTO member_auth (member_seq, 
+	   		                     auth_num,
+	   		                     auth_uri, 
+	   		                     reg_dtm, 
+	   		                     expire_dtm, 
+	   		                     auth_yn) 
+			             VALUES( ${memberSeq},
+			             		 '',
+			             		 #{authUri},
+			             		 DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
+			             		 #{expireDtm},
+			            		 'N')
+    </insert>    
+
+    <update id="updateMemberAuthYN" parameterType="String"  >
+        UPDATE member_auth
+           SET auth_yn = 'Y'
+         WHERE auth_uri = #{authUri}
+           AND IFNULL(auth_yn,'N') = 'N';
+    </update>
+    
+</mapper>
