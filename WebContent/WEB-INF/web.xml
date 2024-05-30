@@ -58,7 +58,12 @@
       <error-code>404</error-code>
       <location>/error/400.jsp</location>
     </error-page>
-
+    
+    <error-page>
+      <error-code>405</error-code>
+      <location>/error/400.jsp</location>
+    </error-page>
+    
     <error-page>
       <error-code>500</error-code>
       <location>/error/500.jsp</location>

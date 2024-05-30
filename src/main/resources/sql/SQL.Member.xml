@@ -5,14 +5,16 @@
 
 <mapper namespace="com.portfolio.www.user.dao.mybatis.MemberRepository">
 
-	<!-- id : 메서드명 
-	     parameterType : 값이 아니라 타입, 대부분 기본형은 기입하지 않아도 된다. -->
-	<!-- 숫자는 #으로 하면 문법적으로 에러가 되기 때문에 $를 사용해야한다 -->     
-	     
-    <select id="getMemberCnt" parameterType="String">
+    <select id="getMemberIdCnt" parameterType="String">
 	    SELECT count(1) 
 	      FROM member 
 	     WHERE member_id = #{memberId}
+    </select>
+    
+    <select id="getMemberEmailCnt" parameterType="String">
+	    SELECT count(1) 
+	      FROM member 
+	     WHERE email = #{email}
     </select>
     
     <select id="getMemberSeq" parameterType="String">

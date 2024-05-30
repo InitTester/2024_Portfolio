@@ -28,7 +28,7 @@ public class JoinController {
 	private MemberService memberService;
 	
 	/* 회원가입 페이지 */
-	@RequestMapping("/auth/joinPage.do")
+	@GetMapping("/auth/joinPage.do")
 	public ModelAndView joinPage(@RequestParam HashMap<String, String> params) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
@@ -45,21 +45,31 @@ public class JoinController {
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
-		mv.setViewName("auth/join");
+		String passwd = params.get("passwd");
 		
 		int result = memberService.join(params, request);	
 		MemberDto dto = new MemberDto().getMemberDto(params);
+		dto.setPasswd(passwd);
 		
 		mv.addObject("result", result);
 		
-		if(result == 0101) {
+		getLogMessage(log, "join", "result", result);
+		getLogMessage(log, "join", "result==101", result==101);
+		
+		if(result == 101) {			
 			mv.addObject("code",MemberMessageEnum.EXISTS_JOIN_ID.getCode());
 			mv.addObject("msg",MemberMessageEnum.EXISTS_JOIN_ID.getDescription());	
 			mv.addObject("dto", dto);
 			mv.setViewName("auth/join");			
+		}else if(result == 102) {
+			mv.addObject("code",MemberMessageEnum.EXISTS_JOIN_EMAIL.getCode());
+			mv.addObject("msg",MemberMessageEnum.EXISTS_JOIN_EMAIL.getDescription());	
+			mv.addObject("dto", dto);
+			mv.setViewName("auth/join");			
 		}else {
-			mv.addObject("msg", result == 1 ? "회원가입 되었습니다." : "실패");
-			mv.setViewName("auth/login");	
+			mv.addObject("code", result == 1 ? MemberMessageEnum.SUCCESS_JOIN.getCode() : MemberMessageEnum.FAIL_JOIN.getCode());
+			mv.addObject("msg", result == 1 ? MemberMessageEnum.SUCCESS_JOIN.getDescription() : MemberMessageEnum.FAIL_JOIN.getDescription());
+			mv.setViewName("redirect:/auth/loginPage.do");
 		}
 			
 		return mv;
@@ -79,7 +89,7 @@ public class JoinController {
 			mv.addObject("result",result);
 			mv.addObject("code",MemberMessageEnum.SUCCESS_AUTH_EMAIL.getCode());
 			mv.addObject("msg",MemberMessageEnum.SUCCESS_AUTH_EMAIL.getDescription());
-			mv.setViewName("auth/login");
+			mv.setViewName("redirect:/auth/loginPage.do");
 //			mv.addObject("msg","인증되었습니다");	
 			
 		} catch (NullPointerException e) {

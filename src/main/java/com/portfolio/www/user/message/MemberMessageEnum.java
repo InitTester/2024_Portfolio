@@ -6,11 +6,12 @@ public enum MemberMessageEnum {
 	SUCCESS("0000", "Request Success"),
 	
 	/* JOIN */
-	SUCCESS_JOIN("0000", "Request Success"),
+	SUCCESS_JOIN("0100", "회원가입 되셨습니다. 서비스를 사용하기 위해 인증메일을 확인해주세요.\n 인증을 하지 않으면 이용하실 수 없습니다."),
+	FAIL_JOIN("0200", "회원가입 실패하셨습니다. 다시 가입해 주시길 바랍니다."),
 	EXISTS_JOIN_ID("0101", "이미 사용중인 아이디입니다. 다른 아이디를 사용해주세요."),
+	EXISTS_JOIN_EMAIL("0102", "이미 가입한 이메일주소 입니다. 이메일 주소를 확인해주세요."),
 	
-	SUCCESS_SEND_EMAIL("1000", "이메일 발송 : 성공하였습니다."),
-	
+	SUCCESS_SEND_EMAIL("1000", "이메일 발송 : 성공하였습니다."),	
 	SUCCESS_AUTH_EMAIL("1000", "이메일 인증 : 성공하였습니다."),	
 	FAIL_AUTHEMAIL_ERR("1001", "이메일 인증 : 실패하였습니다."),
 	

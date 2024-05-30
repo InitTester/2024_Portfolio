@@ -9,8 +9,12 @@ import com.portfolio.www.user.dto.MemberDto;
 @Repository
 public interface MemberRepository {
 	
-	/* 회원 가입 여부 */
-	public int getMemberCnt(String memberId);
+	/* 회원 가입 여부 id 중복체크*/
+	public int getMemberIdCnt(String memberId);
+	
+	/* 회원 가입 여부 email 중복체크*/
+	public int getMemberEmailCnt(String email);
+	
 	
 	public int getMemberSeq(String memberId);
 	

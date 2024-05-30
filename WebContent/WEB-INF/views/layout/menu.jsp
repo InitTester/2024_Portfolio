@@ -132,7 +132,7 @@
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav">
                                     <li class="has_dropdown">
-                                        <a href="index.html">HOME</a>
+                                        <a href="<c:url value='/index.do'/>">HOME</a>
                                         <div class="dropdowns dropdown--menu">
                                             <ul>
                                                 <li>
@@ -148,7 +148,7 @@
                                         </div>
                                     </li>
                                     <li class="has_dropdown">
-                                        <a href="all-products-list.html">all product</a>
+                                        <a href="#">all product</a>
                                         <div class="dropdowns dropdown--menu">
                                             <ul>
                                                 <li>
@@ -297,7 +297,7 @@
                                     </li>
                                     
                                     <li class="has_dropdown">
-                                        <a href="all-products-list.html">게시판</a>
+                                        <a href="#">게시판</a>
                                         <div class="dropdowns dropdown--menu">
                                             <ul>
                                                 <li>
@@ -320,7 +320,7 @@
                                     </li>
                                     
                                     <li>
-                                        <a href="contact.html">contact</a>
+                                        <a href="<c:url value='/contact.do'/>">contact</a>
                                     </li>
                                 </ul>
                             </div>
