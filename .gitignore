@@ -32,3 +32,4 @@ out/
 
 # Ignore all properties files
 *.properties
+/build/

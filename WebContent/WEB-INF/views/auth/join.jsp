@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@ page import="com.portfolio.www.user.message.MemberMessageEnum" %>
+<%
+String ctx = request.getContextPath();
+%>
     <!--================================
             START SIGNUP AREA
     =================================-->
@@ -23,31 +26,32 @@
 
                                 <div class="form-group">
                                     <label for="memberId">Your Id</label>
-                                    <input id="memberId" name= "memberId" type="text" class="text_field" placeholder="Enter your Id">
+                                    
+                                    <input id="memberId" name= "memberId" type="text" class="text_field" value="${dto.memberId}" placeholder="Enter your Id">
                                     <div id="msgId" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email_ad">Email Address</label>
-                                    <input id="email_ad" name="email" type="text" class="text_field" placeholder="Enter your email address">
+                                    <input id="email_ad" name="email" type="text" class="text_field" value="${dto.email}" placeholder="Enter your email address">
                                     <div id="msgEmail" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="user_name">Username</label>
-                                    <input id="user_name" name= "memberNm" type="text" class="text_field" placeholder="Enter your username...">
+                                    <input id="user_name" name= "memberNm" type="text" class="text_field" value="${dto.memberNm}" placeholder="Enter your username...">
                                     <div id="msgName" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input id="password" name="passwd" type="password" class="text_field" placeholder="Enter your password...">
+                                    <input id="password" name="passwd" type="password" class="text_field" value="${dto.passwd}" placeholder="Enter your password...">
                                     <div id="msgPwd" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="con_pass">Confirm Password</label>
-                                    <input id="con_pass" type="password" name="confirmPasswd" class="text_field" placeholder="Confirm password">
+                                    <input id="con_pass" type="password" name="confirmPasswd" class="text_field" value="${dto.confirmPasswd}" placeholder="Confirm password">
                                     <div id="msgPwdConfirm" class="msg"></div>
                                 </div>
 
@@ -74,7 +78,17 @@
             END SIGNUP AREA
     =================================-->
 
-	<script>
+    <script type="text/javascript">
+    
+		window.onload=function(){
+			var code = '${code}';
+			var msg = '${msg}';
+	
+			if(code != '' && code != '<%= MemberMessageEnum.SUCCESS.getCode() %>'){
+				alert(msg);
+			}
+		} 
+	
 		/* JS 유효성 검사, 정규식 */
 	    /* input */
 	    const user_id = document.getElementById("memberId");
@@ -89,8 +103,8 @@
 	    const pwd = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=\-.])(?=.*[0-9]).{8,20}$/;
 	    const email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
-	    validateInput(user_id,id,"msgId","유효하지 않은 이메일 형식입니다.");
-	    validateInput(user_email,email,"msgEmail","유효하지 않은 이메일 형식입니다.");
+	    validateInput(user_id,id,"msgId","아이디는 4~20자의 영어 소문자, 숫자만 사용가능합니다");
+	    validateInput(user_email,email,"msgEmail","유효하지 않은 이메일 형식입니다");
 	    validateInput(user_name, name, "msgName", "최소 2자 이상 입력, 숫자는 입력할 수 없습니다.");
 	    validateInput(user_pwd, pwd, "msgPwd", "비밀번호는 8~20자, 영문, 숫자, 특수문자를 혼합하여 입력해주세요");
 	    validateInput(user_pwdConfirm, pwd, "msgPwdConfirm", "비밀번호는 8~20자, 영문, 숫자, 특수문자를 혼합하여 입력해주세요");
@@ -117,7 +131,9 @@
 	    joinForm?.addEventListener("submit",function(e) {
 	        e.preventDefault();
 	        
-	        if(!(user_id.test(user_email.value))) {
+	        console.log("이벤트는 탄거 같은데 ");
+	        
+	        if(!(id.test(user_id.value))) {
 	            setMessage("유효하지 않은 아이디 형식입니다.","memberId", "msgId", "red");
 	            return false;
 	        }
@@ -126,7 +142,7 @@
 	            return false;
 	        }
 
-	        if (!(name.test(user_name))) {
+	        if (user_name.value.length < 2 ) {
 	            setMessage('최소 2자 이상 입력해주세요.', "user_name", "msgName", "red");
 	            return false;
 	        }
@@ -152,6 +168,4 @@
 	    })
 	
 	</script>
-
-
 </html>

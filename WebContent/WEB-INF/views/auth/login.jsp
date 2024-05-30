@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ page import="com.portfolio.www.user.message.MemberMessageEnum" %>
+<%
+String ctx = request.getContextPath();
+String msg = request.getParameter("msg");
+String code = request.getParameter("code");
+%>
     <!--================================
             START LOGIN AREA
     =================================-->
@@ -13,6 +19,7 @@
                             <div class="login--header">
                                 <h3>Welcome Back</h3>
                                 <p>You can sign in with your username</p>
+                                
                             </div>
                             <!-- end .login_header -->
 
@@ -61,3 +68,18 @@
     <!--================================
             END LOGIN AREA
     =================================-->
+    <script type="text/javascript">
+
+		window.onload=function(){
+			var params = new URLSearchParams(window.location.search);
+			
+			var code = params.get('code');
+			var msg = params.get('msg');
+			
+			if(code != '' && code != '<%= MemberMessageEnum.SUCCESS.getCode() %>'){
+
+	            alert(decodeURIComponent(msg));
+			}
+		} 
+	</script>
+	

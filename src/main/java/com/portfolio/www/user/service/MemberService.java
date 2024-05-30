@@ -48,15 +48,22 @@ public class MemberService {
 		params.put("email", email);
 
 		String memberId = params.get("memberId");		
-		int memberCnt = memberRepository.getMemberCnt(memberId);
+		int memberIdCnt = memberRepository.getMemberIdCnt(memberId);
+		int memberEmailCnt = memberRepository.getMemberEmailCnt(email);
 
 		getLogMessage(log, "join", "memberId", memberId);
-		getLogMessage(log, "join", "memberCnt", memberCnt);
+		getLogMessage(log, "join", "memberCnt", memberIdCnt);
+		getLogMessage(log, "join", "memberEmailCnt", memberEmailCnt);
 		
-		if(memberCnt > 0) {
-			// 회원 id 여부 
+		/* id 중복체크 */
+		if(memberIdCnt > 0) {
 			return Integer.parseInt(MemberMessageEnum.EXISTS_JOIN_ID.getCode());
 		}
+		
+//		/* email 중복체크 */
+//		if(memberEmailCnt > 0) {
+//			return Integer.parseInt(MemberMessageEnum.EXISTS_JOIN_EMAIL.getCode());
+//		}
 		
 		int cnt = memberRepository.join(params);
 		int memberSeq = memberRepository.getMemberSeq(params.get("memberId"));
@@ -72,7 +79,7 @@ public class MemberService {
 			
 			authDto.setExpireDtm(calendar.getTimeInMillis());
 			
-			log.info("getExpireDtm : " + authDto.getExpireDtm());
+			getLogMessage(log,"join","getExpireDtm",authDto.getExpireDtm());
 			
 			/* db 추가 */
 			try {
@@ -80,8 +87,8 @@ public class MemberService {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 			}
-			
-			log.info("System.getenv(\"JASYPT_ENCRYPTION_EMAIL\")+\"@naver.com\") :: "+System.getenv("JASYPT_ENCRYPTION_EMAIL")+"@naver.com");
+
+			getLogMessage(log,"join","System.getenv( ",System.getenv("JASYPT_ENCRYPTION_EMAIL")+"@naver.com" + " )");
 			/* 인증 메일 발송 */
 			EmailDto emailDto = new EmailDto();
 			emailDto.setFrom(System.getenv("JASYPT_ENCRYPTION_EMAIL")+"@naver.com");
@@ -90,11 +97,12 @@ public class MemberService {
 			
 			/* 인증 확인을 위한 url 링크 처리 
 			 * 현재 로컬에서 하기 때문에 주소는 localhost 사용이지만
-			 * 추후 실제로 사용될 서버 주소로 변경하면 된다.*/
-			
-			log.info("contextroot : " + request.getContextPath());			
+			 * 추후 실제로 사용될 서버 주소로 변경하면 된다.*/			
+			getLogMessage(log,"join","contextroot",request.getContextPath());
 			
 			String html = "<a href='http://localhost:8080"+request.getContextPath()+"/emailAuth.do?uri="+authDto.getAuthUri()+"'>인증하기</a>";
+
+			getLogMessage(log,"join","html",html);
 			log.info("html : " + html);
 			
 			emailDto.setText(html);			
