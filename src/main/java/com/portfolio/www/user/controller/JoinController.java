@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.portfolio.www.common.util.CommonUtil;
 import com.portfolio.www.user.dto.MemberDto;
 import com.portfolio.www.user.message.MemberMessageEnum;
 import com.portfolio.www.user.service.MemberService;
@@ -39,9 +40,9 @@ public class JoinController {
 	
 	/* 회원가입 실행 */
 	@PostMapping("/auth/join.do")
-	public ModelAndView join(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+	public ModelAndView join(@RequestParam HashMap<String, String> params, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
-		getLogMessage(log,"join","로그","로그인 페이지 접속");
+		CommonUtil.getLogMessage(log,"join","로그","로그인 페이지 접속");
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
@@ -53,8 +54,8 @@ public class JoinController {
 		
 		mv.addObject("result", result);
 		
-		getLogMessage(log, "join", "result", result);
-		getLogMessage(log, "join", "result==101", result==101);
+		CommonUtil.getLogMessage(log, "join", "result", result);
+		CommonUtil.getLogMessage(log, "join", "result==101", result==101);
 		
 		if(result == 101) {			
 			mv.addObject("code",MemberMessageEnum.EXISTS_JOIN_ID.getCode());
@@ -67,8 +68,8 @@ public class JoinController {
 			mv.addObject("dto", dto);
 			mv.setViewName("auth/join");			
 		}else {
-			mv.addObject("code", result == 1 ? MemberMessageEnum.SUCCESS_JOIN.getCode() : MemberMessageEnum.FAIL_JOIN.getCode());
-			mv.addObject("msg", result == 1 ? MemberMessageEnum.SUCCESS_JOIN.getDescription() : MemberMessageEnum.FAIL_JOIN.getDescription());
+			redirectAttributes.addFlashAttribute("code", result == 1 ? MemberMessageEnum.SUCCESS_JOIN.getCode() : MemberMessageEnum.FAIL_JOIN.getCode());
+			redirectAttributes.addFlashAttribute("msg", result == 1 ? MemberMessageEnum.SUCCESS_JOIN.getDescription() : MemberMessageEnum.FAIL_JOIN.getDescription());
 			mv.setViewName("redirect:/auth/loginPage.do");
 		}
 			
@@ -77,7 +78,7 @@ public class JoinController {
 
 	/* 이메일 인증 실행 */
 	@GetMapping("/emailAuth.do")
-	public ModelAndView emailAuth(@RequestParam("uri") String uri) {
+	public ModelAndView emailAuth(@RequestParam("uri") String uri, RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
 		
 		boolean result = false;
@@ -87,10 +88,9 @@ public class JoinController {
 			result = memberService.emailAuth(uri);
 			
 			mv.addObject("result",result);
-			mv.addObject("code",MemberMessageEnum.SUCCESS_AUTH_EMAIL.getCode());
-			mv.addObject("msg",MemberMessageEnum.SUCCESS_AUTH_EMAIL.getDescription());
+			redirectAttributes.addFlashAttribute("code",MemberMessageEnum.SUCCESS_AUTH_EMAIL.getCode());
+			redirectAttributes.addFlashAttribute("msg",MemberMessageEnum.SUCCESS_AUTH_EMAIL.getDescription());
 			mv.setViewName("redirect:/auth/loginPage.do");
-//			mv.addObject("msg","인증되었습니다");	
 			
 		} catch (NullPointerException e) {
 			// TODO Auto-generated catch block
@@ -118,10 +118,5 @@ public class JoinController {
 		}
 		
 		return mv;
-	}
-	
-	public static Logger getLogMessage(Logger log, String methodName, String logKey, Object logValue) {
-		log.info("["+methodName+ "] (" + logKey + ") : " + logValue);
-		return log;
 	}
 }
