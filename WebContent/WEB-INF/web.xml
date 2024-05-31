@@ -54,11 +54,17 @@
 		<url-pattern>*.rest</url-pattern> </servlet-mapping> -->
 
 	<!-- 에러처리 -->
+	<!-- error-code(HTTP 오류 코드를 지정), exception-type(서블릿 컨테이너에서 발생한 예외의 유형을 지정) 도 가능하다 -->    
+    <error-page>
+	  <exception-type>javax.servlet.ServletException</exception-type>
+	  <location>/error/400.jsp</location>
+	</error-page>	
+    
     <error-page>
       <error-code>404</error-code>
       <location>/error/400.jsp</location>
     </error-page>
-    
+
     <error-page>
       <error-code>405</error-code>
       <location>/error/400.jsp</location>
@@ -68,7 +74,12 @@
       <error-code>500</error-code>
       <location>/error/500.jsp</location>
     </error-page>
-   
+    
+    <error-page>
+      <error-code>505</error-code>
+      <location>/error/500.jsp</location>
+    </error-page>
+       
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

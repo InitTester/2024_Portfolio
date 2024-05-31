@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<style>
+	.hidden{
+		display: none;
+	}
+</style>
+
+<!-- 로그인 정보 -->
+<c:set var="loginInfo" value="${not empty cookie.memberId.value ? 'hidden' : ''}"/>
+<c:set var="userprofileImg" value="${not empty cookie.profileImg.value ? '/images/usr_avatar.png' : '/user/img/'}"/>
+
     <!-- ================================
 	    START MENU AREA
 	================================= -->
@@ -25,81 +36,79 @@
                     <div class="col-lg-8 offset-lg-1 col-6 col-md-9 v_middle">
                         <!-- start .author-area -->
                         <div class="author-area not_logged_in">
-                            <div class="author__notification_area">
-                                <ul>
-                                    <li class="has_dropdown">
-                                        <div class="icon_wrap">
-                                            <span class="lnr lnr-cart"></span>
-                                            <span class="notification_count purch">2</span>
-                                        </div>
-
-                                        <div class="dropdowns dropdown--cart">
-                                            <div class="cart_area">
-                                                <div class="cart_product">
-                                                    <div class="product__info">
-                                                        <div class="thumbn">
-                                                            <img src="<c:url value='/assest/template/images/capro1.jpg'/>" alt="cart product thumbnail" />
-                                                        </div>
-
-                                                        <div class="info">
-                                                            <a class="title" href="single-product.html">Finance and
-                                                                Consulting Business Theme</a>
-                                                            <div class="cat">
-                                                                <a href="#">
-                                                                    <img src="<c:url value='/assest/template/images/catword.png'/>" alt="" />Wordpress
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="product__action">
-                                                        <a href="#">
-                                                            <span class="lnr lnr-trash"></span>
-                                                        </a>
-                                                        <p>$60</p>
-                                                    </div>
-                                                </div>
-                                                <div class="cart_product">
-                                                    <div class="product__info">
-                                                        <div class="thumbn">
-                                                            <img src="<c:url value='/assest/template/images/capro2.jpg'/>" alt="cart product thumbnail" />
-                                                        </div>
-
-                                                        <div class="info">
-                                                            <a class="title" href="single-product.html">Flounce -
-                                                                Multipurpose OpenCart Theme</a>
-                                                            <div class="cat">
-                                                                <a href="#">
-                                                                    <img src="<c:url value='/assest/template/images/catword.png'/>" alt="" />Wordpress
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="product__action">
-                                                        <a href="#">
-                                                            <span class="lnr lnr-trash"></span>
-                                                        </a>
-                                                        <p>$60</p>
-                                                    </div>
-                                                </div>
-                                                <div class="total">
-                                                    <p>
-                                                        <span>Total :</span>$80</p>
-                                                </div>
-                                                <div class="cart_action">
-                                                    <a class="go_cart" href="cart.html">View Cart</a>
-                                                    <a class="go_checkout" href="checkout.html">Checkout</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pull-right join desktop-size d-md-block d-none">
-                                <a href="<c:url value='/auth/joinPage.do'/>" class="btn btn--round btn-secondary  btn--xs">Join Now</a>
-                                <a href="<c:url value='/auth/loginPage.do'/>" class="btn btn--round btn--xs">Login</a>
-                            </div>
+                            <!-- 회원가입/로그인 -->
+                            <c:if test="${empty cookie.memberId.value }">
+	                            <div class="pull-right join desktop-size d-md-block d-none ${loginInfo}" >
+	                                <a href="<c:url value='/auth/joinPage.do'/>" class="btn btn--round btn-secondary  btn--xs">회원가입</a>
+	                                <a href="<c:url value='/auth/loginPage.do'/>" class="btn btn--round btn--xs">로그인</a>
+	                            </div>
+                            </c:if>
+                            
+                            <c:if test="${not empty cookie.memberId.value}">                          
+                            	<!-- 로그인 정보 -->
+	                            <div class="author-author__info inline has_dropdown">
+	                                <div class="author__avatar">
+	                                    <img src="<c:url value='/images/usr_avatar.png'/>" alt="user avatar">
+	
+	                                </div>
+	                                <div class="autor__info">
+	                                    <p class="name">
+	                                         ${cookie.memberNm.value} <!-- Jhon Doe -->
+	                                    </p>
+	                                  <!--   <p class="ammount">$20.45</p> -->
+	                                </div>
+	
+	                                <div class="dropdowns dropdown--author">
+	                                    <ul>
+	                                        <li>
+	                                            <a href="author.html">
+	                                                <span class="lnr lnr-user"></span>Profile</a>
+	                                        </li>
+	                             <!--            <li>
+	                                            <a href="dashboard.html">
+	                                                <span class="lnr lnr-home"></span> Dashboard</a>
+	                                        </li> -->
+	                                        <li>
+	                                            <a href="dashboard-setting.html">
+	                                                <span class="lnr lnr-cog"></span> Setting</a>
+	                                        </li>
+	                                       <!--  <li>
+	                                            <a href="cart.html">
+	                                                <span class="lnr lnr-cart"></span>Purchases</a>
+	                                        </li>
+	                                        <li>
+	                                            <a href="favourites.html">
+	                                                <span class="lnr lnr-heart"></span> Favourite</a>
+	                                        </li>
+	                                        <li>
+	                                            <a href="dashboard-add-credit.html">
+	                                                <span class="lnr lnr-dice"></span>Add Credits</a>
+	                                        </li>
+	                                        <li>
+	                                            <a href="dashboard-statement.html">
+	                                                <span class="lnr lnr-chart-bars"></span>Sale Statement</a>
+	                                        </li>
+	                                        <li>
+	                                            <a href="dashboard-upload.html">
+	                                                <span class="lnr lnr-upload"></span>Upload Item</a>
+	                                        </li>
+	                                        <li>
+	                                            <a href="dashboard-manage-item.html">
+	                                                <span class="lnr lnr-book"></span>Manage Item</a>
+	                                        </li>
+	                                        <li>
+	                                            <a href="dashboard-withdrawal.html">
+	                                                <span class="lnr lnr-briefcase"></span>Withdrawals</a>
+	                                        </li> -->
+	                                        <li>
+	                                            <a href="<c:url value='/auth/logout.do'/>">
+	                                                <span class="lnr lnr-exit"></span>Logout</a>
+	                                        </li>
+	                                    </ul>
+	                                </div>
+	                            </div>
+                            </c:if>
+                            
                             <div class="pull-right join mobile-size d-md-none d-flex">
                                 <a href="#" class="btn btn--round btn-secondary "><span class="lnr lnr-user"></span></a>
                                 <a href="#" class="btn btn--round"><span class="lnr lnr-enter"></span></a>
@@ -132,170 +141,12 @@
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav">
                                     <li class="has_dropdown">
-                                        <a href="<c:url value='/index.do'/>">HOME</a>
-                                        <div class="dropdowns dropdown--menu">
-                                            <ul>
-                                                <li>
-                                                    <a href="index.html">Home Multi Vendor</a>
-                                                </li>
-                                                <li>
-                                                    <a href="index-single.html">Home Two Single User</a>
-                                                </li>
-                                                <li>
-                                                    <a href="index3.html">Home Three Product</a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <a href="<c:url value='/index.do'/>">홈</a>
                                     </li>
-                                    <li class="has_dropdown">
-                                        <a href="#">all product</a>
-                                        <div class="dropdowns dropdown--menu">
-                                            <ul>
-                                                <li>
-                                                    <a href="all-products.html">Recent Items</a>
-                                                </li>
-                                                <li>
-                                                    <a href="all-products.html">Popular Items</a>
-                                                </li>
-                                                <li>
-                                                    <a href="index3.html">Free Templates</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Follow Feed</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Top Authors</a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                     <li class="has_dropdown">
+                                        <a href="#">프로필</a>
                                     </li>
-                                    <li class="has_dropdown">
-                                        <a href="#">categories</a>
-                                        <div class="dropdowns dropdown--menu">
-                                            <ul>
-                                                <li>
-                                                    <a href="category-grid.html">Popular Items</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">Admin Templates</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">Blog / Magazine / News</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">Creative</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">Corporate Business</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">Resume Portfolio</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">eCommerce</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">Entertainment</a>
-                                                </li>
-                                                <li>
-                                                    <a href="category-grid.html">Landing Pages</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="has_megamenu">
-                                        <a href="#">Elements</a>
-                                        <div class="dropdown_megamenu contained">
-                                            <div class="megamnu_module">
-                                                <div class="menu_items">
-                                                    <div class="menu_column">
-                                                        <ul>
-                                                            <li>
-                                                                <a href="accordion.html">Accordion</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="alert.html">Alert</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="brands.html">Brands</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="buttons.html">Buttons</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="cards.html">Cards</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="charts.html">Charts</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="content-block.html">Content Block</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="dropdowns.html">Drpdowns</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-
-                                                    <div class="menu_column">
-                                                        <ul>
-                                                            <li>
-                                                                <a href="features.html">Features</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="footer.html">Footer</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="info-box.html">Info Box</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="menu.html">Menu</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="modal.html">Modal</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="pagination.html">Pagination</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="peoples.html">Peoples</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="products.html">Products</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-
-                                                    <div class="menu_column">
-                                                        <ul>
-                                                            <li>
-                                                                <a href="progressbar.html">Progressbar</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="social.html">Social</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="tab.html">Tabs</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="table.html">Table</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="testimonials.html">Testimonials</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="timeline.html">Timeline</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="typography.html">Typography</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    
+                                                                       
                                     <li class="has_dropdown">
                                         <a href="#">게시판</a>
                                         <div class="dropdowns dropdown--menu">
@@ -304,23 +155,13 @@
                                                     <a href="<c:url value='/forum//notice/listPage.do'/>">공지사항</a>
                                                 </li>
                                                 <li>
-                                                    <a href="all-products.html">Popular Items</a>
-                                                </li>
-                                                <li>
-                                                    <a href="index3.html">Free Templates</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Follow Feed</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Top Authors</a>
+                                                    <a href="all-products.html">자유게시판</a>
                                                 </li>
                                             </ul>
                                         </div>
-                                    </li>
-                                    
+                                    </li>                                    
                                     <li>
-                                        <a href="<c:url value='/contact.do'/>">contact</a>
+                                        <a href="<c:url value='/contact.do'/>">문의하기</a>
                                     </li>
                                 </ul>
                             </div>
@@ -339,3 +180,32 @@
     <!--================================
 	    END MENU AREA
 	=================================-->
+	
+	 <!--================================
+        START BREADCRUMB AREA
+    =================================-->
+<!--     <section class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb">
+                        <ul>
+                            <li>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li class="active">
+                                <a href="#">Testimonials</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h1 class="page-title">Testimonials</h1>
+                </div>
+                end /.col-md-12
+            </div>
+            end /.row
+        </div>
+        end /.container
+    </section> -->
+    <!--================================
+        END BREADCRUMB AREA
+    =================================-->
