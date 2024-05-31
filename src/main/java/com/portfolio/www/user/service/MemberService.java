@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.portfolio.www.common.util.CommonUtil;
 import com.portfolio.www.user.dao.mybatis.MemberAuthRepository;
 import com.portfolio.www.user.dao.mybatis.MemberRepository;
 import com.portfolio.www.user.dto.EmailDto;
@@ -51,19 +52,19 @@ public class MemberService {
 		int memberIdCnt = memberRepository.getMemberIdCnt(memberId);
 		int memberEmailCnt = memberRepository.getMemberEmailCnt(email);
 
-		getLogMessage(log, "join", "memberId", memberId);
-		getLogMessage(log, "join", "memberCnt", memberIdCnt);
-		getLogMessage(log, "join", "memberEmailCnt", memberEmailCnt);
+		CommonUtil.getLogMessage(log, "join", "memberId", memberId);
+		CommonUtil.getLogMessage(log, "join", "memberCnt", memberIdCnt);
+		CommonUtil.getLogMessage(log, "join", "memberEmailCnt", memberEmailCnt);
 		
 		/* id 중복체크 */
 		if(memberIdCnt > 0) {
 			return Integer.parseInt(MemberMessageEnum.EXISTS_JOIN_ID.getCode());
 		}
 		
-//		/* email 중복체크 */
-//		if(memberEmailCnt > 0) {
-//			return Integer.parseInt(MemberMessageEnum.EXISTS_JOIN_EMAIL.getCode());
-//		}
+		/* email 중복체크 */
+		if(memberEmailCnt > 0) {
+			return Integer.parseInt(MemberMessageEnum.EXISTS_JOIN_EMAIL.getCode());
+		}
 		
 		int cnt = memberRepository.join(params);
 		int memberSeq = memberRepository.getMemberSeq(params.get("memberId"));
@@ -79,7 +80,7 @@ public class MemberService {
 			
 			authDto.setExpireDtm(calendar.getTimeInMillis());
 			
-			getLogMessage(log,"join","getExpireDtm",authDto.getExpireDtm());
+			CommonUtil.getLogMessage(log,"join","getExpireDtm",authDto.getExpireDtm());
 			
 			/* db 추가 */
 			try {
@@ -88,7 +89,7 @@ public class MemberService {
 				// TODO Auto-generated catch block
 			}
 
-			getLogMessage(log,"join","System.getenv( ",System.getenv("JASYPT_ENCRYPTION_EMAIL")+"@naver.com" + " )");
+			CommonUtil.getLogMessage(log,"join","System.getenv( ",System.getenv("JASYPT_ENCRYPTION_EMAIL")+"@naver.com" + " )");
 			/* 인증 메일 발송 */
 			EmailDto emailDto = new EmailDto();
 			emailDto.setFrom(System.getenv("JASYPT_ENCRYPTION_EMAIL")+"@naver.com");
@@ -98,12 +99,11 @@ public class MemberService {
 			/* 인증 확인을 위한 url 링크 처리 
 			 * 현재 로컬에서 하기 때문에 주소는 localhost 사용이지만
 			 * 추후 실제로 사용될 서버 주소로 변경하면 된다.*/			
-			getLogMessage(log,"join","contextroot",request.getContextPath());
+			CommonUtil.getLogMessage(log,"join","contextroot",request.getContextPath());
 			
 			String html = "<a href='http://localhost:8080"+request.getContextPath()+"/emailAuth.do?uri="+authDto.getAuthUri()+"'>인증하기</a>";
 
-			getLogMessage(log,"join","html",html);
-			log.info("html : " + html);
+			CommonUtil.getLogMessage(log,"join","html",html);
 			
 			emailDto.setText(html);			
 			emailUtil.sendMail(emailDto,true);
@@ -149,24 +149,47 @@ public class MemberService {
 		return result;		
 	}
 	
-	public static String getBCrypt(String beforeData) {
+	/* 로그인 */
+	public MemberDto login(HashMap<String, String> params) {
 		
-		getLogMessage(log, "join", "beforeData", beforeData);
-		
-		/* email,pwd 암호화 */
-		String encData  = BCrypt.withDefaults().hashToString(12,beforeData.toCharArray());
-		
-		getLogMessage(log, "join", "encData", encData);
-		
-		BCrypt.Result result = BCrypt.verifyer().verify(beforeData.toCharArray(), encData);
-		
-		getLogMessage(log, "join", "result.verified", result.verified);
-		
-		return encData;
+		try {
+			String memberId = params.get("memberId");			
+			CommonUtil.getLogMessage(log, "login", "memberId", memberId);
+			
+			MemberDto memberDto = memberRepository.getMemberInfo(memberId);
+			
+			String passwd = params.get("passwd");
+			CommonUtil.getLogMessage(log, "login", "passwd", passwd);
+			
+			String dbPasswd = memberDto.getPasswd();
+			CommonUtil.getLogMessage(log, "login", "dbPasswd", memberDto.getPasswd());
+			
+			BCrypt.Result result = BCrypt.verifyer().verify(passwd.toCharArray(),dbPasswd);
+			
+			return result.verified ? memberDto : null ;
+			
+		} catch (EmptyResultDataAccessException e) {
+			// TODO Auto-generated catch block
+			throw new EmptyResultDataAccessException(0202);
+			/* throw new EmptyResultDataAccessException("존재하지 않는 사용자 입니다.",0202); */
+		}
 	}
 	
-	public static Logger getLogMessage(Logger log, String methodName, String logKey, Object logValue) {
-			log.info("["+methodName+ "] (" + logKey + ") : " + logValue);
-		return log;
+	/*
+	 * public static void main(String[] args) { String get = getBCrypt("j123123!");
+	 * System.out.println(get); }
+	 */
+	public static String getBCrypt(String beforeData) {
+		
+		CommonUtil.getLogMessage(log, "join", "beforeData", beforeData);
+		
+		/* email,pwd 암호화 */
+		String encData  = BCrypt.withDefaults().hashToString(12,beforeData.toCharArray());		
+		CommonUtil.getLogMessage(log, "join", "encData", encData);
+		
+		BCrypt.Result result = BCrypt.verifyer().verify(beforeData.toCharArray(), encData);		
+		CommonUtil.getLogMessage(log, "join", "result.verified", result.verified);
+		
+		return encData;
 	}
 }

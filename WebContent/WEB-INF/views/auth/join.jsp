@@ -15,9 +15,8 @@ String ctx = request.getContextPath();
                     <form id="joinForm">
                         <div class="cardify signup_form">
                             <div class="login--header">
-                                <h3>Create Your Account</h3>
-                                <p>Please fill the following fields with appropriate information to register a new MartPlace
-                                    account.
+                                <h3>회원가입</h3>
+                                <p>새 PortfolioHome 계정을 등록하려면 다음 필드에 적절한 정보를 입력하십시오.
                                 </p>
                             </div>
                             <!-- end .login_header -->
@@ -25,41 +24,41 @@ String ctx = request.getContextPath();
                             <div class="login--form">
 
                                 <div class="form-group">
-                                    <label for="memberId">Your Id</label>
+                                    <label for="memberId">아이디</label>
                                     
-                                    <input id="memberId" name= "memberId" type="text" class="text_field" value="${dto.memberId}" placeholder="Enter your Id">
+                                    <input id="memberId" name= "memberId" type="text" class="text_field" value="${dto.memberId}" placeholder="사용하실 ID를 입력해주세요">
                                     <div id="msgId" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email_ad">Email Address</label>
-                                    <input id="email_ad" name="email" type="text" class="text_field" value="${dto.email}" placeholder="Enter your email address">
+                                    <label for="email_ad">이메일 주소</label>
+                                    <input id="email_ad" name="email" type="text" class="text_field" value="${dto.email}" placeholder="이메일주소를 입력해주세요">
                                     <div id="msgEmail" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="user_name">Username</label>
-                                    <input id="user_name" name= "memberNm" type="text" class="text_field" value="${dto.memberNm}" placeholder="Enter your username...">
+                                    <label for="user_name">이름</label>
+                                    <input id="user_name" name= "memberNm" type="text" class="text_field" value="${dto.memberNm}" placeholder="이름을 입력해주세요">
                                     <div id="msgName" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input id="password" name="passwd" type="password" class="text_field" value="${dto.passwd}" placeholder="Enter your password...">
+                                    <label for="password">비밀번호</label>
+                                    <input id="password" name="passwd" type="password" class="text_field" value="${dto.passwd}" placeholder="비밀번호를 입력해주세요">
                                     <div id="msgPwd" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="con_pass">Confirm Password</label>
-                                    <input id="con_pass" type="password" name="confirmPasswd" class="text_field" value="${dto.confirmPasswd}" placeholder="Confirm password">
+                                    <label for="con_pass">비밀번호 확인</label>
+                                    <input id="con_pass" type="password" name="confirmPasswd" class="text_field" value="${dto.confirmPasswd}" placeholder="비밀번호를 확인합니다">
                                     <div id="msgPwdConfirm" class="msg"></div>
                                 </div>
 
-                                <button class="btn btn--md btn--round register_btn" >Register Now</button>
+                                <button class="btn btn--md btn--round register_btn" >가입하기</button>
 
                                 <div class="login_assist">
-                                    <p>Already have an account?
-                                        <a href="<c:url value='/auth/loginPage.do'/>">Login</a>
+                                    <p>기존 계정이 있으신가요?
+                                        <a href="<c:url value='/auth/loginPage.do'/>">로그인</a>
                                     </p>
                                 </div>
                             </div>
@@ -84,7 +83,7 @@ String ctx = request.getContextPath();
 			var code = '${code}';
 			var msg = '${msg}';
 	
-			if(code != '' && code != '<%= MemberMessageEnum.SUCCESS.getCode() %>'){
+			if(code !== '' && code !== '<%= MemberMessageEnum.SUCCESS.getCode() %>'){
 				alert(msg);
 			}
 		} 
