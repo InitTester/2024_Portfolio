@@ -79,8 +79,9 @@ String ctx = request.getContextPath();
                          <!-- end .login--form -->
                      </div> 
                 <!-- end .col-md-6 -->
-            </div>
+                </div>
             <!-- end .row -->
+            </div>
         </div>
         <!-- end .container -->
     </section>
