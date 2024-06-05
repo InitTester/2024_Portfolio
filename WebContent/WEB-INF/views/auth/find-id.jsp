@@ -29,7 +29,7 @@ String ctx = request.getContextPath();
                     <!-- 이름,이메일 입력 전  --> 
                      <div class="cardify recover_pass">
                          <div class="login--header">
-                             <p>귀하의 계정에 대한 이름, 이메일 주소를 입력하십시오. 귀하의 아이디가 전송됩니다.</p>
+                             <p>귀하의 계정에 대한 이름, 이메일 주소를 입력하십시오. 귀하의 아이디 찾을 수 있습니다.</p>
                          </div>
                          <!-- end .login_header -->
 
@@ -63,8 +63,8 @@ String ctx = request.getContextPath();
                        			<ul id="resultList" class="text_field"></ul>
                              </div>
 
-                             	<button class="btn btn--md btn--round register_btn" type="button"onclick="goToLogin()">로그인하러 가기</button>
-		                       <button class="btn btn--md btn--round register_btn"  type="button" onclick="resetPassword()">비밀번호 재설정</button>
+                             	<button class="btn btn--md btn--round register_btn" type="button"onclick="goToLogin()">로그인</button>
+		                       <button class="btn btn--md btn--round register_btn"  type="button" onclick="resetPassword()">비밀번호 찾기</button>
                          </div>
                          <!-- end .login--form -->
                      </div>
@@ -96,7 +96,7 @@ String ctx = request.getContextPath();
 		function findId() {
 			
 			if(user_name === null || user_name.value ===''){
-	            setMessage('최소 2자 이상 입력해주세요.', "memberNm", "msgName", "red");
+	            setMessage("이름을 입력해주세요", "memberNm", "msgName", "red");
 	            return false;
 			}
 			

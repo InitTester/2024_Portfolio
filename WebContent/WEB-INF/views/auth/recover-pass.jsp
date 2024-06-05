@@ -25,7 +25,7 @@ String ctx = request.getContextPath();
                             <div class="login--form">
                                 <div class="form-group">
                                     <label for="memberId">아이디</label>
-                                    <input id="memberId" type="text" name="memberId" class="text_field" placeholder="ID를 입력해주세요">  
+                                    <input id="memberId" type="text" name="memberId" class="text_field" placeholder="아이디를 입력해주세요">  
                                     <div id="msgId" class="msg"></div>
                                 </div>    
                                 
