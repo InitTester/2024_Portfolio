@@ -49,14 +49,15 @@
 	<!-- 작업지시서가 있는 패키지 위치를 잡아줘야 사용 할 수 있다 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<!-- <property name="basePackage" value="com.portfolio.www.forum.notice.dao.mybatis" /> -->
-		<property name="basePackage" value="com.portfolio.www.user.dao.mybatis,com.portfolio.www.forum.notice.dao.mybatis" />
+		<!-- <property name="basePackage" value="com.portfolio.www.user.dao.mybatis,com.portfolio.www.forum.notice.dao.mybatis" /> -->
+		<property name="basePackage" value="com.portfolio.www.**.mybatis" />
 	</bean>
 
 	<!-- 트랜잭션 관리를 위한 bean -->
 	<bean id="transactionManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
+	
   	<!-- 이메일 전송하기 위한 bean설정 -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 			<property name="host" value="smtp.naver.com" />
@@ -71,11 +72,12 @@
 	</bean>	
 	
 	<!-- Jasypt Start -->		
-   <bean id="encryptorConfig"
-      class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+   <bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
 	      <!-- 사용할 암호화 알고리즘 -->
 	      <property name="algorithm" value="PBEWithMD5AndDES" />
 	      <!-- PBE (패스워드 기반 암호화) 암호 설정 -->
+	      <!-- <property name="password" value="BASIC" /> -->		
+	      <!-- <property name="password" value="APP_ENCRYPTION_PASSWORD" />		 -->
 	      <property name="password" value="BASIC" />		
    </bean>
 
@@ -84,7 +86,7 @@
       <property name="config" ref="encryptorConfig" />
    </bean>
 
-   <bean
+   <bean id="propertyConfigurer"
       class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
       <constructor-arg ref="encryptor" />
       <property name="locations">
@@ -96,4 +98,12 @@
    </bean>
    <!-- Jasypt End -->	
    
+   <!-- dataSource Test 연결 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:33306/forum?serverTimezone=Asia/Seoul" />
+		<property name="username" value="admin"/>
+		<property name="password" value="jj123456"/>
+	</bean>   
+	
 </beans>
