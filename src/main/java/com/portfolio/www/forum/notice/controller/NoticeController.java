@@ -3,6 +3,8 @@ package com.portfolio.www.forum.notice.controller;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class NoticeController {
+	private final static Logger log = LoggerFactory.getLogger(NoticeController.class);
 	
 	@RequestMapping("/forum//notice/listPage.do")
 	public ModelAndView listPage(@RequestParam HashMap<String, String> params) {

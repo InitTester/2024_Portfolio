@@ -17,6 +17,8 @@ public interface MemberRepository {
 	
 	public int getMemberSeq(String memberId);
 	
+	public String getMemberId(Integer memberSeq);
+	
 	/* 회원정보 */
 	public MemberDto getMemberInfo(String memberId);
 	
@@ -25,4 +27,10 @@ public interface MemberRepository {
 	
 	/* 회원가입 테이블 인증 업데이트 */
 	public int updateMemberYN(Integer memberSeq);	
+	
+	/* id 찾기 */
+	public MemberDto findmemberID(HashMap<String,String> params);
+	
+	/* 비밀번호 변경 */
+	public int updateMemberPass(HashMap<String,String> params);	
 }

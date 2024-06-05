@@ -1,5 +1,7 @@
 package com.portfolio.www.user.dto;
 
+import java.util.HashMap;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("EmailDto")
@@ -33,5 +35,17 @@ public class EmailDto {
 	}
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+	
+	public static EmailDto setEmailDto(String from, String reciver, String subject, String text) {
+		
+		EmailDto dto = new EmailDto();
+		
+		dto.setFrom(from);
+		dto.setReceiver(reciver);
+		dto.setSubject(subject);
+		dto.setText(text);
+		
+		return dto;
 	}
 }

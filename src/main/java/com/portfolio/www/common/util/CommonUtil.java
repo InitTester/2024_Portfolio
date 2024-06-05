@@ -1,12 +1,17 @@
 package com.portfolio.www.common.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.util.Properties;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -58,5 +63,41 @@ public class CommonUtil {
         }
 
         return null;
+    }
+    
+	/* properties 의 경로에서 특정 key로 값가져오기 */
+    public static String getPropertiesValue(String properPath, String propertiesKey) {
+    	Properties prop = new Properties();
+    	InputStream input = null;
+    	
+    	try {
+			 // 클래스패스에서 파일 경로를 얻어옴
+			String filePath = CommonUtil.class.getClassLoader().getResource(properPath).getFile();
+	        File configFile = new File(filePath);
+	         
+		    input = new FileInputStream(configFile);		
+			prop.load(input);  
+    		 
+			StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+			String evnKey = System.getenv("APP_ENCRYPTION_PASSWORD");
+
+			encryptor.setPassword(evnKey);
+			
+			String decry = prop.getProperty(propertiesKey);
+			decry = decry.substring(4, decry.length()-1);
+			
+    		return encryptor.decrypt(decry);
+    		 
+    	} catch (IOException ioe) {
+    		return ioe.getMessage();
+    	} finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -22,7 +22,13 @@
 	      FROM member 
 	     WHERE member_id = #{memberId}
     </select>
-    
+     
+    <select id="getMemberId" parameterType="Integer">
+	    SELECT member_id 
+	      FROM member 
+	     WHERE member_seq = #{member_seq}
+    </select>
+       
     <select id="getMemberInfo" parameterType="String" resultType="MemberDto">
 	    SELECT member_seq, 
 	    	   member_id, 
@@ -54,11 +60,30 @@
 		            		DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') )
     </insert>    
     
-    <update id="updateMemberYN" parameterType="Integer"  >
+    <update id="updateMemberYN" parameterType="Integer">
         UPDATE member
            SET auth_yn = 'Y'
          WHERE member_seq = #{memberSeq}
            AND auth_yn = 'N'
     </update>
+    
+   <select id="findmemberID" parameterType="hashMap" resultType="MemberDto">
+	    SELECT member_id,
+	    	   member_nm, 
+	    	   join_dtm
+  	      FROM member 
+		 WHERE email = #{email}
+		   AND member_nm = #{memberNm} 
+		   AND auth_yn = 'Y' 
+    </select>    
+  
+    <update id="updateMemberPass" parameterType="hashMap">
+        UPDATE member
+           SET pwd_chng_dtm = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
+               passwd = #{passwd}
+         WHERE member_seq = #{member_id}
+    </update>
+      
+    
     
 </mapper>

@@ -5,6 +5,12 @@
 <%
 String ctx = request.getContextPath();
 %>
+	<style>
+	
+        .msg {
+        	color: red;
+        }
+	</style>
     <!--================================
             START SIGNUP AREA
     =================================-->
@@ -130,14 +136,12 @@ String ctx = request.getContextPath();
 	    joinForm?.addEventListener("submit",function(e) {
 	        e.preventDefault();
 	        
-	        console.log("이벤트는 탄거 같은데 ");
-	        
 	        if(!(id.test(user_id.value))) {
 	            setMessage("유효하지 않은 아이디 형식입니다.","memberId", "msgId", "red");
 	            return false;
 	        }
 	        if(!(email.test(user_email.value))) {
-	            setMessage("유효하지 않은 이메일 형식입니다.","user_email", "msgEmail", "red");
+	            setMessage("유효하지 않은 이메일 형식입니다.","email_ad", "msgEmail", "red");
 	            return false;
 	        }
 

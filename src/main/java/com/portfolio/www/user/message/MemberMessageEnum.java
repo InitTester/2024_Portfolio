@@ -21,9 +21,15 @@ public enum MemberMessageEnum {
 	FAIL_AUTH_EMAIL_ERR3("1003", "이메일 인증 : 인증메일 유효시간 만료되었습니다."),
 	
 	/* LOGIN */		
-	INVALID_ID_OR_PASSWORD("0203", "아이디 또는 비밀번호가 일치하지 않습니다. 다시 입력해 주세요."),
 	USER_NOT_FOUND("0202", "존재하지 않는 사용자 입니다."),
-	PAGEING_ERROR("9999","잘못된 페이지 접근입니다.");
+	INVALID_ID_OR_PASSWORD("0203", "아이디 또는 비밀번호가 일치하지 않습니다. 다시 입력해 주세요."),
+	INVALID_ID_OR_EMAIL("0204", "아이디 또는 이메일주소가 일치하지 않습니다. 다시 입력해 주세요."),
+	CHECK_EMAIL("3000","이메일을 확인해주세요."),
+	PAGEING_ERROR("9999","잘못된 페이지 접근입니다.")
+	
+	
+	
+	;
 	
 	private String code;
 	private String description;
