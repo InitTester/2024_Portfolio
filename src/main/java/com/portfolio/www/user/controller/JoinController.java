@@ -23,7 +23,7 @@ import com.portfolio.www.user.service.MemberService;
 
 @Controller
 public class JoinController {
-	private final static Logger log = LoggerFactory.getLogger(JoinController.class);
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private MemberService memberService;

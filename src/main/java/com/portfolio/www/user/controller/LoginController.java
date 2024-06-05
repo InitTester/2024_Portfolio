@@ -54,12 +54,12 @@ public class LoginController {
 			HttpServletRequest request,	HttpServletResponse response){
 		
 		ModelAndView mv = new ModelAndView();
+		MemberDto dto = new MemberDto().getMemberDto(params);
 		
 		try {
 			CommonUtil.getLogMessage(log, "login", "로그", "login 메서드 접속");
 			
 			MemberDto memberDto = memberService.login(params);
-			MemberDto dto = new MemberDto().getMemberDto(params);
 			
 			String memberId = memberDto.getMemberId();
 			String memberNm = memberDto.getMemberNm();
@@ -70,7 +70,6 @@ public class LoginController {
 			
 			if(!ObjectUtils.isEmpty(memberDto)) {
 				
-
 				// 세션 				
 				HttpSession session = request.getSession();
 				session.setAttribute("memberId", memberId);
@@ -92,28 +91,31 @@ public class LoginController {
 				mv.addObject("key", Calendar.getInstance().getTimeInMillis());		
 				mv.setViewName("redirect:/index.do");
 				
-			} else {
-				// id,pwd 틀릴 시 
-				mv.addObject("code",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getCode());
-				mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription());	
-				mv.addObject("dto",dto);
-				mv.setViewName("auth/login");				
 			}
+			
+			/*
+			 * else { // id,pwd 틀릴 시
+			 * mv.addObject("code",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getCode());
+			 * mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription())
+			 * ; mv.addObject("dto",dto); mv.setViewName("auth/login"); }
+			 */
 			
 			return mv;
 			
 		} catch (EmptyResultDataAccessException e) {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
-			mv.setViewName("login");
-			mv.addObject("code",MemberMessageEnum.USER_NOT_FOUND.getCode());
-			mv.addObject("msg",MemberMessageEnum.USER_NOT_FOUND.getDescription());	
+			mv.addObject("code",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getCode());
+			mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription());	
+			mv.addObject("dto",dto);
+			mv.setViewName("auth/login");
 			return mv;
 		}
 	}
 	
+	/*로그아웃*/
 	@GetMapping("/auth/logout.do")
-	public ModelAndView loginOut(@RequestParam HashMap<String, String> params,
+	public ModelAndView logOut(@RequestParam HashMap<String, String> params,
 								 HttpServletResponse response, HttpServletRequest request) {
 
 		HttpSession session = request.getSession();
@@ -133,6 +135,35 @@ public class LoginController {
 		
 		return mv;
 	}
-	
 
+	/* 아이디 찾기 */
+	@GetMapping("/auth/findIdPage.do")
+	public ModelAndView findIdPage(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
+		mv.setViewName("auth/find-id");
+		
+		return mv;
+	}	
+	
+	/* 비밀번호 재설정(id,이메일 확인 후 메일 전송) */
+	@GetMapping("/auth/recoverPassPage.do")
+	public ModelAndView recoverPassPage(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
+		mv.setViewName("auth/recover-pass");
+		
+		return mv;
+	}
+
+	/* 비밀번호 재설정(비밀번호 재설정) */
+	@GetMapping("/auth/resetPassPage.do")
+	public ModelAndView resetPassPage(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
+		mv.setViewName("auth/reset-password");
+		
+		return mv;
+	}	
+	
 }

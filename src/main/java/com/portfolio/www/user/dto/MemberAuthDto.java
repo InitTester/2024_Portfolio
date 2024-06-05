@@ -55,11 +55,12 @@ public class MemberAuthDto {
 		this.authYn = authYn;
 	}
 	
-	public static MemberAuthDto setMemberAuthDto(int memberSeq, String uuid) {
+	public static MemberAuthDto setMemberAuthDto(int memberSeq, String uuid, long expireDtm) {
 
 		MemberAuthDto authDto = new MemberAuthDto();
 		authDto.setMemberSeq(memberSeq);
 		authDto.setAuthUri(uuid);
+		authDto.setExpireDtm(expireDtm);
 		
 		return authDto;
 	}
