@@ -92,7 +92,11 @@ String ctx = request.getContextPath();
 				/* dataType : 'text', */
 				// 결과 성공 콜백함수 
 				success : function(result) {				
-					console.dir(result);		            
+					console.dir(result);		
+					if(result=== 1){
+						alert('<%= MemberMessageEnum.SUCCESS_CHANGE_PASSWORD_SEND_EMAIL.getDescription()%>');
+					    window.location.href = '<%=ctx%>/index.do'; // 메인 페이지로 이동
+					}
 				},
 				// 결과 에러 콜백함수
 				error : function(request, status, error) {
