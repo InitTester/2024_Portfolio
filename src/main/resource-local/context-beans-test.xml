@@ -48,8 +48,6 @@
  	<!-- DAO 위치를 basePackage로.. -->
 	<!-- 작업지시서가 있는 패키지 위치를 잡아줘야 사용 할 수 있다 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!-- <property name="basePackage" value="com.portfolio.www.forum.notice.dao.mybatis" /> -->
-		<!-- <property name="basePackage" value="com.portfolio.www.user.dao.mybatis,com.portfolio.www.forum.notice.dao.mybatis" /> -->
 		<property name="basePackage" value="com.portfolio.www.**.mybatis" />
 	</bean>
 

@@ -1,16 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 String ctx = request.getContextPath();
 %>
-	<link rel="stylesheet" href="<%=ctx%>/assest/template/css/trumbowyg.min.css">
-    <script src="<%=ctx%>/assest/template/js/vendor/trumbowyg.min.js"></script>
-    <script src="<%=ctx%>/assest/template/js/vendor/trumbowyg/ko.js"></script>
-    <script type="text/javascript">
-	    $('#trumbowyg-demo').trumbowyg({
-	        lang: 'kr'
-	    });
-	</script>
+
     <!--================================
             START DASHBOARD AREA
     =================================-->
@@ -21,30 +15,31 @@ String ctx = request.getContextPath();
                     <div class="forum_detail_area ">
                         <div class="cardify forum--issue">
                             <div class="title_vote clearfix">
-                                <h3>Responsive Website Footer Menu</h3>
+                                <h3>${boardDetail.title}</h3>
 
+								<!-- 좋아요/싫어요 -->
                                 <div class="vote">
-                                    <a href="#">
+                                    <a href="#" id="voteUp" data-isLike="Y" class="${isLike eq 'Y' ? 'active' : '' }" 
+                                       onclick="vote(${boardDetail.boardTypeSeq},${boardDetail.boardSeq},this);" >
                                         <span class="lnr lnr-thumbs-up"></span>
                                     </a>
-                                    <a href="#">
+                                    <a href="#" id="voteDown" data-isLike="N" class="${isLike eq 'N' ? 'active' : '' }" 
+                                       onclick="vote(${boardDetail.boardTypeSeq},${boardDetail.boardSeq},this);" >
                                         <span class="lnr lnr-thumbs-down"></span>
                                     </a>
-                                </div>
-                                <!-- end .vote -->
+                                </div>                                
                             </div>
                             <!-- end .title_vote -->
+                            
+                            
                             <div class="suppot_query_tag">
-                                <img class="poster_avatar" src="<%=ctx%>/assest/template/images/support_avat1.png" alt="Support Avatar"> Mitesh Chavda
-                                <span>2024.03.23 20:41:22</span>
+                                <img class="poster_avatar" src="<%=ctx%>/assest/template/images/support_avat1.png" alt="Support Avatar"> ${boardDetail.regMemberNm}
+                                <span><fmt:formatDate value="${boardDetail.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+                                조회 ${boardDetail.hit}
                             </div>
-                            <p style="    margin-bottom: 0; margin-top: 19px;">
-                            	Nunc placerat mi id nisi interdum they mollis. Praesent pharetra, justot scel erisque the mattis
-                                leo quam. Nunc placerat mi id nisi interdum they mollis. Praesent phare tra, justo ut scel
-                                eris que the mattis, leo quam placerat mi id nisi interdum mollis</p>
+                            <p style="margin-bottom: 0; margin-top: 19px;">${boardDetail.content}</p>
                         </div>
                         <!-- end .forum_issue -->
-
 
                         <div class="forum--replays cardify">
                             <div class="area_title">
@@ -112,4 +107,61 @@ String ctx = request.getContextPath();
     <!--================================
             END DASHBOARD AREA
     =================================-->
+    
+    <script type="text/javascript">
+    	/* 에디터 사용 */
+	    $('#trumbowyg-demo').trumbowyg({
+	        lang: 'kr'
+	    });
+	   
+	    /* 새로고침 */ 
+       window.addEventListener('popstate', function(event) {
+            window.location.reload();
+        });	    
+	    
+       /* vote 함수 */
+     	function vote(boardTypeSeq, boardSeq, thisElement) {
+    	    let url = `<%=ctx%>/forum/board/vote.do`;
+    	    
+    	    let voteDto = { boardTypeSeq : boardTypeSeq,
+   	    		         boardSeq : boardSeq,
+   	    		         isLike : thisElement.getAttribute("data-isLike")};
+    	    
+    	    console.log(voteDto);
+    	    
+    	    $.ajax({
+    	    	type : 'POST',
+    	    	url : url,
+    	    	headers : { 'Content-Type' : 'application/json'},
+    	    	dataType : 'text',
+    	    	data: JSON.stringify(voteDto),
+    	    	success : function(result){    	    		
+	   	    		let thumb = thisElement.getAttribute("data-isLike")==='Y' ? 'Up' : 'Down';
+	   	    		
+	   	    		console.log('a#vote'+thumb + ', result : ' + result);
+	   	    		console.log('값은 ? '+(result === 1));
+	   	    		
+	   	    		/* 1.추가 2.수정 3.삭제 */
+	    			if (result == 1) {   		
+	    				console.log('1번에 왔다');
+	    				$('a#vote'+thumb).addClass('active');
+	    			}else if(result == 2){
+	    				console.log('2번에 왔다');
+	    				$('a#vote'+!thumb).removeClass('active');
+	    				$('a#vote'+thumb).addClass('active'); 
+	    			} else if(result ==3){
+	    				console.log('3번에 왔다');
+		      			$('a#vote'+thumb).removeClass('active');	
+	    			}    	  
+	   	    		console.log('ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ');  		
+    	    	},
+    	    	error : function(request, status, error){
+    	    		console.log('vote method error :' +error);
+    	    	}
+    	    	
+    	    });
+    	}
+
+       
+	</script>
 	

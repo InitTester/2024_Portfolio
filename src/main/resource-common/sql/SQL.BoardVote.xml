@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.www.forum.board.dao.mybatis.BoardVoteRepository">
+
+	<select id="getVote" parameterType="BoardVoteDto" >
+		SELECT is_like
+		  FROM board_vote
+		 WHERE board_type_seq = #{boardTypeSeq}
+		   AND board_seq = #{boardSeq}
+		   AND member_id = #{memberId}
+	</select>
+	
+
+	<insert id="addVote" parameterType="BoardVoteDto">
+		INSERT INTO board_vote (board_seq, 
+							    board_type_seq, 
+							    member_id, 
+							    is_like, 
+							    ip, 
+							    reg_dtm) 
+				        VALUES (#{boardSeq},
+				        	    #{boardTypeSeq},
+				        	    #{memberId},
+				        	    #{isLike},
+				        	    #{ip},
+				        	    DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'))
+	
+	</insert>
+	
+	<update id="updateVote" parameterType="BoardVoteDto">
+		UPDATE board_vote
+		   SET is_like = #{isLike},
+		   	        ip = #{ip}
+		 WHERE board_type_seq = #{boardTypeSeq}
+		   AND board_seq = #{boardSeq}
+		   AND member_id = #{memberId}	
+	</update>
+	
+	<delete id="deleteVote" parameterType="BoardVoteDto">
+		DELETE FROM board_vote
+		 WHERE board_type_seq = #{boardTypeSeq}
+		   AND board_seq = #{boardSeq}
+		   AND member_id = #{memberId}	
+	</delete>
+			
+</mapper>

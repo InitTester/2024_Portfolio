@@ -152,10 +152,10 @@
                                         <div class="dropdowns dropdown--menu">
                                             <ul>
                                                 <li>
-                                                    <a href="<c:url value='/forum//notice/listPage.do'/>">공지사항</a>
+                                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=1'/>">공지사항</a>
                                                 </li>
                                                 <li>
-                                                    <a href="all-products.html">자유게시판</a>
+                                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=2'/>">자유게시판</a>
                                                 </li>
                                             </ul>
                                         </div>

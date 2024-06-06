@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.www.forum.board.dao.mybatis.BoardRepository">
+
+	<!-- boardTypeNm -->
+	<select id="getBoardTypeNm" >
+		SELECT board_type_nm
+		  FROM board_type
+		 WHERE board_type_seq = ${type}
+	</select>
+	
+	<select id="getBoardTotalCnt" >
+		SELECT count(*) 
+		  FROM board
+		 WHERE board_type_seq = ${type}
+	</select>
+
+	<!-- 게시판 전체 -->
+    <select id="getBoardList" parameterType="hashMap" resultType="BoardDto">
+		SELECT b.board_seq, 
+		       b.board_type_seq, 
+		       b.title, 
+		       b.content, 
+		       b.hit, 
+		       b.del_yn,
+		       b.reg_dtm,
+		       b.reg_member_seq, 
+		       m.member_id AS regMemberId,
+		       m.member_nm AS regMemberNm, 
+		       b.update_dtm, 
+		       b.update_member_seq, 
+		       bt.board_type_nm
+		  FROM board b  
+		  JOIN board_type bt ON bt.board_type_seq  = b.board_type_seq  
+		  JOIN member m ON m.member_seq  = b.reg_member_seq  
+		 WHERE 1 = 1 
+		   AND b.board_type_seq = ${type}
+		 ORDER BY b.board_seq DESC
+		 LIMIT ${start}, ${size} 
+    </select>
+    
+ 	<!-- 게시글 상세 조회 -->
+    <select id="getBoardDetail" resultType="BoardDto">
+		SELECT b.board_seq, 
+		       b.board_type_seq, 
+		       b.title, 
+		       b.content, 
+		       b.hit, 
+		       b.del_yn,
+		       b.reg_dtm,
+		       b.reg_member_seq, 
+		       m.member_id AS regMemberId,
+		       m.member_nm AS regMemberNm, 
+		       b.update_dtm, 
+		       b.update_member_seq, 
+		       bt.board_type_nm
+		  FROM board b  
+		  JOIN board_type bt ON bt.board_type_seq  = b.board_type_seq  
+		  JOIN member m ON m.member_seq  = b.reg_member_seq  
+		 WHERE b.board_seq = ${boardSeq}
+		 ORDER BY b.board_seq DESC
+    </select>
+       
+    <update id="updateHit" parameterType="String">
+    	UPDATE board
+    	   SET hit = IFNULL(hit,0) + 1
+    	WHERE board_seq = #{boardSeq}
+    </update>
+    
+</mapper>
