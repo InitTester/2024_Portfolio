@@ -15,8 +15,10 @@ public interface MemberRepository {
 	/* 회원 가입 여부 email 중복체크*/
 	public int getMemberEmailCnt(String email);
 	
+	/* 회원번호 */
 	public int getMemberSeq(String memberId);
 	
+	/* 회원아이디 */
 	public String getMemberId(Integer memberSeq);
 	
 	/* 회원정보 */

@@ -13,22 +13,24 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class CommonUtil {
-	private final static Logger log = LoggerFactory.getLogger(CommonUtil.class);
+//	private final static Logger log = LoggerFactory.getLogger(CommonUtil.class);
 	
 	public static Logger getLogMessage(Logger log, String methodName, String logKey, Object logValue) {
-		log.info("["+methodName+ "] (" + logKey + ") : " + logValue);
+		log.info("["+methodName+ "] (" + logKey + ") : " + logValue.toString());
+		
 		return log;
 	}
 	
     public static Cookie createCookie(String cookieKey, String cookieValue, int maxAge, String path){
     	
         String encodedValue = cookieValue;
-        
 //        try { encodedValue = URLEncoder.encode(cookieValue, "UTF-8"); }
 //        catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
         

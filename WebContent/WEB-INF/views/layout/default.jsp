@@ -28,6 +28,7 @@ String ctx = request.getContextPath();
     <link rel="stylesheet" href="<%=ctx%>/assest/template/css/trumbowyg.min.css">
     <link rel="stylesheet" href="<%=ctx%>/assest/template/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="<%=ctx%>/assest/template/css/style.css">
+	<link rel="stylesheet" href="<%=ctx%>/assest/template/css/trumbowyg.min.css">
     <!-- endinject -->
 
     <!-- Favicon -->
@@ -70,6 +71,9 @@ String ctx = request.getContextPath();
     <script src="<%=ctx%>/assest/template/js/dashboard.js"></script>
     <script src="<%=ctx%>/assest/template/js/main.js"></script>
     <script src="<%=ctx%>/assest/template/js/map.js"></script>
+    
+	<script src="<%=ctx%>/assest/template/js/vendor/trumbowyg.min.js"></script>
+    <script src="<%=ctx%>/assest/template/js/vendor/trumbowyg/ko.js"></script>
     <!-- endinject -->
 </body>
 
