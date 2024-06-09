@@ -39,13 +39,15 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
-		Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
-		
-		CommonUtil.getLogMessage(log, "loginPage", "memberSeq", memberSeq);
-		String memberId = memberService.getMemberId(memberSeq);
-		CommonUtil.getLogMessage(log, "loginPage", "memberId", memberId);
-		mv.addObject("memberId",memberId);
-		
+		if(CommonUtil.getCookieValue(request, "rememberSeq")!=null) {		
+
+			Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "rememberSeq"));
+			
+			CommonUtil.getLogMessage(log, "loginPage", "memberSeq", memberSeq);
+			String memberId = memberService.getMemberId(memberSeq);
+			CommonUtil.getLogMessage(log, "loginPage", "memberId", memberId);
+			mv.addObject("memberId",memberId);
+		}
 		mv.setViewName("auth/login");
 		
 		return mv;
@@ -66,7 +68,7 @@ public class LoginController {
 			MemberDto memberDto = memberService.login(params);
 			
 			String memberId = memberDto.getMemberId();
-			String memberSeq = memberDto.getMemberSeq().toString();
+//			String memberSeq = memberDto.getMemberSeq().toString();
 			String memberNm = memberDto.getMemberNm();
 			Integer memberSeq = memberService.getMemberSeq(memberId);
 			//TODO 추후 개발 예정
@@ -81,8 +83,8 @@ public class LoginController {
 				session.setAttribute("memberId", memberId);
 				
 				// 쿠키 
-//				response.addCookie(CommonUtil.createCookie("memberId",memberId,-1,"/"));
-				response.addCookie(CommonUtil.createCookie("memberSeq",memberSeq,-1,"/"));
+				response.addCookie(CommonUtil.createCookie("memberId",memberId,-1,"/"));
+//				response.addCookie(CommonUtil.createCookie("memberSeq",String.valueOf(memberSeq),-1,"/"));
 				response.addCookie(CommonUtil.createCookie("memberNm",memberNm,-1,"/"));
 //				setCookie("profileImg","profileImg",-1,"/");
 				

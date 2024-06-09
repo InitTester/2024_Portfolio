@@ -8,7 +8,7 @@
 </style>
 
 <!-- 로그인 정보 -->
-<c:set var="loginInfo" value="${not empty cookie.memberId.value ? 'hidden' : ''}"/>
+<c:set var="loginInfo" value="${not empty cookie.rememberSeq.value ? 'hidden' : ''}"/>
 <c:set var="userprofileImg" value="${not empty cookie.profileImg.value ? '/images/usr_avatar.png' : '/user/img/'}"/>
 
     <!-- ================================
