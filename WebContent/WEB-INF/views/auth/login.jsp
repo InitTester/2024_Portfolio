@@ -13,7 +13,7 @@ String ctx = request.getContextPath();
         }
 	</style>
 	
-<c:set var="memberId" value="${empty dto.memberId ? cookie.rememberId.value : dto.memberId}"/>
+<c:set var="memberId" value="${empty dto.memberId ? memberId : dto.memberId}"/>
 
     <!--================================
             START LOGIN AREA
@@ -43,7 +43,7 @@ String ctx = request.getContextPath();
                                 
                                 <div class="form-group">
                                     <div class="custom_checkbox">
-                                        <input type="checkbox" id="ch2" name="passwdrememberId" value="on" ${empty cookie.rememberId.value ? "" : "checked"}>
+                                        <input type="checkbox" id="ch2" name="rememberId" value="on" ${empty cookie.rememberSeq.value ? "" : "checked"}>
                                         <label for="ch2">
                                             <span class="shadow_checkbox"></span>
                                             <span class="label_text">아이디 저장</span>

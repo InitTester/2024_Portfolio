@@ -61,7 +61,8 @@
 	                                <div class="dropdowns dropdown--author">
 	                                    <ul>
 	                                        <li>
-	                                            <a href="author.html">
+	                                            <a href="#">
+	                                            <!-- <a href="author.html"> -->
 	                                                <span class="lnr lnr-user"></span>Profile</a>
 	                                        </li>
 	                             <!--            <li>
@@ -69,7 +70,8 @@
 	                                                <span class="lnr lnr-home"></span> Dashboard</a>
 	                                        </li> -->
 	                                        <li>
-	                                            <a href="dashboard-setting.html">
+<!-- 	                                            <a href="dashboard-setting.html"> -->
+	                                            <a href="#">
 	                                                <span class="lnr lnr-cog"></span> Setting</a>
 	                                        </li>
 	                                       <!--  <li>
@@ -161,7 +163,8 @@
                                         </div>
                                     </li>                                    
                                     <li>
-                                        <a href="<c:url value='/contact.do'/>">문의하기</a>
+                                        <%-- <a href="<c:url value='/contact.do'/>">문의하기</a> --%>
+                                        <a href="<c:url value='#'/>">문의하기</a>
                                     </li>
                                 </ul>
                             </div>

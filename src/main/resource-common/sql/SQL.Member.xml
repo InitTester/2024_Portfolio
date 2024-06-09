@@ -67,7 +67,7 @@
            AND auth_yn = 'N'
     </update>
     
-   <select id="findmemberID" parameterType="hashMap" resultType="MemberDto">
+   <select id="findmemberID" parameterType="HashMap" resultType="MemberDto">
 	    SELECT member_id,
 	    	   member_nm, 
 	    	   join_dtm

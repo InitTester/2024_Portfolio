@@ -22,11 +22,13 @@ import com.portfolio.www.user.dto.MemberDto;
 import com.portfolio.www.user.message.MemberMessageEnum;
 import com.portfolio.www.user.service.MemberService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.portfolio.www.common.util.CommonUtil;
 
+@Slf4j
 @Controller
 public class LoginController {
-	private final static Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
 	private MemberService memberService;
@@ -37,10 +39,12 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
-		HttpSession session = request.getSession();
+		Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
 		
-//		String memberId = (String)session.getAttribute("memberId");
-//		mv.addObject("memberId",)
+		CommonUtil.getLogMessage(log, "loginPage", "memberSeq", memberSeq);
+		String memberId = memberService.getMemberId(memberSeq);
+		CommonUtil.getLogMessage(log, "loginPage", "memberId", memberId);
+		mv.addObject("memberId",memberId);
 		
 		mv.setViewName("auth/login");
 		
@@ -54,7 +58,7 @@ public class LoginController {
 			HttpServletRequest request,	HttpServletResponse response){
 		
 		ModelAndView mv = new ModelAndView();
-		MemberDto dto = new MemberDto().getMemberDto(params);
+		MemberDto dto = MemberDto.getMemberDto(params);
 		
 		try {
 			CommonUtil.getLogMessage(log, "login", "로그", "login 메서드 접속");
@@ -63,6 +67,7 @@ public class LoginController {
 			
 			String memberId = memberDto.getMemberId();
 			String memberNm = memberDto.getMemberNm();
+			Integer memberSeq = memberService.getMemberSeq(memberId);
 			//TODO 추후 개발 예정
 //			String profileImg = memberDto.getMemberNm();
 			
@@ -83,9 +88,9 @@ public class LoginController {
 				
 				/* id 기억 쿠키 */
 				if(!rememberId.toString().isEmpty()){
-					response.addCookie(CommonUtil.createCookie("rememberId",memberId,-1,"/"));
+					response.addCookie(CommonUtil.createCookie("rememberSeq",String.valueOf(memberSeq),-1,"/"));
 				}else {
-					response.addCookie(CommonUtil.createCookie("rememberId",memberId,0,"/"));
+					response.addCookie(CommonUtil.createCookie("rememberSeq",String.valueOf(memberSeq),0,"/"));
 				}
 				
 				mv.addObject("key", Calendar.getInstance().getTimeInMillis());		
