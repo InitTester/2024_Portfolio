@@ -78,7 +78,7 @@ public class MemberService {
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.MINUTE, 30);
 			
-			MemberAuthDto authDto = new MemberAuthDto().setMemberAuthDto(memberSeq, uuid, calendar.getTimeInMillis());
+			MemberAuthDto authDto = MemberAuthDto.setMemberAuthDto(memberSeq, uuid, calendar.getTimeInMillis());
 
 			/* db 추가 */
 			try {
@@ -100,7 +100,7 @@ public class MemberService {
 			CommonUtil.getLogMessage(log, "join", "html", html);
 
 			/* 인증 메일 발송 */
-			EmailDto emailDto = new EmailDto().setEmailDto(from, email, MemberMessageEnum.SUCCESS_JOIN.getDescription(), html);			
+			EmailDto emailDto = EmailDto.setEmailDto(from, email, MemberMessageEnum.SUCCESS_JOIN.getDescription(), html);			
 			emailUtil.sendMail(emailDto, true);
 		}
 		return cnt;
@@ -231,9 +231,19 @@ public class MemberService {
 	}
 
 	/* 아이디찾기 */
-	public MemberDto getMemberId(HashMap<String, String> params) {
+	public String getMemberId(Integer memberSeq) {
+		return memberRepository.getMemberId(memberSeq);
+	}
+	
+	public MemberDto findmemberID(HashMap<String, String> params) {
 		return memberRepository.findmemberID(params);
 	}
+	
+	/* 회원 번호 */
+	public Integer getMemberSeq(String memberId) {
+		return memberRepository.getMemberSeq(memberId);
+	}
+	
 
 	/* 비밀번호 찾기 */
 	public int recoverPassSend(String memberId, String email, HttpServletRequest request) {
@@ -246,7 +256,7 @@ public class MemberService {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MINUTE, 30);
 		
-		MemberAuthDto authDto = new MemberAuthDto().setMemberAuthDto(memberSeq, uuid, calendar.getTimeInMillis());
+		MemberAuthDto authDto = MemberAuthDto.setMemberAuthDto(memberSeq, uuid, calendar.getTimeInMillis());
 		authDto.setAuthNum("passwordChange");
 		
 		/* db 추가 */
@@ -276,7 +286,7 @@ public class MemberService {
 			CommonUtil.getLogMessage(log, "recoverPassSend", "html", html);
 
 			/* 인증 메일 발송 */
-			EmailDto emailDto = new EmailDto().setEmailDto(from, email, MemberMessageEnum.CHECK_EMAIL.getDescription(), html);			
+			EmailDto emailDto = EmailDto.setEmailDto(from, email, MemberMessageEnum.CHECK_EMAIL.getDescription(), html);			
 			emailUtil.sendMail(emailDto, true);
 			 
 			return memberIdCnt;

@@ -1,4 +1,4 @@
-package com.portfolio.www.user.controller.rest;
+package com.portfolio.www.user.controller;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeoutException;
@@ -40,11 +40,9 @@ public class RestLoginController {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("memberNm", memberNm);
 		params.put("email", email);
-
-		MemberDto dto = null;
-
+		
 		try {
-			dto = memberService.getMemberId(params);
+			MemberDto dto = memberService.findmemberID(params);
 			CommonUtil.getLogMessage(log, "findId", "memberIsd", dto.getMemberId());
 			return ResponseEntity.ok(dto);
 		} catch (EmptyResultDataAccessException e) {
