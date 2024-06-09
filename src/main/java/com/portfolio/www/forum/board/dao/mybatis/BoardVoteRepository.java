@@ -18,7 +18,4 @@ public interface BoardVoteRepository {
 
 	/* 좋아요/싫어요 삭제 */
 	public int deleteVote(BoardVoteDto boardVoteDto);
-	
-	
-	
 }

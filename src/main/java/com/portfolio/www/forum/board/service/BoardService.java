@@ -1,20 +1,37 @@
 package com.portfolio.www.forum.board.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.mybatis.spring.MyBatisSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portfolio.www.common.util.CommonUtil;
+import com.portfolio.www.forum.board.dao.mybatis.BoardAttachRepository;
 import com.portfolio.www.forum.board.dao.mybatis.BoardRepository;
 import com.portfolio.www.forum.board.dao.mybatis.BoardVoteRepository;
+import com.portfolio.www.forum.board.dto.BoardAttachDto;
 import com.portfolio.www.forum.board.dto.BoardDto;
 import com.portfolio.www.forum.board.dto.BoardVoteDto;
+import com.portfolio.www.forum.board.util.FileUtil;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BoardService {
 	private final static Logger log = LoggerFactory.getLogger(BoardService.class);
 	
@@ -23,7 +40,14 @@ public class BoardService {
 	
 	@Autowired
 	private BoardVoteRepository boardVoteRepository;
+	
+	@Autowired
+	private BoardAttachRepository boardattachRepository;
+	
+	@Autowired
+	private FileUtil fileUtil;
 
+	/* 게시판 이름 */
 	public String getBoardTypeNm(Integer boardTypeSeq) {
 		return boardRepository.getBoardTypeNm(boardTypeSeq);
 	}
@@ -34,22 +58,23 @@ public class BoardService {
 	}
 	
 	/* 게시글 조회수 */
-	public int updateHit(String boardSeq) {
+	public int updateHit(Integer boardSeq) {
 		return boardRepository.updateHit(boardSeq);
 	}
 	
 	/* 게시글 상세조회 */
-	public BoardDto getBoardDetail(String boardSeq) {
+	public BoardDto getBoardDetail(Integer boardSeq) {
 		return boardRepository.getBoardDetail(boardSeq);
 	}
 	
+	/* 좋아요/싫어요 상태*/
 	public String getVote(HashMap<String, String> params) {
 		
 		Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq").toString());
 		Integer boardSeq = Integer.parseInt(params.get("boardSeq").toString());
-		String memberId= params.get("memberId").toString();
+		Integer memberSeq=  Integer.parseInt(params.get("memberSeq").toString());
 		
-		BoardVoteDto boardVoteDto = new BoardVoteDto().getBoardVoteDto(boardTypeSeq, boardSeq, memberId, "", "");
+		BoardVoteDto boardVoteDto = BoardVoteDto.getBoardVoteDto(boardTypeSeq, boardSeq, memberSeq, "", "");
 		
 		CommonUtil.getLogMessage(log, "getVote", "boardVoteDto", boardVoteDto);
 		System.out.println(boardVoteDto);
@@ -57,6 +82,8 @@ public class BoardService {
 		return boardVoteRepository.getVote(boardVoteDto);
 	}
 	
+	/* 좋아요/싫어요 등록/수정/삭제 */
+	@Transactional
 	public int setVote(BoardVoteDto boardVoteDto) {
 		
 		/* 좋아요/싫어요 기능 
@@ -89,7 +116,56 @@ public class BoardService {
 		return resultVlue;
 	}
 	
+	/* 게시글 등록 */
+	@Transactional
+	public boolean addBoard(BoardDto boardDto, MultipartFile[] attFiles, HttpServletRequest request) {
+		
+		File destFile =null;
+		
+		try {
+
+			/*board_seq*/
+			boardRepository.addBoard(boardDto);
+			int boardSeq = boardDto.getBoardSeq();
+			
+			CommonUtil.getLogMessage(log, "addBoard", "getBoardSeq", boardDto.getBoardSeq());
+			CommonUtil.getLogMessage(log, "addBoard", "boardSeq", boardSeq);
+			
+			for(MultipartFile mpf : attFiles) {
+				if(!mpf.isEmpty()) {
+					destFile = fileUtil.saveFile(mpf,request);
+
+//					String ChngFileNm = UUID.randomUUID().toString().replaceAll("-","");
+					BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardSeq);
+					
+//					attachDto.setChngFileNm(ChngFileNm);
+					attachDto.setOrgFileNm(mpf.getOriginalFilename());
+					attachDto.setFileType(mpf.getContentType());
+					attachDto.setFileSize(mpf.getSize());
+					attachDto.setSavePath(destFile.getAbsolutePath());
+					
+					boardattachRepository.addBoardAttach(attachDto);
+				}
+			}
+			
+			return true;
+			
+		}catch(DataAccessException dae) {
+			CommonUtil.getLogMessage(log, "addBoard", "DataAccessException", dae);
+			return false;
+		}catch(Exception e) {
+			if(!ObjectUtils.isEmpty(destFile)) {
+				destFile.delete();
+				log.info(" addBoard :: e.getMessage()={}", e.getMessage());	
+			}
+			return false;
+		}
+	}
 	
+	/* 게시글 첨부파일 리스트 */
+	public List<BoardAttachDto> getBoardAttachAll(BoardAttachDto attachDto){
+		return boardattachRepository.getBoardAttachAll(attachDto);
+	}
 	
 	
 	

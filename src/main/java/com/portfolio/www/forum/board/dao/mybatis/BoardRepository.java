@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.portfolio.www.forum.board.dto.BoardAttachDto;
 import com.portfolio.www.forum.board.dto.BoardDto;
 
 @Repository 
@@ -20,10 +21,13 @@ public interface BoardRepository {
 	public List<BoardDto> getBoardList(HashMap<String, Object> params);
 	
 	/* 게시글 상세 조회 */
-	public BoardDto getBoardDetail(String boardSeq);
+	public BoardDto getBoardDetail(Integer boardSeq);
 	
 	/* 게시판 조회수 */
-	public int updateHit(String boardSeq);
+	public int updateHit(Integer boardSeq);
+	
+	/* 게시글 등록 */
+	public int addBoard(BoardDto boardDto);
 	
 	
 	

@@ -38,7 +38,7 @@ String ctx = request.getContextPath();
                                      </tbody>                                        
                                  </table>
                                	 <div style="display: inline-block; margin: 0 5px; float: right; padding-right:10px;">
-                               		<a href="<c:url value='/forum/board/writePage.do?boardTypeSeq=${boardTypeSeq}'/>">
+                               		<a href="<c:url value='/forum/board/newPage.do?boardTypeSeq=${boardTypeSeq}'/>">
                                			<button class="btn btn--round btn--bordered btn-sm btn-secondary">작성</button>
                                		</a>
                            		</div>

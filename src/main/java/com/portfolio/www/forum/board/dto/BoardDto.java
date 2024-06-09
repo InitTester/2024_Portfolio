@@ -9,7 +9,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("BoardDto")
 public class BoardDto {
 	
-	private Integer boardSeq;
+	private int boardSeq;
 	private Integer boardTypeSeq;
 	private String boardTypeNm;
 	private String title;
@@ -24,10 +24,10 @@ public class BoardDto {
 	private String updateDtm;
 	private Integer updateMemberSeq;
 	
-	public Integer getBoardSeq() {
+	public int getBoardSeq() {
 		return boardSeq;
 	}
-	public void setBoardSeq(Integer boardSeq) {
+	public void setBoardSeq(int boardSeq) {
 		this.boardSeq = boardSeq;
 	}
 	public Integer getBoardTypeSeq() {
@@ -116,6 +116,17 @@ public class BoardDto {
 	}
 	public void setUpdateMemberSeq(Integer updateMemberSeq) {
 		this.updateMemberSeq = updateMemberSeq;
+	}
+	
+	public static BoardDto setBoardDto(Integer boardTypeSeq, String title, String content, Integer memberSeq) {
+		
+		BoardDto boardDto = new BoardDto();
+		boardDto.setBoardTypeSeq(boardTypeSeq);
+		boardDto.setTitle(title);
+		boardDto.setContent(content);
+		boardDto.setRegMemberSeq(memberSeq);
+		
+		return boardDto;
 	}
 	
 }

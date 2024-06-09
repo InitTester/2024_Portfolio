@@ -14,6 +14,7 @@ String ctx = request.getContextPath();
                 <div class="col-lg-12">
                     <div class="forum_detail_area ">
                         <div class="cardify forum--issue">
+                        
                             <div class="title_vote clearfix">
                                 <h3>${boardDetail.title}</h3>
 
@@ -27,17 +28,25 @@ String ctx = request.getContextPath();
                                        onclick="vote(${boardDetail.boardTypeSeq},${boardDetail.boardSeq},this);" >
                                         <span class="lnr lnr-thumbs-down"></span>
                                     </a>
-                                </div>                                
+                                </div>                          
                             </div>
-                            <!-- end .title_vote -->
                             
-                            
+                           	<!-- 게시글 정보 -->
                             <div class="suppot_query_tag">
                                 <img class="poster_avatar" src="<%=ctx%>/assest/template/images/support_avat1.png" alt="Support Avatar"> ${boardDetail.regMemberNm}
                                 <span><fmt:formatDate value="${boardDetail.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
                                 조회 ${boardDetail.hit}
                             </div>
+                            <!-- 게시글 내용 -->
                             <p style="margin-bottom: 0; margin-top: 19px;">${boardDetail.content}</p>
+                           
+                            <!-- 수정/삭제 버튼, 로그인 회원+등록자가 동일하면 -->
+	                           <!-- 수정버튼 -->	                               
+	                           <a href="<c:url value='/forum/board/editPage.do?boardSeq=${boardDetail.boardSeq}&boardTypeSeq=${boardDetail.boardTypeSeq}'/>" >수정</a>
+	                    	   <!-- 삭제버튼 -->
+	                    	   <a href="#" onClick="javascript:deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
+                            
+                            
                         </div>
                         <!-- end .forum_issue -->
 

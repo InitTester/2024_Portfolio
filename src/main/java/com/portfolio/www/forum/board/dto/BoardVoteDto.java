@@ -7,14 +7,14 @@ public class BoardVoteDto {
 	
 	private Integer boardSeq;
 	private Integer boardTypeSeq;
-	private String memberId;
+	private Integer memberSeq;
 	private String isLike;
 	private String ip;
 	private String regDtm;
 	
 	@Override
 	public String toString() {
-		return "BoardVoteDto [boardSeq=" + boardSeq + ", boardTypeSeq=" + boardTypeSeq + ", memberId=" + memberId
+		return "BoardVoteDto [boardSeq=" + boardSeq + ", boardTypeSeq=" + boardTypeSeq + ", memberSeq=" + memberSeq
 				+ ", isLike=" + isLike + ", ip=" + ip + ", regDtm=" + regDtm + "]";
 	}
 	
@@ -31,11 +31,11 @@ public class BoardVoteDto {
 	public void setBoardTypeSeq(Integer boardTypeSeq) {
 		this.boardTypeSeq = boardTypeSeq;
 	}
-	public String getmemberId() {
-		return memberId;
+	public Integer getmemberSeq() {
+		return memberSeq;
 	}
-	public void setmemberId(String memberId) {
-		this.memberId = memberId;
+	public void setmemberSeq(Integer memberSeq) {
+		this.memberSeq = memberSeq;
 	}
 	public String getIsLike() {
 		return isLike;
@@ -56,12 +56,12 @@ public class BoardVoteDto {
 		this.regDtm = regDtm;
 	}
 	
-	public static BoardVoteDto getBoardVoteDto(Integer boardTypeSeq, Integer boardSeq, String memberId, String isLike, String ip) {
+	public static BoardVoteDto getBoardVoteDto(Integer boardTypeSeq, Integer boardSeq, Integer memberSeq, String isLike, String ip) {
 		
 		BoardVoteDto dto = new BoardVoteDto();
 		dto.setBoardTypeSeq(boardTypeSeq);
 		dto.setBoardSeq(boardSeq);
-		dto.setmemberId(memberId);
+		dto.setmemberSeq(memberSeq);
 		dto.setIp(ip);
 		dto.setIsLike(isLike);
 		

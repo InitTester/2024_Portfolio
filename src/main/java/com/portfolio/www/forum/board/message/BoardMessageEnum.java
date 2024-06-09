@@ -1,7 +1,8 @@
 package com.portfolio.www.forum.board.message;
 
 public enum BoardMessageEnum {
-	SUCCESS("0000", "Request Success"),
+	SUCCESS("0000", "게시글 작성이 완료 되었습니다"),
+	FAIL("9999", "게시글 작성이 실패 되었습니다"),
 	PAGEING_ERROR("9999","잘못된 페이지 접근입니다.");
 
 	private String code;

@@ -1,4 +1,4 @@
-package com.portfolio.www.forum.board.controller.rest;
+package com.portfolio.www.forum.board.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +26,7 @@ public class RestBoardVoteController {
 //	@ResponseBody
 	public ResponseEntity<Integer> vote(@RequestBody BoardVoteDto voteDto, HttpServletRequest request) {
 
-		voteDto.setmemberId(CommonUtil.getCookieValue(request, "memberId"));
+		voteDto.setmemberSeq(Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq")));
 		voteDto.setIp(request.getRemoteAddr());
 		
 		int result = boardService.setVote(voteDto);

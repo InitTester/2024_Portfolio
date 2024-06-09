@@ -12,7 +12,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="info-footer">
                             <div class="info__logo">
-                                <img src="<c:url value='/assest/template/images/flogo.png'/> " alt="footer logo" />
+                                <img src="<c:url value='/images/logo.png'/> " alt="footer logo" />
                             </div>
                             <p class="info--text">포트폴리오를 위한 개인 홈페이지 입니다.</p>
                             

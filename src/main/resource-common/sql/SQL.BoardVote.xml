@@ -10,20 +10,19 @@
 		  FROM board_vote
 		 WHERE board_type_seq = #{boardTypeSeq}
 		   AND board_seq = #{boardSeq}
-		   AND member_id = #{memberId}
+		   AND member_seq = #{memberSeq}
 	</select>
 	
-
 	<insert id="addVote" parameterType="BoardVoteDto">
 		INSERT INTO board_vote (board_seq, 
 							    board_type_seq, 
-							    member_id, 
+							    member_seq, 
 							    is_like, 
 							    ip, 
 							    reg_dtm) 
 				        VALUES (#{boardSeq},
 				        	    #{boardTypeSeq},
-				        	    #{memberId},
+				        	    #{memberSeq},
 				        	    #{isLike},
 				        	    #{ip},
 				        	    DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'))
@@ -36,14 +35,14 @@
 		   	        ip = #{ip}
 		 WHERE board_type_seq = #{boardTypeSeq}
 		   AND board_seq = #{boardSeq}
-		   AND member_id = #{memberId}	
+		   AND member_seq = #{memberSeq}	
 	</update>
 	
 	<delete id="deleteVote" parameterType="BoardVoteDto">
 		DELETE FROM board_vote
 		 WHERE board_type_seq = #{boardTypeSeq}
 		   AND board_seq = #{boardSeq}
-		   AND member_id = #{memberId}	
+		   AND member_seq = #{memberSeq}	
 	</delete>
 			
 </mapper>

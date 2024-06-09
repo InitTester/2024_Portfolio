@@ -62,6 +62,7 @@ public class LoginController {
 			MemberDto memberDto = memberService.login(params);
 			
 			String memberId = memberDto.getMemberId();
+			String memberSeq = memberDto.getMemberSeq().toString();
 			String memberNm = memberDto.getMemberNm();
 			//TODO 추후 개발 예정
 //			String profileImg = memberDto.getMemberNm();
@@ -75,7 +76,8 @@ public class LoginController {
 				session.setAttribute("memberId", memberId);
 				
 				// 쿠키 
-				response.addCookie(CommonUtil.createCookie("memberId",memberId,-1,"/"));
+//				response.addCookie(CommonUtil.createCookie("memberId",memberId,-1,"/"));
+				response.addCookie(CommonUtil.createCookie("memberSeq",memberSeq,-1,"/"));
 				response.addCookie(CommonUtil.createCookie("memberNm",memberNm,-1,"/"));
 //				setCookie("profileImg","profileImg",-1,"/");
 				
