@@ -28,12 +28,13 @@ import com.portfolio.www.forum.board.dto.BoardVoteDto;
 import com.portfolio.www.forum.board.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BoardService {
-	private final static Logger log = LoggerFactory.getLogger(BoardService.class);
 	
 	@Autowired
 	private BoardRepository boardRepository;
@@ -77,7 +78,6 @@ public class BoardService {
 		BoardVoteDto boardVoteDto = BoardVoteDto.getBoardVoteDto(boardTypeSeq, boardSeq, memberSeq, "", "");
 		
 		CommonUtil.getLogMessage(log, "getVote", "boardVoteDto", boardVoteDto);
-		System.out.println(boardVoteDto);
 		
 		return boardVoteRepository.getVote(boardVoteDto);
 	}
@@ -167,6 +167,10 @@ public class BoardService {
 		return boardattachRepository.getBoardAttachAll(attachDto);
 	}
 	
+	/* 게시글 첨부파일 리스트 */
+	public BoardAttachDto getBoardAttach(BoardAttachDto attachDto){
+		return boardattachRepository.getBoardAttach(attachDto);
+	}
 	
 	
 	

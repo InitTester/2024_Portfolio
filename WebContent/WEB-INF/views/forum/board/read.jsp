@@ -36,16 +36,34 @@ String ctx = request.getContextPath();
                                 <img class="poster_avatar" src="<%=ctx%>/assest/template/images/support_avat1.png" alt="Support Avatar"> ${boardDetail.regMemberNm}
                                 <span><fmt:formatDate value="${boardDetail.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
                                 조회 ${boardDetail.hit}
+                                
+                                <!-- 수정/삭제 버튼, 로그인 회원+등록자가 동일하면 -->
+	                            <!-- 수정버튼 -->	                               
+	                            <a href="<c:url value='/forum/board/editPage.do?boardSeq=${boardDetail.boardSeq}&boardTypeSeq=${boardDetail.boardTypeSeq}'/>" >수정</a>
+	                    	    <!-- 삭제버튼 -->
+	                    	    <a href="#" onClick="javascript:deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
                             </div>
                             <!-- 게시글 내용 -->
                             <p style="margin-bottom: 0; margin-top: 19px;">${boardDetail.content}</p>
                            
-                            <!-- 수정/삭제 버튼, 로그인 회원+등록자가 동일하면 -->
-	                           <!-- 수정버튼 -->	                               
-	                           <a href="<c:url value='/forum/board/editPage.do?boardSeq=${boardDetail.boardSeq}&boardTypeSeq=${boardDetail.boardTypeSeq}'/>" >수정</a>
-	                    	   <!-- 삭제버튼 -->
-	                    	   <a href="#" onClick="javascript:deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
-                            
+                            <!-- 첨부파일 다운로드 -->
+                            <div class = "downLoad_area"> 	
+	                            <!-- 전체 다운로드 -->
+	  <%--                           <c:if test="${attFiles.size() > 1}">
+	                            	<a href="<%=ctx%>/forum/downloadAll.do?boardSeq=${boardDetail.boardSeq}&boardTypeSeq=${boardDetail.boardTypeSeq}">파일 전체 다운로드</a>
+	                            	<a href="#">파일 전체 다운로드</a>
+	                            	<br>
+	                            </c:if>
+	                                                        	
+	  							<c:if test="${attFiles.size() != 0}">
+		                            <c:forEach items="${attFiles}" var="attFile">
+		                            	<a href="<%=ctx%>/forum/download.do?attachSeq=${attFiles.attachSeq}"> ${attFiles.orgFileNm} (size : ${attFiles.fileSize})</a>
+		                            	<a href="#"> ${attFiles.orgFileNm} (size : ${attFiles.fileSize})</a>
+		                            	<a href="#">  (size : ${attFiles.fileSize})</a>
+		                            	<br>
+		                            </c:forEach>
+	                            </c:if>    
+                            </div>	 --%>
                             
                         </div>
                         <!-- end .forum_issue -->

@@ -66,7 +66,7 @@
 										                      <img src='/pf/images/1dbb81zm57cf544ba09327ff5de5c9521a.jpg'/>
 										                      <img src="file:///C:/Users/USER/pf/file/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="이미지">
 										                      <img src="/image2/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="이미지">
-										                      
+										                      <img src="http://ec2-3-35-171-121.ap-northeast-2.compute.amazonaws.com/img/shutterstock_2205178589-1-1.png">
 
 <%-- 											                    <img class='imgView' src="/pf/file/${attFile.savePath}" alt="Image ${i.index+1}" /> --%>
 											                    <%-- <img class='imgView' src="file:///C:/Users/USER/pf/file/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="Image ${i.index+1}" /> --%>

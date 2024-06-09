@@ -14,4 +14,7 @@ public interface BoardAttachRepository {
 	
 	/* 첨부파일 리스트 */
 	public List<BoardAttachDto> getBoardAttachAll(BoardAttachDto attachDto);
+	
+	/* 첨부파일 정보 */
+	public BoardAttachDto getBoardAttach(BoardAttachDto attachDto);
 }

@@ -73,6 +73,7 @@ public class BoardController {
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
 		Integer boardSeq = Integer.parseInt(params.get("boardSeq"));
+		Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq"));
 		
 		/* 조회수 올리기 TODO 추후 조회수 새로고침화면에서 어떻게..?*/ 	
 		boardService.updateHit(boardSeq);
@@ -81,9 +82,13 @@ public class BoardController {
 		params.put("memberSeq", memberSeq);
 		
 		String isLike = boardService.getVote(params);
+
+		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);	
+		List<BoardAttachDto> attFiles = boardService.getBoardAttachAll(attachDto);
 		
 		mv.addObject("boardDetail", boardService.getBoardDetail(boardSeq));
 		mv.addObject("isLike", isLike);
+		mv.addObject("attFiles", attFiles);
 		mv.setViewName("forum/board/read");
 		
 		return mv;

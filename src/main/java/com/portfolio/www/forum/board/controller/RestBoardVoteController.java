@@ -18,16 +18,19 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 public class RestBoardVoteController {
-	private final static Logger log = LoggerFactory.getLogger(RestBoardVoteController.class);
+	
 	@Autowired
 	private BoardService boardService;
 
 	@PostMapping("/forum/board/vote.do")
 //	@ResponseBody
 	public ResponseEntity<Integer> vote(@RequestBody BoardVoteDto voteDto, HttpServletRequest request) {
+		
+		Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
+		String Ip = request.getRemoteAddr();
 
-		voteDto.setmemberSeq(Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq")));
-		voteDto.setIp(request.getRemoteAddr());
+		voteDto.setmemberSeq(memberSeq);
+		voteDto.setIp(Ip);
 		
 		int result = boardService.setVote(voteDto);
 		

@@ -10,10 +10,10 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mysql.cj.protocol.a.result.ResultsetRowsStatic;
 import com.portfolio.www.common.util.CommonUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +30,13 @@ public class FileUtil {
 	
 //	private String SAVE_PATH = ResultsetRowsStatic.get
 	
+	@Value("#{config['file.save.path']}")
+	private String savePath;
+	
 	public File saveFile(MultipartFile mpf, HttpServletRequest request) {
 		
-		String SAVE_PATH = request.getRealPath("\\images\\") + savePathDay;
+//		String SAVE_PATH = request.getRealPath("\\images\\") + savePathDay;
+		String SAVE_PATH = savePath + savePathDay;
 
 		CommonUtil.getLogMessage(log, "saveFile", "SAVE_PATH", SAVE_PATH);
 		CommonUtil.getLogMessage(log, "saveFile", "root", root);
