@@ -277,16 +277,29 @@
         </configuration>
       </plugin>
       
-	<!-- 리소스를 시스템 환경에 맞게 구분해주는 플러그인 -->
-	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-resources-plugin</artifactId>
-		<version>3.3.1</version>
-		<configuration>
-			<encoding>UTF-8</encoding>
-		</configuration>
-	</plugin>
-	<!-- /resource 구분 플러그인 -->
+		<!-- 리소스를 시스템 환경에 맞게 구분해주는 플러그인 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>3.3.1</version>
+			<configuration>
+				<encoding>UTF-8</encoding>
+			</configuration>
+		</plugin>
+		<!-- /resource 구분 플러그인 -->
+		
+		<plugin>
+		    <groupId>org.apache.tomcat.maven</groupId>
+		    <artifactId>tomcat7-maven-plugin</artifactId>
+		    <version>2.2</version>
+		    <configuration>
+		        <url>http://ec2-3-35-171-121.ap-northeast-2.compute.amazonaws.com:8080/manager/text</url>
+		        <server>TomcatServer</server>
+		        <path>/${project.build.finalName}</path>
+		        <username>admin</username>
+		        <password>admin</password>
+		    </configuration>
+		</plugin>
 			
     </plugins>
     
