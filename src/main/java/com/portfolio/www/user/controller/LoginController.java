@@ -39,9 +39,9 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
-		if(CommonUtil.getCookieValue(request, "rememberSeq")!=null) {		
+		if(CommonUtil.getCookieValue(request, "memberSeq")!=null) {		
 
-			Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "rememberSeq"));
+			Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
 			
 			CommonUtil.getLogMessage(log, "loginPage", "memberSeq", memberSeq);
 			String memberId = memberService.getMemberId(memberSeq);
@@ -84,11 +84,11 @@ public class LoginController {
 				
 				// 쿠키 
 				response.addCookie(CommonUtil.createCookie("memberId",memberId,-1,"/"));
-//				response.addCookie(CommonUtil.createCookie("memberSeq",String.valueOf(memberSeq),-1,"/"));
+				response.addCookie(CommonUtil.createCookie("memberSeq",String.valueOf(memberSeq),-1,"/"));
 				response.addCookie(CommonUtil.createCookie("memberNm",memberNm,-1,"/"));
 //				setCookie("profileImg","profileImg",-1,"/");
 				
-				CommonUtil.getLogMessage(log, "login", "rememberId.isEmpty()", rememberId.toString().isEmpty());
+				CommonUtil.getLogMessage(log, "login", "memberId.isEmpty()", rememberId.toString().isEmpty());
 				
 				/* id 기억 쿠키 */
 				if(!rememberId.toString().isEmpty()){

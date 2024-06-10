@@ -31,13 +31,15 @@ String ctx = request.getContextPath();
                             <div class="login--form">
                                 <div class="form-group">
                                     <label for="memberId">아이디</label>
-                                    <input id="memberId" type="text" name="memberId" value="${memberId}" class="text_field" placeholder="아이디를 입력해주세요">
+                                    <%-- <input id="memberId" type="text" name="memberId" value="${memberId}" class="text_field" placeholder="아이디를 입력해주세요"> --%>
+                                    <input id="memberId" type="text" name="memberId" value="test" class="text_field" placeholder="아이디를 입력해주세요">
                                     <div id="msgId" class="msg"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="password">비밀번호</label>
-                                    <input id="password" type="password" name="passwd" value="${dto.passwd}" class="text_field" placeholder="비밀번호를 입력해주세요">
+                                    <%-- <input id="password" type="password" name="passwd" value="${dto.passwd}" class="text_field" placeholder="비밀번호를 입력해주세요"> --%>
+                                    <input id="password" type="password" name="passwd" value="test1234!" class="text_field" placeholder="비밀번호를 입력해주세요">
                                     <div id="msgPwd" class="msg"></div>
                                 </div>
                                 
