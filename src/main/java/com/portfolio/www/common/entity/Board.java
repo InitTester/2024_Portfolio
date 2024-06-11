@@ -1,4 +1,4 @@
-package com.portfolio.www.forum.board.dto;
+package com.portfolio.www.common.entity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,9 +6,9 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("BoardDto")
-public class BoardDto {
-	
+@Alias("Board")
+public class Board {
+
 	private int boardSeq;
 	private Integer boardTypeSeq;
 	private String boardTypeNm;
@@ -117,17 +117,4 @@ public class BoardDto {
 	public void setUpdateMemberSeq(Integer updateMemberSeq) {
 		this.updateMemberSeq = updateMemberSeq;
 	}
-	
-	public static BoardDto setBoardDto(Integer boardTypeSeq,Integer boardSeq, String title, String content, Integer memberSeq) {
-		
-		BoardDto boardDto = new BoardDto();
-		boardDto.setBoardTypeSeq(boardTypeSeq);
-		boardDto.setBoardSeq(boardSeq);
-		boardDto.setTitle(title);
-		boardDto.setContent(content);
-		boardDto.setRegMemberSeq(memberSeq);
-		
-		return boardDto;
-	}
-	
 }

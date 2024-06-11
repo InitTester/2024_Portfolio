@@ -1,13 +1,17 @@
 package com.portfolio.www.forum.board.controller;
 
+import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,7 +80,7 @@ public class BoardController {
 		Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq"));
 		
 		/* 조회수 올리기 TODO 추후 조회수 새로고침화면에서 어떻게..?*/ 	
-		boardService.updateHit(boardSeq);
+		boardService.viewsBoardHit(boardSeq);
 		
 		String memberSeq = CommonUtil.getCookieValue(request,"memberSeq");
 		params.put("memberSeq", memberSeq);
@@ -122,26 +126,24 @@ public class BoardController {
 		String content = params.get("trumbowyg-demo");
 		Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
 		
-		BoardDto boardDto = BoardDto.setBoardDto(boardTypeSeq, title, content, memberSeq);
+		BoardDto boardDto = BoardDto.setBoardDto(boardTypeSeq, 0, title, content, memberSeq);
 			
-		boolean result = boardService.addBoard(boardDto, attFiles, request);
+		boolean result = boardService.newBoard(boardDto, attFiles, request);
 
 		if(result) {
-			CommonUtil.getLogMessage(log, "boardNew", "true", result);
 			mv.addObject("code",BoardMessageEnum.SUCCESS.getCode());
 			mv.addObject("msg",BoardMessageEnum.SUCCESS.getDescription());
-			mv.setViewName("redirect:/forum/board/listPage.do");
+			mv.setViewName("redirect:/forum/board/listPage.do?boardTypeSeq="+boardTypeSeq);
 		} else {	
-			CommonUtil.getLogMessage(log, "boardNew", "false", result);
 			mv.addObject("code",BoardMessageEnum.FAIL.getCode());
 			mv.addObject("msg",BoardMessageEnum.FAIL.getDescription());
-			mv.addObject("board", boardDto);
-			
+			mv.addObject("board", boardDto);			
 			mv.setViewName("forum/board/new");
 		}
 		return mv;
 	}
-	/* 게시글 등록 페이지 */
+	
+	/* 게시글 수정 페이지 */
 	@GetMapping("/forum/board/editPage.do")
 	public ModelAndView boardEditPage(@RequestParam HashMap<String, String> params,
 			@RequestParam(defaultValue = "1") Integer boardSeq,
@@ -160,15 +162,86 @@ public class BoardController {
 		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);		
 		List<BoardAttachDto> attFiles = boardService.getBoardAttachAll(attachDto);
 		
+//		CommonUtil.getLogMessage(log, "boardEditPage", "getAccessUri", attachDto.getAccessUri());
 		mv.addObject("board", boardDto);
 		mv.addObject("attFiles", attFiles);
 		
 		return mv;
 	}
-	/* 게시글 수정 */
-//	@PostMapping("/forum/board/editPage.do"){
-//		
-//	}
 	
+	/* 게시글 수정 */
+	@PostMapping("/forum/board/edit.do")
+	public ModelAndView edit(@RequestParam HashMap<String , String> params,
+            @RequestParam(value = "attFile", required=false) MultipartFile[] attFiles,
+            HttpServletRequest request) {
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("key",Calendar.getInstance().getTimeInMillis());
+//		Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
 
+		Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq"));
+		Integer boardSeq = Integer.parseInt(params.get("boardSeq"));
+		String title = params.get("title");
+		String content = params.get("trumbowyg-demo");
+		Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
+		
+		BoardDto boardDto = BoardDto.setBoardDto(boardTypeSeq, boardSeq, title, content, memberSeq);
+		
+		CommonUtil.getLogMessage(log, "edit", "boardDto.title", boardDto.getTitle());
+		
+		int result = boardService.editBoard(boardDto, attFiles);
+
+		if(result==1) {
+			
+			mv.addObject("code",BoardMessageEnum.EDIT_SUCCESS.getCode());
+			mv.addObject("msg",BoardMessageEnum.EDIT_SUCCESS.getDescription());
+			mv.setViewName("redirect:/forum/board/readPage.do?boardTypeSeq="+boardTypeSeq+"&boardSeq="+params.get("boardSeq"));
+		} else {	
+			
+			mv.addObject("code",BoardMessageEnum.EDIT_FAIL.getCode());
+			mv.addObject("msg",BoardMessageEnum.EDIT_FAIL.getDescription());
+			mv.addObject("board", boardDto);
+			mv.setViewName("forum/board/edit");
+		}
+		return mv;
+	}
+	
+	/* 게시글 전체 다운로드 */
+	@GetMapping("/forum/board/downloadAll.do")
+	public ModelAndView downloadAll(@RequestParam Integer boardTypeSeq,
+			@RequestParam Integer boardSeq){
+		
+		ModelAndView mv = new ModelAndView();
+		String downloadFileNm = boardService.getDownloadAllName(); 
+		File file = boardService.getBoardAttachFileAll(boardTypeSeq, boardSeq);
+		
+		Map<String, Object> fileInfo = new HashMap<String, Object>();
+		fileInfo.put("downloadFile", file);
+		fileInfo.put("downloadFileNm", downloadFileNm);
+		fileInfo.put("ZipFile", false);
+		
+		mv.addObject("fileInfo", fileInfo);
+		mv.setViewName("fileDownloadView");
+		
+		return mv;
+	}
+	
+	/* 게시글 개별 다운로드 */
+	@GetMapping("/forum/board/download.do")
+	public ModelAndView download( @RequestParam Integer attachSeq){
+		
+		ModelAndView mv = new ModelAndView();
+		BoardAttachDto attachDto = boardService.getBoardAttach(attachSeq);
+		File file = new File(attachDto.getSavePath());
+		
+		Map<String, Object> fileInfo = new HashMap<String, Object>();
+		fileInfo.put("downloadFile", file);
+		fileInfo.put("downloadFileNm", attachDto.getOrgFileNm());
+		fileInfo.put("ZipFile", false);
+		
+		mv.addObject("fileInfo", fileInfo);
+		mv.setViewName("fileDownloadView");
+		
+		return mv;
+	}
 }

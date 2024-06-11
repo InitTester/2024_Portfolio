@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="/common/scripts.jsp" %>
+<%@ page import="com.portfolio.www.forum.board.message.BoardMessageEnum" %>
+
 	<style>
 		.drop-area  {
 		    border: 4px dashed #ccc;
@@ -34,7 +36,8 @@
                 <div class="col-lg-12">
                     <div class="question-form cardify p-4">
                         <form action="<%=ctx%>/forum/board/edit.do" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name ="boardTypeSeq" value='${empty board.boardTypeSeq ?boardTypeSeq : board.boardTypeSeq}'>
+                        <input type="hidden" name ="boardTypeSeq" value='${empty board.boardTypeSeq ? boardTypeSeq : board.boardTypeSeq}'>
+                        <input type="hidden" name ="boardSeq" value='${empty board.boardSeq ? boardSeq : board.boardSeq}'>
                             <div class="form-group">
                                 <label>제목</label>
                                 <input type="text" name="title" value='${board.title}'  placeholder="제목을 입력해주세요" required>
@@ -58,25 +61,23 @@
 												    <span class="lnr lnr-paperclip"></span> 파일 추가
 													    <input type="file" name="attFile" style="display:none;" accept = "image/gif, image/png, image/jpeg" onchange="handleFiles(this.files, 'gallery${i.index}')" >
 													    <div class="gallery" id="gallery${i.index+1}">
-										                    <c:if test="${not empty attFile.savePath}">
-										                      <!-- <img src="/images2/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="Image" style="max-width: 300px; max-height: 300px;"/>
-										                      <img src="/images2/1dbb8157cf544ba09327ff5de5c9521a" alt="Image2" style="max-width: 300px; max-height: 300px;"/>
-										                      <img src="/images/1dbb8157cf544ba09327ff5de5c9521a" alt="Image3" style="max-width: 300px; max-height: 300px;"/> -->
-										                      <img src='/WebContent/images/1dbb8157cf544ba09327ff5de5c9521a.jpg'/>
-										                      <img src='/pf/images/1dbb81zm57cf544ba09327ff5de5c9521a.jpg'/>
-										                      <img src="file:///C:/Users/USER/pf/file/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="이미지">
-										                      <img src="/image2/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="이미지">
-										                      <img src="http://ec2-3-35-171-121.ap-northeast-2.compute.amazonaws.com/img/shutterstock_2205178589-1-1.png">
-
-<%-- 											                    <img class='imgView' src="/pf/file/${attFile.savePath}" alt="Image ${i.index+1}" /> --%>
-											                    <%-- <img class='imgView' src="file:///C:/Users/USER/pf/file/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="Image ${i.index+1}" /> --%>
-											                    
+										                    <c:if test="${not empty attFile.savePath}">										                      
+										                      <img src="${attFile.accessUri}">
 											                </c:if>
 													    </div>
 													</label>
 											    </div>
                                         	</c:forEach>
                                         </c:if>               
+                                        
+                                        <!-- 첨부파일 추가기능 -->
+                                        <c:forEach var ="i" begin='${attachCnt+1}' end="3" step="1">
+											<label class="drop-area" id="drop-area${i}">
+											    <span class="lnr lnr-paperclip"></span> 파일 추가
+											    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery3')" >
+											    <div class="gallery" id="gallery${i}"></div>
+											</label>
+		                                </c:forEach>   
                                         
                                         <!-- <span id="profileImg" style="background: url('file:///C:/Users/USER/pf/file/1dbb8157cf544ba09327ff5de5c9521a.jpg') 50% 37% / cover no-repeat"></span> -->         
                       <%--                   <img src="<%=ctx%>/file/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="Image" /> --%>
@@ -127,14 +128,14 @@
 	        lang: 'kr'
 	    });
 	    
-    	window.onload=function(){
-    		var code = '${code}';
-    		var msg = '${msg}';
-    		
-   			if(msg != null & msg != "") {
-   				alert(msg);
-   			}
-    	}
+		window.onload=function(){
+			var code = '${code}';
+			var msg = '${msg}';
+	
+			if(code !== '' && code !== '<%= BoardMessageEnum.SUCCESS.getCode() %>'){
+				alert(msg);
+			}
+		} 
 
 	    // 파일 처리 함수
 	    function handleFiles(files, galleryId) {

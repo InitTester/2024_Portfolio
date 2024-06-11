@@ -4,6 +4,11 @@
 <%
 String ctx = request.getContextPath();
 %>
+<<style>
+	.content{
+		min-height: 100px; 
+	}
+</style>
 
     <!--================================
             START DASHBOARD AREA
@@ -34,36 +39,40 @@ String ctx = request.getContextPath();
                            	<!-- 게시글 정보 -->
                             <div class="suppot_query_tag">
                                 <img class="poster_avatar" src="<%=ctx%>/assest/template/images/support_avat1.png" alt="Support Avatar"> ${boardDetail.regMemberNm}
-                                <span><fmt:formatDate value="${boardDetail.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+                                &emsp;
+                                <span>
+                                	<fmt:formatDate value="${boardDetail.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                </span>
+                                &emsp;
                                 조회 ${boardDetail.hit}
-                                
+                                &emsp;&emsp;  
+
                                 <!-- 수정/삭제 버튼, 로그인 회원+등록자가 동일하면 -->
 	                            <!-- 수정버튼 -->	                               
-	                            <a href="<c:url value='/forum/board/editPage.do?boardSeq=${boardDetail.boardSeq}&boardTypeSeq=${boardDetail.boardTypeSeq}'/>" >수정</a>
+	                            <a href="<c:url value='/forum/board/editPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'/>" >수정 </a>	                            
 	                    	    <!-- 삭제버튼 -->
-	                    	    <a href="#" onClick="javascript:deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
+	                    	    <a href="#" onClick="deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
+	                    	    
                             </div>
                             <!-- 게시글 내용 -->
-                            <p style="margin-bottom: 0; margin-top: 19px;">${boardDetail.content}</p>
-                           
+                            <div class="content">
+                            	<p style="margin-bottom: 0; margin-top: 19px;">${boardDetail.content}</p>
+                            </div>
                             <!-- 첨부파일 다운로드 -->
                             <div class = "downLoad_area"> 	
 	                            <!-- 전체 다운로드 -->
-	  <%--                           <c:if test="${attFiles.size() > 1}">
-	                            	<a href="<%=ctx%>/forum/downloadAll.do?boardSeq=${boardDetail.boardSeq}&boardTypeSeq=${boardDetail.boardTypeSeq}">파일 전체 다운로드</a>
-	                            	<a href="#">파일 전체 다운로드</a>
+	                            <c:if test="${attFiles.size() > 1}">
+	                            	<a href="<%=ctx%>/forum/board/downloadAll.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}">파일 전체 다운로드</a>
 	                            	<br>
 	                            </c:if>
 	                                                        	
 	  							<c:if test="${attFiles.size() != 0}">
 		                            <c:forEach items="${attFiles}" var="attFile">
-		                            	<a href="<%=ctx%>/forum/download.do?attachSeq=${attFiles.attachSeq}"> ${attFiles.orgFileNm} (size : ${attFiles.fileSize})</a>
-		                            	<a href="#"> ${attFiles.orgFileNm} (size : ${attFiles.fileSize})</a>
-		                            	<a href="#">  (size : ${attFiles.fileSize})</a>
+		                            	<a href="<%=ctx%>/forum/board/download.do?attachSeq=${attFile.attachSeq}"> ${attFile.orgFileNm} (size : ${attFile.fileSize})</a>
 		                            	<br>
 		                            </c:forEach>
 	                            </c:if>    
-                            </div>	 --%>
+                            </div>	
                             
                         </div>
                         <!-- end .forum_issue -->
@@ -146,7 +155,7 @@ String ctx = request.getContextPath();
             window.location.reload();
         });	    
 	    
-       /* vote 함수 */
+       /* 게시글 좋아요/싫어요) */
      	function vote(boardTypeSeq, boardSeq, thisElement) {
     	    let url = `<%=ctx%>/forum/board/vote.do`;
     	    
@@ -189,6 +198,40 @@ String ctx = request.getContextPath();
     	    });
     	}
 
-       
+    	/* 게시글 삭제 */
+    	function deleteClick(boardSeq, boardTypeSeq) {
+    		var result = confirm("정말 현재 게시글을 삭제 하시겠습니까?");
+
+    		let url = '<%=ctx%>/forum/board'
+	    		url += '/'+boardTypeSeq
+		    	url += '/'+boardSeq
+		    	url += '/delete.do';
+		    	
+    		if(result){
+    			
+    			$.ajax({
+    	            type: 'DELETE',
+    	            url: url,
+    	            headers: {
+    	                "Accept": "application/json",  // 요청에 대한 Accept 헤더를 설정
+    	                "Content-Type": "application/json"
+    	    		},
+    	    		// 결과 성공 콜백함수 
+    	    		success : function(response) {   
+    	    			var page = response.page;
+    	    			
+    	    			/* alert(page); */
+	    				location.href='<%=ctx%>'+page;
+        				/* alert(response.msg);  */        	
+    	    		},
+    	    		// 결과 에러 콜백함수
+    	    		error : function(request, status, error) {
+    	    			console.log(error)
+    	    		}
+    	    	});
+    		}else{
+    			/* alert('cancel'); */
+    		}
+    	}
 	</script>
 	

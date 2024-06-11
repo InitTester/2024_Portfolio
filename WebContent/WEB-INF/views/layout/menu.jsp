@@ -113,8 +113,8 @@
                             </c:if>
                             
                             <div class="pull-right join mobile-size d-md-none d-flex">
-                                <a href="#" class="btn btn--round btn-secondary "><span class="lnr lnr-user"></span></a>
-                                <a href="#" class="btn btn--round"><span class="lnr lnr-enter"></span></a>
+                                <a href="<c:url value='/auth/loginPage.do'/>" class="btn btn--round btn-secondary "><span class="lnr lnr-user"></span></a>
+                                <a href="<c:url value='/auth/logout.do'/>" class="btn btn--round"><span class="lnr lnr-enter"></span></a>
                             </div>
                         </div>
                         <!-- end .author-area -->

@@ -1,17 +1,15 @@
 package com.portfolio.www.forum.board.service;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.mybatis.spring.MyBatisSystemException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +23,7 @@ import com.portfolio.www.forum.board.dao.mybatis.BoardVoteRepository;
 import com.portfolio.www.forum.board.dto.BoardAttachDto;
 import com.portfolio.www.forum.board.dto.BoardDto;
 import com.portfolio.www.forum.board.dto.BoardVoteDto;
+import com.portfolio.www.forum.board.exception.FileDeleteException;
 import com.portfolio.www.forum.board.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -47,6 +46,9 @@ public class BoardService {
 	
 	@Autowired
 	private FileUtil fileUtil;
+	
+	@Value("#{config['img.access.host']}")
+	private String accessUriPath;
 
 	/* 게시판 이름 */
 	public String getBoardTypeNm(Integer boardTypeSeq) {
@@ -59,8 +61,8 @@ public class BoardService {
 	}
 	
 	/* 게시글 조회수 */
-	public int updateHit(Integer boardSeq) {
-		return boardRepository.updateHit(boardSeq);
+	public int viewsBoardHit(Integer boardSeq) {
+		return boardRepository.viewsBoardHit(boardSeq);
 	}
 	
 	/* 게시글 상세조회 */
@@ -118,27 +120,32 @@ public class BoardService {
 	
 	/* 게시글 등록 */
 	@Transactional
-	public boolean addBoard(BoardDto boardDto, MultipartFile[] attFiles, HttpServletRequest request) {
+	public boolean newBoard(BoardDto boardDto, MultipartFile[] attFiles, HttpServletRequest request) {
 		
 		File destFile =null;
-		
+
 		try {
 
 			/*board_seq*/
-			boardRepository.addBoard(boardDto);
+			boardRepository.newBoard(boardDto);
 			int boardSeq = boardDto.getBoardSeq();
 			
-			CommonUtil.getLogMessage(log, "addBoard", "getBoardSeq", boardDto.getBoardSeq());
 			CommonUtil.getLogMessage(log, "addBoard", "boardSeq", boardSeq);
 			
 			for(MultipartFile mpf : attFiles) {
 				if(!mpf.isEmpty()) {
-					destFile = fileUtil.saveFile(mpf,request);
+					destFile = fileUtil.saveFile(mpf);
 
-//					String ChngFileNm = UUID.randomUUID().toString().replaceAll("-","");
-					BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardSeq);
+					CommonUtil.getLogMessage(log, "addBoard", "getPath", destFile.getPath());
+					String accessUri = "";
+					if(!destFile.getPath().contains("c:")) {
+						accessUri = accessUriPath + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();	
+					}
 					
-//					attachDto.setChngFileNm(ChngFileNm);
+					BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardSeq);
+				
+					attachDto.setChngFileNm(destFile.getName());
+					attachDto.setAccessUri(accessUri);
 					attachDto.setOrgFileNm(mpf.getOriginalFilename());
 					attachDto.setFileType(mpf.getContentType());
 					attachDto.setFileSize(mpf.getSize());
@@ -156,11 +163,75 @@ public class BoardService {
 		}catch(Exception e) {
 			if(!ObjectUtils.isEmpty(destFile)) {
 				destFile.delete();
-				log.info(" addBoard :: e.getMessage()={}", e.getMessage());	
+				CommonUtil.getLogMessage(log, "addBoard", "Exception", e.getMessage());
 			}
 			return false;
 		}
 	}
+	
+	/* 게시글 수정 */
+	public int editBoard(BoardDto boardDto,  MultipartFile[] attFiles) {
+		
+		int cnt = -1;
+
+		File destFile =null;
+		
+		try {
+			cnt = boardRepository.editBoard(boardDto);
+			CommonUtil.getLogMessage(log, "editBoard", "title", boardDto.getTitle());
+			
+			for(MultipartFile mpf : attFiles) {
+				if(!mpf.isEmpty()) {
+					destFile = fileUtil.saveFile(mpf);
+
+					CommonUtil.getLogMessage(log, "editBoard", "isEmpty", 1);
+					String accessUri = accessUriPath + destFile.getPath().split("/app/")[1];// + destFile.getName();
+					BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardDto.getBoardSeq());
+
+					attachDto.setChngFileNm(destFile.getName());
+					attachDto.setAccessUri(accessUri);
+					attachDto.setOrgFileNm(mpf.getOriginalFilename());
+					attachDto.setFileType(mpf.getContentType());
+//					CommonUtil.getLogMessage(log, "editBoard", "isEmpty", 3);
+					attachDto.setFileSize(mpf.getSize());
+					attachDto.setSavePath(destFile.getAbsolutePath());
+					
+					boardattachRepository.addBoardAttach(attachDto);
+				}
+			}
+			
+			return cnt;
+		}catch(DataAccessException dae) {
+			CommonUtil.getLogMessage(log, "editBoard", "DataAccessException", dae.getMessage());
+			return cnt;
+		}catch(Exception e) {
+			if(!ObjectUtils.isEmpty(destFile)) {
+				destFile.delete();
+				CommonUtil.getLogMessage(log, "editBoard", "Exception", e.getMessage());
+			}
+			return cnt;
+		}
+	}
+	
+	/* 게시글 삭제 */
+	public int deleteBoard(BoardDto boardDto) {
+		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardDto.getBoardSeq());
+		boolean empty = boardattachRepository.getBoardAttachEmpty(attachDto) > 0 ? false : true;
+		
+		if(!empty) {
+			int cnt = boardattachRepository.deleteBoardAttachAll(attachDto);
+			
+			// 첨부파일 삭제가 안되었다
+			if(cnt!=1) {
+				FileDeleteException fde = new FileDeleteException("deleteBoard Fail");
+				CommonUtil.getLogMessage(log, "deleteBoard", "FileDeleteException", fde.getMessage());
+				throw fde;
+			}
+		}
+		return boardRepository.deletetBoard(boardDto);
+	}
+
+	
 	
 	/* 게시글 첨부파일 리스트 */
 	public List<BoardAttachDto> getBoardAttachAll(BoardAttachDto attachDto){
@@ -168,9 +239,42 @@ public class BoardService {
 	}
 	
 	/* 게시글 첨부파일 리스트 */
-	public BoardAttachDto getBoardAttach(BoardAttachDto attachDto){
-		return boardattachRepository.getBoardAttach(attachDto);
+	public BoardAttachDto getBoardAttach(Integer attachSeq){
+		boardattachRepository.viewsDownloadHit(attachSeq);
+		return boardattachRepository.getBoardAttach(attachSeq);
 	}
+	
+	/* 다운로드 전체 파일 */
+	public File getBoardAttachFileAll(Integer boardTypeSeq, Integer boardSeq ){
+		
+		List<BoardAttachDto> attachDtos = boardattachRepository.getBoardAttachAll(BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq));
+		
+		for(BoardAttachDto attachDto : attachDtos) {
+			boardattachRepository.viewsDownloadHit(attachDto.getAttachSeq());
+		}
+
+		return fileUtil.makeZipFiles(attachDtos);
+	}	
+	
+	/* 다운로드 전체 이름 */
+	public String getDownloadAllName() {
+		String savePathDay = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE);		
+		return savePathDay + ".zip";
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
