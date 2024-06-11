@@ -1,5 +1,5 @@
 # 개발기간 : 2024.05.27 ~ ing
-# 개발사이트(
+# 개발사이트
  [포트폴리오 홈페이지](http://bit.ly/3VkEis5)  
    지속적인 ec2 서버 재구축(ec2환경설정 익숙해지기 위해) 중이므로 종종 개발 사이트 연결이 맞지 않는 경우가 생길 수도 있습니다
 # 프로젝트 개요
@@ -60,3 +60,5 @@
  - Maven Version : 3.9.6
  - Tomcat Version : 9.0.87
  - Java Version : openJDK 11.0.2
+ - AWS EC2, RDS, Nginx
+ 
