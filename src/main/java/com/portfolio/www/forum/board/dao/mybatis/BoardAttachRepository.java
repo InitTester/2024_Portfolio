@@ -16,5 +16,16 @@ public interface BoardAttachRepository {
 	public List<BoardAttachDto> getBoardAttachAll(BoardAttachDto attachDto);
 	
 	/* 첨부파일 정보 */
-	public BoardAttachDto getBoardAttach(BoardAttachDto attachDto);
+	public BoardAttachDto getBoardAttach(Integer attachSeq);
+
+	/* 다운로드 수 */
+	public int viewsDownloadHit(Integer attachSeq);
+	
+	/* 선택 게시글 첨부파일 여부 */
+	public int getBoardAttachEmpty(BoardAttachDto boardDto);
+	
+	/* 선택 게시글 첨부파일 전체 삭제 */
+	public int deleteBoardAttachAll(BoardAttachDto boardDto);
+	
+	
 }

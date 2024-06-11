@@ -23,7 +23,7 @@ public class CommonUtil {
 //	private final static Logger log = LoggerFactory.getLogger(CommonUtil.class);
 	
 	public static Logger getLogMessage(Logger log, String methodName, String logKey, Object logValue) {
-		log.info("["+methodName+ "] (" + logKey + ") : " + logValue.toString());
+		log.info("["+methodName+ "] (" + logKey + ") : " + logValue);
 		
 		return log;
 	}

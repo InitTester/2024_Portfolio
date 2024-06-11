@@ -66,14 +66,14 @@
     </select>
        
     <!-- 조회수 -->
-    <update id="updateHit">
+    <update id="viewsBoardHit">
     	UPDATE board
     	   SET hit = IFNULL(hit,0) + 1
     	WHERE board_seq = #{boardSeq}
     </update>
     
     <!-- 게시글 등록 -->
-    <insert id="addBoard" parameterType="BoardDto">
+    <insert id="newBoard" parameterType="BoardDto">
     	<selectKey order="AFTER" keyProperty="boardSeq" keyColumn="board_seq" resultType = "int">
     		SELECT LAST_INSERT_ID()
     	</selectKey>
@@ -92,9 +92,23 @@
 					        'N', -->
 					        DATE_FORMAT(now(),'%Y%m%d%H%i%s'),
 					        #{regMemberSeq})
-
-    						        
     </insert>
     
+    <!-- 게시글 수정 -->
+    <update id="editBoard" parameterType="BoardDto">
+    	UPDATE board
+    	   SET title = #{title},
+    	       content = #{content},
+    	       update_dtm = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+    	 WHERE board_type_seq = ${boardTypeSeq}
+    	   AND board_seq = ${boardSeq}    	   
+    </update>
+    
+    <!-- 게시글 삭제 -->
+    <update id="deletetBoard" parameterType="BoardDto">
+    	DELETE FROM board
+    	 WHERE board_type_seq = ${boardTypeSeq}
+    	   AND board_seq = ${boardSeq}    	   
+    </update>
     
 </mapper>

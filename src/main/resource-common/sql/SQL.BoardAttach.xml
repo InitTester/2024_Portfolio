@@ -6,8 +6,7 @@
 <mapper namespace="com.portfolio.www.forum.board.dao.mybatis.BoardAttachRepository">
 
     <!-- 게시글 첨부파일 등록 -->
-    <insert id="addBoardAttach" parameterType="BoardAttachDto">
-    
+    <insert id="addBoardAttach" parameterType="BoardAttachDto">    
 	    INSERT INTO board_attach (board_type_seq,
 	                       board_seq,
 	                       org_file_nm, 
@@ -45,5 +44,42 @@
     	   AND board_type_seq = #{boardTypeSeq}
     </select>
     
+    <!-- 게시글 첨부파일 정보(개별) -->
+    <select id="getBoardAttach" resultType="BoardAttachDto">
+    	SELECT attach_seq,
+    		   board_seq,
+    		   board_type_seq,
+    		   org_file_nm,
+    		   save_path,
+    		   chng_file_nm,
+    		   file_size,
+    		   file_type,
+    		   access_uri,
+    		   reg_dtm
+    	  FROM board_attach
+    	 WHERE attach_seq = #{attachSeq}
+    </select>
+    
+    <!-- 게시글 다운로드 수 -->
+    <update id="viewsDownloadHit" >
+    	UPDATE board_attach
+    	   SET hit = IFNULL(hit,0) + 1
+    	WHERE attach_seq = #{attachSeq}
+    </update>
+    
+    <!-- 선택 게시글 첨부파일 여부 -->
+    <select id="getBoardAttachEmpty" parameterType="BoardAttachDto" >
+    	SELECT COUNT(1)
+    	  FROM board_attach
+    	 WHERE board_type_seq = #{boardTypeSeq}
+    	   AND board_seq = #{boardSeq}
+    </select>
+    
+    <!-- 선택 게시글 첨부파일 전체 삭제 -->
+    <delete id="deleteBoardAttachAll" parameterType="BoardAttachDto" >
+    	DELETE FROM board_attach
+	    	  WHERE board_type_seq = #{boardTypeSeq}
+	    	    AND board_seq = #{boardSeq}
+    </delete>
     
 </mapper>

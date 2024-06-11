@@ -24,10 +24,16 @@ public interface BoardRepository {
 	public BoardDto getBoardDetail(Integer boardSeq);
 	
 	/* 게시판 조회수 */
-	public int updateHit(Integer boardSeq);
+	public int viewsBoardHit(Integer boardSeq);
 	
 	/* 게시글 등록 */
-	public int addBoard(BoardDto boardDto);
+	public int newBoard(BoardDto boardDto);
+	
+	/* 게시글 수정 */
+	public int editBoard(BoardDto boardDto);
+
+	/* 게시글 삭제 */
+	public int deletetBoard(BoardDto boardDto);
 	
 	
 	
