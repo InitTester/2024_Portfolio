@@ -45,7 +45,18 @@
 > > ><img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/8b750f39-4d58-445b-bf9d-c0a882427509">
 > > ><img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/ad1ec4ce-a124-4ff6-a9eb-e8200a70d13d">
 
+> #### 게시판
+<img height="350" width="350" alt="image" src="">
+<img height="350" width="350" alt="image" src="">
 
+> 사용자가 로그인인 후 자유롭게 게시글을 작성합니다.
+> 게시글은 첨부파일도 추가/다운로드, 게시글에 대한 좋아요/싫어요, 댓글 기능이 가능합니다.
+> 
+> 구현 기능
+> >1. 
+> >2. 
+> >3. 
+> >4. 
 
 
 # 사용 기술 및 Tools
