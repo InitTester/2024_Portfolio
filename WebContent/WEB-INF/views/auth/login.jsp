@@ -23,6 +23,7 @@ String ctx = request.getContextPath();
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
                     <form id="formLogin">   
+                    	<input type="hidden" name = "redirectURL" value="${redirectURL}">
                         <div class="cardify login">
                             <div class="login--header">
                                 <h3>아이디로 로그인</h3>                                

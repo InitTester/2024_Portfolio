@@ -27,7 +27,32 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 
-
+	<!-- 필터 등록 -->
+	<!-- log -->
+	<filter>
+	    <filter-name>logFilter</filter-name>
+	    <filter-class>com.portfolio.www.index.filter.LogFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>logFilter</filter-name>
+<!-- 	    <servlet-name>pf</servlet-name> -->
+	    <url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	<!-- login check -->
+	<filter>
+	    <filter-name>loginCheckFilter</filter-name>
+	    <filter-class>com.portfolio.www.index.filter.LoginCheckFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>loginCheckFilter</filter-name>
+	    <!-- <servlet-name>pf</servlet-name> -->
+	    <url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	
 	<!-- 한글 처리를 위한 필터 설정 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
