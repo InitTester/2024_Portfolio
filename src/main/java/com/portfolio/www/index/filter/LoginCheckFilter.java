@@ -21,13 +21,26 @@ public class LoginCheckFilter implements Filter {
 		HttpServletResponse httpResponse  = (HttpServletResponse)response;
 
 		String contextPath = httpRequest.getContextPath();
+		String queryString = httpRequest.getQueryString();
+//		String queryStringboardtype = httpRequest.getParameter("boardTypeSeq");
+//		String requestURL = httpRequest.getRequestURL().toString();
+//		String requestURI = httpRequest.getRequestURI().replaceAll(contextPath, "")+"?"+queryString;
 		String requestURI = httpRequest.getRequestURI().replaceAll(contextPath, "");
 		
+//		log.info("[LoginCheckFilter] queryString : ({})", queryString);
+//		log.info("[LoginCheckFilter] requestURI : ({})", requestURI);
+		
+		
 		try {
-			log.info("[LoginCheckFilter] LoginCheck Filter Start : ({})", requestURI);
+//			log.info("[LoginCheckFilter] LoginCheck Filter Start : ({})", requestURI);
 			
 			if(isLoginCheckPath(requestURI)) {
-
+				
+				if(!queryString.isEmpty())
+					requestURI = requestURI+"?"+queryString;
+				
+				log.info("[LoginCheckFilter] redirect >>> requestURI: ({})", requestURI);
+				
 				log.info("[LoginCheckFilter] LoginCheck Filter Logic Start : ({})", requestURI);
 				HttpSession session = httpRequest.getSession(false);
 				
@@ -48,6 +61,17 @@ public class LoginCheckFilter implements Filter {
 			log.info("[LoginCheckFilter] LoginCheck Filter End : ({})", requestURI);
 		}
 	}
+	
+	private String extractRedirectURL(String queryString) {
+        String[] params = queryString.split("&");
+        for (String param : params) {
+            String[] keyValue = param.split("=", 2);
+            if (keyValue.length == 2 && "redirectURL".equals(keyValue[0])) {
+                return keyValue[1];
+            }
+        }
+        return null;
+    }
 	
 	private boolean isLoginCheckPath(String requestURI) {
 		return !PatternMatchUtils.simpleMatch(whitelist, requestURI);

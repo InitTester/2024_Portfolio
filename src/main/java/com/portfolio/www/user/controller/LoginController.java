@@ -36,21 +36,22 @@ public class LoginController {
 	/* 로그인 페이지 */
 	@GetMapping("/auth/loginPage.do")
 	public ModelAndView loginPage(@RequestParam HashMap<String, String> params,
-							      @RequestParam(defaultValue ="/") String redirectURL,
+							      @RequestParam(name ="redirectURL", required=false) String redirectURL,
+//							      @RequestParam(required=false) String boardTypeSeq,
 								  HttpServletRequest request) {
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
 		if(CommonUtil.getCookieValue(request, "memberSeq")!=null) {		
 
 			Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
-			
-			CommonUtil.getLogMessage(log, "loginPage", "memberSeq", memberSeq);
 			String memberId = memberService.getMemberId(memberSeq);
-			CommonUtil.getLogMessage(log, "loginPage", "memberId", memberId);
+			
 			mv.addObject("memberId",memberId);
-			mv.addObject("redirectURL", redirectURL);
 		}
+		CommonUtil.getLogMessage(log, "loginPage", "redirectURL", redirectURL);
+		mv.addObject("redirectURL", redirectURL);
 		mv.setViewName("auth/login");
 		
 		return mv;
@@ -62,24 +63,24 @@ public class LoginController {
 			@RequestParam(name="rememberId", required = false, defaultValue = "") String rememberId,
 			HttpServletRequest request,	
 			HttpServletResponse response,
-			@RequestParam(name ="redirectURL", defaultValue ="/") String redirectURL){
+		    @RequestParam(name ="redirectURL", required=false) String redirectURL){
 		
 		ModelAndView mv = new ModelAndView();
 		MemberDto dto = MemberDto.getMemberDto(params);
-		
+
 		try {
 			CommonUtil.getLogMessage(log, "login", "로그", "login 메서드 접속");
+			CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
 			
 			MemberDto memberDto = memberService.login(params);
 			
 			String memberId = memberDto.getMemberId();
-//			String memberSeq = memberDto.getMemberSeq().toString();
 			String memberNm = memberDto.getMemberNm();
 			Integer memberSeq = memberService.getMemberSeq(memberId);
 			//TODO 추후 개발 예정
 //			String profileImg = memberDto.getMemberNm();
 			
-			CommonUtil.getLogMessage(log, "login", "memberSeq", rememberId);
+			CommonUtil.getLogMessage(log, "login", "memberSeq", memberSeq);
 			
 			if(!ObjectUtils.isEmpty(memberDto)) {
 				
@@ -92,8 +93,6 @@ public class LoginController {
 				response.addCookie(CommonUtil.createCookie("memberSeq",String.valueOf(memberSeq),-1,"/"));
 				response.addCookie(CommonUtil.createCookie("memberNm",memberNm,-1,"/"));
 //				setCookie("profileImg","profileImg",-1,"/");
-				
-				CommonUtil.getLogMessage(log, "login", "memberId.isEmpty()", rememberId.toString().isEmpty());
 				
 				/* id 기억 쿠키 */
 				if(!rememberId.toString().isEmpty()){
