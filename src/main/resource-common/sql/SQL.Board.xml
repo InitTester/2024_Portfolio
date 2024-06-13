@@ -20,7 +20,7 @@
 	</select>
 
 	<!-- 게시판별 전체 -->
-    <select id="getBoardList" parameterType="hashMap" resultType="BoardDto">
+    <select id="getBoardList" parameterType="hashMap" resultType="BoardListDto">
 		SELECT b.board_seq, 
 		       b.board_type_seq, 
 		       b.title, 
@@ -33,10 +33,22 @@
 		       m.member_nm AS regMemberNm, 
 		       b.update_dtm, 
 		       b.update_member_seq, 
-		       bt.board_type_nm
+		       bt.board_type_nm,
+		       IFNULL(c.attachCnt,0) attachCnt,
+		       IFNULL(d.commentCnt,0) commentCnt
 		  FROM board b  
 		  JOIN board_type bt ON bt.board_type_seq  = b.board_type_seq  
 		  JOIN member m ON m.member_seq  = b.reg_member_seq  
+  	 LEFT JOIN (SELECT board_seq, 
+		               board_type_seq , 
+		               count(*) attachCnt
+				  FROM board_attach
+			  GROUP BY board_seq, board_type_seq) c ON b.board_type_seq = c.board_type_seq AND b.board_seq = c.board_seq
+	 LEFT JOIN (SELECT board_seq,
+		               board_type_seq,
+		               count(*) commentCnt
+		          FROM board_comment
+		      GROUP BY board_seq, board_type_seq) d ON b.board_type_seq = d.board_type_seq AND b.board_seq = d.board_seq
 		 WHERE 1 = 1 
 		   AND b.board_type_seq = ${type}
 		 ORDER BY b.board_seq DESC

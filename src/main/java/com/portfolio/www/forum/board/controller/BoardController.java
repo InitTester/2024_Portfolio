@@ -1,17 +1,14 @@
 package com.portfolio.www.forum.board.controller;
 
-import java.io.File;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.portfolio.www.common.util.CommonUtil;
 import com.portfolio.www.forum.board.dto.BoardAttachDto;
+import com.portfolio.www.forum.board.dto.BoardCommentDto;
 import com.portfolio.www.forum.board.dto.BoardDto;
+import com.portfolio.www.forum.board.dto.BoardVoteDto;
 import com.portfolio.www.forum.board.message.BoardMessageEnum;
+import com.portfolio.www.forum.board.service.BoardAttachService;
+import com.portfolio.www.forum.board.service.BoardCommentService;
 import com.portfolio.www.forum.board.service.BoardService;
+import com.portfolio.www.forum.board.service.BoardVoteService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +34,15 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
+
+	@Autowired
+	private BoardAttachService attachService;
+
+	@Autowired
+	private BoardVoteService voteService;
+
+	@Autowired
+	private BoardCommentService commentService;
 	
 	/* 게시글 리스트 size : 10*/
 	@GetMapping("/forum/board/listPage.do")
@@ -72,28 +83,41 @@ public class BoardController {
 	/* 게시물 상세페이지 */
 	@GetMapping("/forum/board/readPage.do")
 	public ModelAndView boardReadPage(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
-		Integer boardSeq = Integer.parseInt(params.get("boardSeq"));
-		Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq"));
+		try {
+			Integer boardSeq = Integer.parseInt(params.get("boardSeq"));
+			Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq"));
+			
+			/* 조회수 올리기 TODO 추후 조회수 새로고침화면에서 어떻게..?*/ 	
+			boardService.viewsBoardHit(boardSeq);
+			
+			Integer memberSeq = Integer.parseInt(session.getAttribute("memberSeq").toString());// CommonUtil.getCookieValue(request,"memberSeq");
+			BoardVoteDto boardVoteDto = BoardVoteDto.getBoardVoteDto(boardTypeSeq, boardSeq, memberSeq, "", "");
+			
+			CommonUtil.getLogMessage(log, "getVote", "boardVoteDto", boardVoteDto);
+			
+			String isLike = voteService.getVote(boardVoteDto);
+	
+			BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);	
+			BoardCommentDto commentDto = BoardCommentDto.setBoardCommentDto(boardTypeSeq, boardSeq);	
 		
-		/* 조회수 올리기 TODO 추후 조회수 새로고침화면에서 어떻게..?*/ 	
-		boardService.viewsBoardHit(boardSeq);
-		
-		String memberSeq = CommonUtil.getCookieValue(request,"memberSeq");
-		params.put("memberSeq", memberSeq);
-		
-		String isLike = boardService.getVote(params);
-
-		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);	
-		List<BoardAttachDto> attFiles = boardService.getBoardAttachAll(attachDto);
-		
-		mv.addObject("boardDetail", boardService.getBoardDetail(boardSeq));
-		mv.addObject("isLike", isLike);
-		mv.addObject("attFiles", attFiles);
-		mv.setViewName("forum/board/read");
+			List<BoardAttachDto> attFiles = attachService.getBoardAttachAll(attachDto);
+			List<BoardCommentDto> comments = commentService.getBoardCommentList(commentDto); 
+			
+			mv.addObject("boardDetail", boardService.getBoardDetail(boardSeq));
+			mv.addObject("isLike", isLike);
+			mv.addObject("attFiles", attFiles);
+			mv.addObject("comments", comments);
+			mv.setViewName("forum/board/read");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.info("Exception : ",e.getMessage());
+		}
 		
 		return mv;
 	}
@@ -160,7 +184,7 @@ public class BoardController {
 		BoardDto boardDto = boardService.getBoardDetail(boardSeq);
 		
 		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);		
-		List<BoardAttachDto> attFiles = boardService.getBoardAttachAll(attachDto);
+		List<BoardAttachDto> attFiles = attachService.getBoardAttachAll(attachDto);
 		
 //		CommonUtil.getLogMessage(log, "boardEditPage", "getAccessUri", attachDto.getAccessUri());
 		mv.addObject("board", boardDto);
@@ -172,8 +196,8 @@ public class BoardController {
 	/* 게시글 수정 */
 	@PostMapping("/forum/board/edit.do")
 	public ModelAndView edit(@RequestParam HashMap<String , String> params,
-            @RequestParam(value = "attFile", required=false) MultipartFile[] attFiles,
-            HttpServletRequest request) {
+			            @RequestParam(value = "attFile", required=false) MultipartFile[] attFiles,
+			            HttpServletRequest request) {	
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key",Calendar.getInstance().getTimeInMillis());
@@ -187,7 +211,10 @@ public class BoardController {
 		
 		BoardDto boardDto = BoardDto.setBoardDto(boardTypeSeq, boardSeq, title, content, memberSeq);
 		
+		System.out.println(params);
 		CommonUtil.getLogMessage(log, "edit", "boardDto.title", boardDto.getTitle());
+		System.out.println(attFiles);
+		
 		
 		int result = boardService.editBoard(boardDto, attFiles);
 
@@ -206,42 +233,4 @@ public class BoardController {
 		return mv;
 	}
 	
-	/* 게시글 전체 다운로드 */
-	@GetMapping("/forum/board/downloadAll.do")
-	public ModelAndView downloadAll(@RequestParam Integer boardTypeSeq,
-			@RequestParam Integer boardSeq){
-		
-		ModelAndView mv = new ModelAndView();
-		String downloadFileNm = boardService.getDownloadAllName(); 
-		File file = boardService.getBoardAttachFileAll(boardTypeSeq, boardSeq);
-		
-		Map<String, Object> fileInfo = new HashMap<String, Object>();
-		fileInfo.put("downloadFile", file);
-		fileInfo.put("downloadFileNm", downloadFileNm);
-		fileInfo.put("ZipFile", false);
-		
-		mv.addObject("fileInfo", fileInfo);
-		mv.setViewName("fileDownloadView");
-		
-		return mv;
-	}
-	
-	/* 게시글 개별 다운로드 */
-	@GetMapping("/forum/board/download.do")
-	public ModelAndView download( @RequestParam Integer attachSeq){
-		
-		ModelAndView mv = new ModelAndView();
-		BoardAttachDto attachDto = boardService.getBoardAttach(attachSeq);
-		File file = new File(attachDto.getSavePath());
-		
-		Map<String, Object> fileInfo = new HashMap<String, Object>();
-		fileInfo.put("downloadFile", file);
-		fileInfo.put("downloadFileNm", attachDto.getOrgFileNm());
-		fileInfo.put("ZipFile", false);
-		
-		mv.addObject("fileInfo", fileInfo);
-		mv.setViewName("fileDownloadView");
-		
-		return mv;
-	}
 }

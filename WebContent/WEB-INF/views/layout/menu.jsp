@@ -8,7 +8,7 @@
 </style>
 
 <!-- 로그인 정보 -->
-<c:set var="loginInfo" value="${not empty cookie.rememberSeq.value ? 'hidden' : ''}"/>
+<c:set var="loginInfo" value="${not empty sessionScope.memberSeq ? 'hidden' : ''}"/>
 <c:set var="userprofileImg" value="${not empty cookie.profileImg.value ? '/images/usr_avatar.png' : '/user/img/'}"/>
 
     <!-- ================================
@@ -38,14 +38,14 @@
                         <!-- start .author-area -->
                         <div class="author-area not_logged_in">
                             <!-- 회원가입/로그인 -->
-                            <c:if test="${empty cookie.memberId.value }">
+                            <c:if test="${empty sessionScope.memberSeq }">
 	                            <div class="pull-right join desktop-size d-md-block d-none ${loginInfo}" >
 	                                <a href="<c:url value='/auth/joinPage.do'/>" class="btn btn--round btn-secondary  btn--xs">회원가입</a>
 	                                <a href="<c:url value='/auth/loginPage.do'/>" class="btn btn--round btn--xs">로그인</a>
 	                            </div>
                             </c:if>
                             
-                            <c:if test="${not empty cookie.memberId.value}">                          
+                            <c:if test="${not empty sessionScope.memberSeq}">                          
                             	<!-- 로그인 정보 -->
 	                            <div class="author-author__info inline has_dropdown">
 	                                <div class="author__avatar">

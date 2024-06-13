@@ -104,7 +104,12 @@
       <error-code>505</error-code>
       <location>/error/500.jsp</location>
     </error-page>
-       
+       	
+    <!-- 세션 timeout 지정 -->
+    <session-config> 
+		<session-timeout>30</session-timeout>
+	</session-config>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

@@ -4,7 +4,6 @@
 <%@ page import="com.portfolio.www.user.message.MemberMessageEnum" %>
 <%
 String ctx = request.getContextPath();
-
 %>
 	<style>
 	
@@ -23,14 +22,14 @@ String ctx = request.getContextPath();
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
                     <form id="formLogin">   
-                    	<input type="hidden" name = "redirectURL" value="${redirectURL}">
                         <div class="cardify login">
                             <div class="login--header">
-                                <h3>아이디로 로그인</h3>                                
+                                <h3>아이디로 로그인</h3>          
                             </div>
                             <!-- end .login_header -->
                             <div class="login--form">
                                 <div class="form-group">
+			                    	<input type="hidden" name = "redirectURL" value="${redirectURL}">
                                     <label for="memberId">아이디</label>
                                     <%-- <input id="memberId" type="text" name="memberId" value="${memberId}" class="text_field" placeholder="아이디를 입력해주세요"> --%>
                                     <input id="memberId" type="text" name="memberId" value="test" class="text_field" placeholder="아이디를 입력해주세요">
@@ -133,6 +132,7 @@ String ctx = request.getContextPath();
 	            return false;
 	        }	        
 
+        	/* formLogin.action = "<c:url value='/auth/login.do?redirectURL=${redirectURL}'/>"; */
         	formLogin.action = "<c:url value='/auth/login.do'/>";
         	formLogin.method = 'POST';
         	formLogin.submit();

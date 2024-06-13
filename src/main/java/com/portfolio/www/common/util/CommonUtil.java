@@ -35,8 +35,6 @@ public class CommonUtil {
 //        try { encodedValue = URLEncoder.encode(cookieValue, "UTF-8"); }
 //        catch (UnsupportedEncodingException e) { throw new RuntimeException(e); }
         
-       getLogMessage(log, "createCookie", "encodedValue", encodedValue);
-        
         Cookie cookie = new Cookie(cookieKey,encodedValue);
         cookie.setMaxAge(maxAge); // 쿠키를 삭제
         cookie.setPath(path);

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 String ctx = request.getContextPath();
 %>
@@ -48,10 +49,12 @@ String ctx = request.getContextPath();
                                 &emsp;&emsp;  
 
                                 <!-- 수정/삭제 버튼, 로그인 회원+등록자가 동일하면 -->
-	                            <!-- 수정버튼 -->	                               
-	                            <a href="<c:url value='/forum/board/editPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'/>" >수정 </a>	                            
-	                    	    <!-- 삭제버튼 -->
-	                    	    <a href="#" onClick="deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
+                                <c:if test='${sessionScope.memberSeq eq boardDetail.regMemberSeq }'>
+		                            <!-- 수정버튼 -->	                               
+		                            <a href="<c:url value='/forum/board/editPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'/>" >수정 </a>	                            
+		                    	    <!-- 삭제버튼 -->
+		                    	    <a href="#" onClick="deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
+	                    	    </c:if>
 	                    	    
                             </div>
                             <!-- 게시글 내용 -->
@@ -77,42 +80,61 @@ String ctx = request.getContextPath();
                         </div>
                         <!-- end .forum_issue -->
 
+						<!-- 댓글 -->
                         <div class="forum--replays cardify">
                             <div class="area_title">
-                                <h4>1 Replies</h4>
+                                <h4>${fn:length(comments)} Replies</h4>
                             </div>
                             <!-- end .area_title -->
-
-                            <div class="forum_single_reply">
-                                <div class="reply_content">
-                                    <div class="name_vote">
-                                        <div class="pull-left">
-                                            <h4>AazzTech
-                                                <span>staff</span>
-                                            </h4>
-                                            <p>Answered 3 days ago</p>
-                                        </div>
-                                        <!-- end .pull-left -->
-
-                                        <div class="vote">
-                                            <a href="#" class="active">
-                                                <span class="lnr lnr-thumbs-up"></span>
-                                            </a>
-                                            <a href="#" class="">
-                                                <span class="lnr lnr-thumbs-down"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- end .vote -->
-                                    <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut sceleris que the
-                                        mattis, leo quam aliquet congue placerat mi id nisi interdum mollis. </p>
-                                </div>
-                                <!-- end .reply_content -->
-                            </div>
-                            <!-- end .forum_single_reply -->
-
+                            
+                            <c:if test="${comments.size() > 0}">
+								<!-- 댓글 정보 -->
+								<c:forEach items="${comments}" var = "comment" varStatus ="status">
+		                            <div class="forum_single_reply" data-commentSeq="${comment.commentSeq}">
+		                                <div class="reply_content" style="padding-left: ${18 + 30 * comment.lvl}px">
+		                                    <div class="name_vote">
+		                                        <div class="pull-left">
+		                                            <h4><span>${comment.memberNm}</span></h4>
+		                                            
+		                                            <div style="display: flex; padding-right:20px">
+		                                            
+		                                            	<p><fmt:formatDate value="${comment.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
+		                                            	
+		                                                 <c:if test='${sessionScope.memberSeq eq boardDetail.regMemberSeq }'>
+								                            <!-- 수정버튼 -->	                               
+							                        		<a style="padding-left: 6px" href="#" onClick="editCommentBox(this);">수정</a>                          
+								                    	    <!-- 삭제버튼 -->
+								                    	    <a style="padding-left: 6px" href="#" onClick="deleteComment(${comment.commentSeq}, ${board.boardTypeSeq}, ${board.boardSeq});">삭제</a>
+							                    	    </c:if>
+							                    	    
+							                    	    <a style="padding-left: 6px" href="#" data-sommemtSeq="${comment.commentSeq}" data-commentLvl="${comment.lvl }" onclick="openReplyCommentWindow(this)">답글</a>
+							                    	    
+		                                            </div>	                                            
+		                                        </div>
+		                                        <!-- end .pull-left -->
+		
+												<!-- 댓글 별 좋아요/싫어요 -->
+		                                        <div class="vote">
+		                                            <a href="#" class="active">
+		                                                <span class="lnr lnr-thumbs-up"></span>
+		                                            </a>
+		                                            <a href="#" class="">
+		                                                <span class="lnr lnr-thumbs-down"></span>
+		                                            </a>
+		                                        </div>
+		                                    </div>
+		                                    <!-- end .vote -->
+	                         		       <div class="commentContent"> ${comment.content}</div>
+		                                </div>
+		                                <!-- end .reply_content -->
+		                            </div>
+								</c:forEach>
+                            </c:if>
+                            
+							<!-- 댓글 추가 창 -->
                             <div class="comment-form-area">
-                                <h4>Leave a comment</h4>
+                                <h4>댓글을 남겨보세요</h4>
+                                
                                 <!-- comment reply -->
                                 <div class="media comment-form support__comment">
                                     <div class="media-left">
@@ -121,13 +143,38 @@ String ctx = request.getContextPath();
                                         </a>
                                     </div>
                                     <div class="media-body">
-                                        <form action="#" class="comment-reply-form">
-                                            <div id="trumbowyg-demo"></div>
-                                            <button class="btn btn--sm btn--round">Post Comment</button>
-                                        </form>
+                                       <div id="trumbowyg-demo"></div>
+									    <button class="btn btn--sm btn--round submit" 
+									            onClick="addComment(${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq}, this);">댓글 등록</button>
+                                        <button type="button" class="btn btn--sm btn--round"
+                                                 onclick="location.href='<%=ctx %>/forum/board/readPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'">취소</button>
                                     </div>
                                 </div>
                                 <!-- comment reply -->
+                                
+                               	<!-- 댓글 수정 창 -->
+	                            <div class="comment-form-area edit" style="display:none">
+	                                <h4>댓글을 수정하세요</h4>
+	                                <!-- comment reply -->
+	                                <div class="media comment-form support__comment">
+	                                    <div class="media-left">
+	                                        <a href="#">
+	                                            <img class="media-object" src="<%=ctx%>/resources/template/images/m7.png" alt="Commentator Avatar">
+	                                        </a>
+	                                    </div>
+	                                    
+	                                   <div class="media-body">
+	                                       <div class="comment-reply-form">
+	                                           <div id="comment-edit"></div>
+	                                           <button type="button" class="btn btn--sm btn--round edit"
+	                                                   onclick="editComment(${boardDetail.boardSeq}, ${boardDetail.boardSeq}, this);">댓글 수정</button>
+	                                           <button type="button" class="btn btn--sm btn--round cancel"
+	                                           		onclick="location.href='<%=ctx %>/forum/board/readPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'">취소</button>
+	                                       </div>
+	                                   </div>
+	                                </div>
+	                                <!-- comment reply -->
+	                            </div>  
                             </div>
                         </div>
                         <!-- end .forum_replays -->
@@ -149,13 +196,17 @@ String ctx = request.getContextPath();
 	    $('#trumbowyg-demo').trumbowyg({
 	        lang: 'kr'
 	    });
+	    
+     	$('#comment-edit').trumbowyg({
+     		lang: 'kr'
+     	})	    
 	   
 	    /* 새로고침 */ 
        window.addEventListener('popstate', function(event) {
             window.location.reload();
         });	    
 	    
-       /* 게시글 좋아요/싫어요) */
+       /* 게시글 (좋아요/싫어요) */
      	function vote(boardTypeSeq, boardSeq, thisElement) {
     	    let url = `<%=ctx%>/forum/board/vote.do`;
     	    
@@ -174,32 +225,26 @@ String ctx = request.getContextPath();
     	    	success : function(result){    	    		
 	   	    		let thumb = thisElement.getAttribute("data-isLike")==='Y' ? 'Up' : 'Down';
 	   	    		
-	   	    		console.log('a#vote'+thumb + ', result : ' + result);
-	   	    		console.log('값은 ? '+(result === 1));
+	   	    		/* console.log('a#vote'+thumb + ', result : ' + result); */
 	   	    		
 	   	    		/* 1.추가 2.수정 3.삭제 */
 	    			if (result == 1) {   		
-	    				console.log('1번에 왔다');
 	    				$('a#vote'+thumb).addClass('active');
 	    			}else if(result == 2){
-	    				console.log('2번에 왔다');
 	    				$('a#vote'+!thumb).removeClass('active');
 	    				$('a#vote'+thumb).addClass('active'); 
 	    			} else if(result ==3){
-	    				console.log('3번에 왔다');
 		      			$('a#vote'+thumb).removeClass('active');	
-	    			}    	  
-	   	    		console.log('ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ');  		
+	    			}    	  	
     	    	},
     	    	error : function(request, status, error){
     	    		console.log('vote method error :' +error);
     	    	}
-    	    	
     	    });
     	}
 
     	/* 게시글 삭제 */
-    	function deleteClick(boardSeq, boardTypeSeq) {
+    	function deleteClick(boardTypeSeq, boardSeq) {
     		var result = confirm("정말 현재 게시글을 삭제 하시겠습니까?");
 
     		let url = '<%=ctx%>/forum/board'
@@ -207,8 +252,7 @@ String ctx = request.getContextPath();
 		    	url += '/'+boardSeq
 		    	url += '/delete.do';
 		    	
-    		if(result){
-    			
+    		if(result){    			
     			$.ajax({
     	            type: 'DELETE',
     	            url: url,
@@ -233,5 +277,149 @@ String ctx = request.getContextPath();
     			/* alert('cancel'); */
     		}
     	}
+    	
+    	/* 게시글 댓글 */
+    	function addComment(boardTypeSeq, boardSeq, elem){
+    		
+    		var url = '<%=ctx%>/forum/board/comment.do';
+    		
+    		$.ajax({
+    			type : 'post',
+    			url : url,    			
+    			headers : {
+    				'Content-Type' : 'application/json',
+	    			"accept" : "application/json"
+    			},
+    			dataType : 'JSON',
+    			data : JSON.stringify ({
+    				boardTypeSeq : boardTypeSeq,
+    				boardSeq : boardSeq,
+	    			content: $('#trumbowyg-demo').trumbowyg('html'),
+	    			parentCommentSeq: elem.getAttribute("data-parentCommentSeq"),
+	    			lvl: elem.getAttribute("data-commentLvl") == null ? 0 : elem.getAttribute("data-commentLvl")
+    			}),
+    			success : function(result){
+    				if(result){
+    					window.location.reload();
+    				} else{
+    					alert('실패!');
+    				}
+    			},
+    			error : function(request, status, error){
+    				console.log(error);
+    			}
+    		});
+    	}
+    
+    	/* 댓글 수정창 */
+    	function editCommentBox(elem){
+	    	let commentContent = document.querySelector('.commentContent').innerText;
+	    	$('#comment-edit').trumbowyg('html', commentContent);
+	    	
+	    	let commentArea = elem.closest('div.forum_single_reply');
+	    	let editForm = document.querySelector('div.comment-form-area.edit');
+	    	commentArea.append(editForm);
+	    	editForm.style.display = "block";
+	    	
+	    	//2-2. 이전의 다른 댓글의 수정버튼을 누른 상태라면, 그 댓글의 수정창은 닫혀야 한다.
+	    /* 	let hiddenElem = document.querySelector('div.contentBtn.hiddenComment');
+	    	console.log(hiddenElem);
+	    	
+	    	if(hiddenElem != null) {
+	    		hiddenElem.classList.remove("hiddenComment");
+	    	}
+	    	contentBox.classList.add("hiddenComment"); */
+	    	
+	    	let editBtn = editForm.querySelector('button.edit');
+	    	editBtn.setAttribute('data-commentSeq', commentArea.getAttribute('data-commentSeq'));    		
+    	}
+    	
+	    /* 대댓글 등록 */
+	    function openReplyCommentWindow(elem){
+	    	
+	    	$('#trumbowyg-demo').trumbowyg('html', '');
+	    	
+	    	let ReplyArea = elem.closest('div.forum_single_reply');
+	    	let commentForm = document.querySelector('div.comment-form-area.reply');
+	    	
+	    	ReplyArea.append(commentForm);
+	    	
+	    	let submitBtn = commentForm.querySelector('button.submit');
+	    	
+	    	console.dir(elem);
+	    	
+	    	console.log("data :" + elem.getAttribute('data-commentSeq'));
+	    	console.log("commentLvl :" + elem.getAttribute('data-commentLvl'));
+	    	
+	    	submitBtn.setAttribute('data-parentCommentSeq', elem.getAttribute('data-commentSeq'));
+	    	submitBtn.setAttribute('data-commentLvl', parseInt(elem.getAttribute('data-commentLvl'))+1);	    	
+	    }    	
+    	
+    	/* 댓글 수정 */
+    	function editComment(boardTypeSeq, boardSeq, elem) {
+
+    		let url = '<%=ctx%>/forum/board/modifyComment.do?';
+		    	url += 'commentSeq='+ elem.getAttribute("data-commentSeq")
+		    	url += '&boardSeq='+boardSeq
+		    	url += '&boardTypeSeq='+boardTypeSeq
+		    	url += '&content=' + $('#comment-edit').trumbowyg('html');
+		    	
+   			$.ajax({
+   	            type: 'post',
+   	            url: url,
+   	            headers: {
+   	                "Accept": "application/json",  // 요청에 대한 Accept 헤더를 설정
+   	                "Content-Type": "application/json"
+   	    		},
+   	    		// 결과 성공 콜백함수 
+   	    		success : function(response) {   
+   	    			var page = response.page;
+   	    			
+   	    			/* alert(page); */
+    				location.href='<%=ctx%>'+page;
+       				/* alert(response.msg);  */        	
+   	    		},
+   	    		// 결과 에러 콜백함수
+   	    		error : function(request, status, error) {
+   	    			console.log(error)
+   	    		}
+   	    	});
+    	}        	
+    	
+    	/* 댓글 삭제 */
+    	function deleteComment(commentSeq, boardTypeSeq, boardSeq) {
+    		var result = confirm("정말 현재 댓글을 삭제 하시겠습니까?");
+
+    		let url = '<%=ctx%>/forum/board/deleteComment.do?';
+		    	url += 'commentSeq='+commentSeq
+		    	url += '&boardSeq='+boardSeq
+		    	url += '&boardTypeSeq='+boardTypeSeq;
+		    	
+    		if(result){    			
+    			$.ajax({
+    	            type: 'delete',
+    	            url: url,
+    	            headers: {
+    	                "Accept": "application/json",  // 요청에 대한 Accept 헤더를 설정
+    	                "Content-Type": "application/json"
+    	    		},
+    	    		// 결과 성공 콜백함수 
+    	    		success : function(response) {   
+    	    			var page = response.page;
+    	    			
+    	    			/* alert(page); */
+	    				location.href='<%=ctx%>'+page;
+        				/* alert(response.msg);  */        	
+    	    		},
+    	    		// 결과 에러 콜백함수
+    	    		error : function(request, status, error) {
+    	    			console.log(error)
+    	    		}
+    	    	});
+    		}else{
+    			/* alert('cancel'); */
+    		}
+    	}    	    	
+    	
 	</script>
 	

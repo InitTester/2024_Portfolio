@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginCheckFilter implements Filter {
 	
-	private static final String[] whitelist = {"/","/index.do","auth/*","/auth/*.do","/assest/*"};
+	private static final String[] checklist = {"/forum/*/*Page.do"};
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -21,13 +21,19 @@ public class LoginCheckFilter implements Filter {
 		HttpServletResponse httpResponse  = (HttpServletResponse)response;
 
 		String contextPath = httpRequest.getContextPath();
+		String queryString = httpRequest.getQueryString();
 		String requestURI = httpRequest.getRequestURI().replaceAll(contextPath, "");
 		
 		try {
-			log.info("[LoginCheckFilter] LoginCheck Filter Start : ({})", requestURI);
+//			log.info("[LoginCheckFilter] LoginCheck Filter Start : ({})", requestURI);
 			
 			if(isLoginCheckPath(requestURI)) {
-
+				
+				if(!queryString.isEmpty())
+					requestURI = requestURI+"?"+queryString;
+				
+				log.info("[LoginCheckFilter] redirect >>> requestURI: ({})", requestURI);
+				
 				log.info("[LoginCheckFilter] LoginCheck Filter Logic Start : ({})", requestURI);
 				HttpSession session = httpRequest.getSession(false);
 				
@@ -35,7 +41,6 @@ public class LoginCheckFilter implements Filter {
 					
 					log.info("[LoginCheckFilter] Not certified User Request : ({})", requestURI);
 					httpResponse.sendRedirect(contextPath+"/auth/loginPage.do?redirectURL="+requestURI);
-//					httpResponse.sendRedirect("/auth/loginPage.do?redirectURL="+requestURI);
 					return;
 				}
 			}
@@ -50,7 +55,6 @@ public class LoginCheckFilter implements Filter {
 	}
 	
 	private boolean isLoginCheckPath(String requestURI) {
-		return !PatternMatchUtils.simpleMatch(whitelist, requestURI);
+		return PatternMatchUtils.simpleMatch(checklist, requestURI);
 	}
-
 }

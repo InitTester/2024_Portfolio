@@ -48,6 +48,7 @@ public class FileUtil {
 		int idx = mpf.getOriginalFilename().lastIndexOf(".");
 		String expansion = mpf.getOriginalFilename().substring(idx);
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+		log.info("[saveFile] (SAVE_PATH : {}) (uuid : {}) (expansion : {}) ",SAVE_PATH, uuid, expansion);
 		
 		destFile = new File(SAVE_PATH, uuid + expansion);
 		
@@ -55,8 +56,12 @@ public class FileUtil {
 			mpf.transferTo(destFile);
 		} catch (IllegalStateException ise) {	
 			CommonUtil.getLogMessage(log, "saveFile", "IllegalStateException", ise.getMessage());
+			throw ise;
 		} catch (IOException ioe) {				
 			CommonUtil.getLogMessage(log, "saveFile", "IOException", ioe.getMessage());
+		} catch (Exception e) {
+			// TODO: handle exception
+			CommonUtil.getLogMessage(log, "saveFile", "Exception", e.getMessage());
 		}
 		return destFile;
 	}

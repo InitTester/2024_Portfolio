@@ -23,9 +23,10 @@ public interface BoardAttachRepository {
 	
 	/* 선택 게시글 첨부파일 여부 */
 	public int getBoardAttachEmpty(BoardAttachDto boardDto);
+
+	/* 선택 게시글 첨부파일 중복체크 */
+	public int getBoardAttachOneEmpty(BoardAttachDto boardDto);
 	
 	/* 선택 게시글 첨부파일 전체 삭제 */
 	public int deleteBoardAttachAll(BoardAttachDto boardDto);
-	
-	
 }

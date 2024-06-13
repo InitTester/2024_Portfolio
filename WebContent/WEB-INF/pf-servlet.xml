@@ -55,7 +55,7 @@
 	</bean>
 	
 	<mvc:resources mapping="/assest/**" location="/assest/" />
-    <mvc:resources mapping="/images2/**" location="file:///C:/Users/USER/pf/file/" />
+    <!-- <mvc:resources mapping="/localimg/**" location="file:///C:/app/" /> -->
 
 	<mvc:annotation-driven />
 

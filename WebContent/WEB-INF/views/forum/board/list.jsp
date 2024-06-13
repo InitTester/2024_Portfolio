@@ -30,7 +30,13 @@ String ctx = request.getContextPath();
                                      	<c:forEach items="${board}" var ="board" >
                                      		<tr>
                                      			<td>${board.boardSeq}</td>
-                                     			<td><a href="<c:url value= '/forum/board/readPage.do?boardSeq=${board.boardSeq}&boardTypeSeq=${board.boardTypeSeq}'/>">${board.title}</a></td>
+                                     			<td>
+                                     				<c:if test="${board.attachCnt > 0}"> <span class="lnr lnr-paperclip"></span></c:if>
+                                     				<a href="<c:url value= '/forum/board/readPage.do?boardTypeSeq=${board.boardTypeSeq}&boardSeq=${board.boardSeq}'/>">${board.title}</a>
+
+                                     				<c:if test="${board.commentCnt > 0}"> <a style="color: orange">${board.commentCnt}</a> </c:if>	
+                                     			</td>
+                                     			
                                      			<td><fmt:formatDate value="${board.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                                      			<td>${board.regMemberNm}</td>      
                                      			<td>${board.hit}</td>                                  	

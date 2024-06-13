@@ -1,5 +1,9 @@
 package com.portfolio.www.forum.board.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("BoardAttachDto")
