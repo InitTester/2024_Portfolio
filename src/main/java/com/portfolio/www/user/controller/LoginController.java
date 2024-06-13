@@ -39,18 +39,20 @@ public class LoginController {
 							      @RequestParam(name ="redirectURL", required=false) String redirectURL,
 //							      @RequestParam(required=false) String boardTypeSeq,
 								  HttpServletRequest request) {
+
+		HttpSession session = request.getSession();
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
-		if(CommonUtil.getCookieValue(request, "memberSeq")!=null) {		
+		if(session.getAttribute("memberSeq")!=null) {		
 
-			Integer memberSeq = Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
+			Integer memberSeq =  Integer.parseInt(session.getAttribute("memberSeq").toString());   //  Integer.parseInt(CommonUtil.getCookieValue(request, "memberSeq"));
 			String memberId = memberService.getMemberId(memberSeq);
 			
 			mv.addObject("memberId",memberId);
 		}
-		CommonUtil.getLogMessage(log, "loginPage", "redirectURL", redirectURL);
+//		CommonUtil.getLogMessage(log, "loginPage", "redirectURL", redirectURL);
 		mv.addObject("redirectURL", redirectURL);
 		mv.setViewName("auth/login");
 		
@@ -69,8 +71,8 @@ public class LoginController {
 		MemberDto dto = MemberDto.getMemberDto(params);
 
 		try {
-			CommonUtil.getLogMessage(log, "login", "로그", "login 메서드 접속");
-			CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
+//			CommonUtil.getLogMessage(log, "login", "로그", "login 메서드 접속");
+//			CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
 			
 			MemberDto memberDto = memberService.login(params);
 			
@@ -80,13 +82,13 @@ public class LoginController {
 			//TODO 추후 개발 예정
 //			String profileImg = memberDto.getMemberNm();
 			
-			CommonUtil.getLogMessage(log, "login", "memberSeq", memberSeq);
+//			CommonUtil.getLogMessage(log, "login", "memberSeq", memberSeq);
 			
 			if(!ObjectUtils.isEmpty(memberDto)) {
 				
 				// 세션 				
 				HttpSession session = request.getSession();
-				session.setAttribute("memberSeq", memberId);
+				session.setAttribute("memberSeq", memberSeq);
 				
 				// 쿠키 
 				response.addCookie(CommonUtil.createCookie("memberId",memberId,-1,"/"));
@@ -102,8 +104,8 @@ public class LoginController {
 				}
 				
 				mv.addObject("key", Calendar.getInstance().getTimeInMillis());	
-				CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
-				mv.setViewName("redirect:" + redirectURL);
+//				CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
+				mv.setViewName("redirect:" + (redirectURL=="" ? "/index.do" : redirectURL));
 				
 			}
 			
@@ -180,5 +182,4 @@ public class LoginController {
 		
 		return mv;
 	}	
-	
 }

@@ -82,4 +82,14 @@
 	    	    AND board_seq = #{boardSeq}
     </delete>
     
+    <delete id="getBoardAttachOneEmpty" parameterType="BoardAttachDto">
+   	    	 SELECT COUNT(1) 
+   	    	   FROM board_attach
+	    	  WHERE board_type_seq = #{boardTypeSeq}
+	    	    AND board_seq = #{boardSeq}
+	    	    AND attach_seq = #{attachSeq}
+	    	    AND org_file_nm = #{org_file_nm}
+    </delete>
+    
+    
 </mapper>

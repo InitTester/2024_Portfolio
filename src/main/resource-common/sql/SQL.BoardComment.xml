@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.www.forum.board.dao.mybatis.BoardCommentRepository">
+
+    <!-- 게시글 첨부파일 리스트 -->
+    <select id="getBoardCommentList" parameterType="BoardCommentDto" resultType="BoardCommentDto">
+    	SELECT a.comment_seq,
+    	       a.lvl,
+    	       a.content,
+    	       a.board_seq,
+    	       a.board_type_seq,
+    	       a.member_seq,
+    	       a.parent_seq,
+    	       a.reg_dtm,
+    	       a.update_dtm,
+    	       a.delete_dtm,
+    	       m.member_nm 
+    	 FROM (SELECT p.comment_seq,
+    	              p.lvl,
+    	              p.content,
+    	              p.board_seq,
+    	              p.board_type_seq,
+    	              p.member_seq,
+    	              IFNULL(p.parent_comment_seq, s.parent_comment_seq) AS parent_seq,
+    	              p.reg_dtm,
+    	              p.update_dtm,
+    	              p.delete_dtm
+    	         FROM board_comment p
+    	    LEFT JOIN board_comment s on s.parent_comment_seq = p.comment_seq) a
+    	         JOIN member m on a.member_seq = m.member_seq
+    	        WHERE a.board_type_seq = #{boardTypeSeq}
+    	          AND a.board_seq = #{boardSeq}
+    	     GROUP BY a.comment_seq
+    	     ORDER BY IFNULL(parent_seq, 999999999), a.reg_dtm, a.comment_seq
+    </select>
+    
+    <!-- 게시글 댓글 추가 -->
+    <insert id ="addComment" parameterType="BoardCommentDto">
+    	INSERT INTO board_comment (lvl,
+    	   						   content,
+    	   						   board_seq,
+    	   						   board_type_seq,
+    	   						   member_seq,
+    	   						   parent_comment_seq,
+    	   						   reg_dtm)
+    	   			       VALUES (#{lvl},
+    	   			               #{content},
+    	   			               #{boardSeq},
+    	   			               #{boardTypeSeq},
+    	   			               #{memberSeq},
+    	   			               #{parentCommentSeq},
+    	   			               DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'))
+    </insert>
+    
+</mapper>

@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginCheckFilter implements Filter {
 	
-	private static final String[] whitelist = {"/","/index.do","auth/*","/auth/*.do","/assest/*"};
+	private static final String[] checklist = {"/forum/*/*Page.do"};
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -22,14 +22,7 @@ public class LoginCheckFilter implements Filter {
 
 		String contextPath = httpRequest.getContextPath();
 		String queryString = httpRequest.getQueryString();
-//		String queryStringboardtype = httpRequest.getParameter("boardTypeSeq");
-//		String requestURL = httpRequest.getRequestURL().toString();
-//		String requestURI = httpRequest.getRequestURI().replaceAll(contextPath, "")+"?"+queryString;
 		String requestURI = httpRequest.getRequestURI().replaceAll(contextPath, "");
-		
-//		log.info("[LoginCheckFilter] queryString : ({})", queryString);
-//		log.info("[LoginCheckFilter] requestURI : ({})", requestURI);
-		
 		
 		try {
 //			log.info("[LoginCheckFilter] LoginCheck Filter Start : ({})", requestURI);
@@ -48,7 +41,6 @@ public class LoginCheckFilter implements Filter {
 					
 					log.info("[LoginCheckFilter] Not certified User Request : ({})", requestURI);
 					httpResponse.sendRedirect(contextPath+"/auth/loginPage.do?redirectURL="+requestURI);
-//					httpResponse.sendRedirect("/auth/loginPage.do?redirectURL="+requestURI);
 					return;
 				}
 			}
@@ -62,19 +54,7 @@ public class LoginCheckFilter implements Filter {
 		}
 	}
 	
-	private String extractRedirectURL(String queryString) {
-        String[] params = queryString.split("&");
-        for (String param : params) {
-            String[] keyValue = param.split("=", 2);
-            if (keyValue.length == 2 && "redirectURL".equals(keyValue[0])) {
-                return keyValue[1];
-            }
-        }
-        return null;
-    }
-	
 	private boolean isLoginCheckPath(String requestURI) {
-		return !PatternMatchUtils.simpleMatch(whitelist, requestURI);
+		return PatternMatchUtils.simpleMatch(checklist, requestURI);
 	}
-
 }

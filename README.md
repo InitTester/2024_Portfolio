@@ -11,29 +11,43 @@
 <img height="350" width="350" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/e4fbd4ed-a42f-4c10-a8da-8239572523ca">
 
 > 사용자가 새 계정을 만들기 위해 이름, 이메일, 비밀번호 등의 정보를 입력합니다.   
-> 입력된 정보를 검증,데이터베이스에 저장
+> 입력된 정보를 검증, 데이터베이스에 저장합니다.
 > 
 > 구현 기능
 > >1. 이메일 인증
-     * 이메일 전송(javax.mail, spring-context-support 라이브러리 사용)
-     * 네이버 계정을 이용해서 이메일 전송(네이버 계정 사용시에 jasypt-spring31 라이브러리를 사용, 네이버 계정 정보에 대한 보안 강화)
+> > >  * 이메일 전송(javax.mail, spring-context-support 라이브러리 사용)
+> > >  * 네이버 계정을 이용해서 이메일 전송(네이버 계정 사용시에 jasypt-spring31 라이브러리를 사용, 네이버 계정 정보에 대한 보안 강화)
 > >2. 비밀번호 암호화
-     * bcrypt 라이브러리를 사용, DB에서 비밀번호에 대한 보안 강화
-> >3. 이메일 유효성 검사   
+> > >  * bcrypt 라이브러리를 사용, DB에서 비밀번호에 대한 보안 강화
+> >3. 유효성 검사   
+> > > >회원 가입 제약 사항(프론트)
+> > >   - 아이디
+> > >     - [x]  공백 또는 빈 칸 불가능, 4~20자의 영어 소문자, 숫자만 사용 가능
+> > >     - [x]  아이디 중복 체크
+> > >   - 이메일
+> > >     - [x]  공백 또는 빈칸 불가능, 이메일 형식 준수 "[xxx@xxx.xxx](mailto:xxx@xxx.xxx)"
+> > >     - [x]  이메일 중복 체크
+> > >   - 이름
+> > >     - [x]  공백 또는 빈칸 불가능, 숫자 입력 불가능, 최소 2자 이상
+> > >   - 비밀번호
+> > >     - [x]  공백 또는 빈칸 불가능, 8~20자, 영문, 숫자, 특수 문자 혼합하여 입력
+> > >     - [x]  비밀번호 확인
 
 
 > #### 로그인
 <img height="350" width="350" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/ac6ab488-a2dc-4b74-a346-800b362d1f90">
 <img height="350" width="350" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/4a8ebe5d-1bdd-45b2-9c9f-fe6456d1616b">
 
-> 사용자가 이메일과 비밀번호를 입력하여 로그인합니다.
-> 입력된 정보를 검증하고, 성공적으로 로그인하면 세션을 생성합니다.
+> 사용자가 아이디와 비밀번호를 입력하여 로그인합니다.
+> 입력된 정보를 검증하고, 성공적으로 로그인하면 세션을 생성
+> 만약 아이디/비밀번호를 잊었다면 찾기 기능을 통해 사용 가능합니다.
 > 
 > 구현 기능
 > >1. 비밀번호 암호화
-> >2. 로그인 실패 시 에러 메시지 표시
-> >3. 아이디 저장 기능
-> >4. 아이디 찾기   
+> >2. 아이디 저장 기능
+> >3. 아이디 찾기
+> >4. 비밀번호 찾기   
+> >5. 유효성 검사
 > > ><img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/c5f82706-3fca-4bb9-8229-5e6b70ee7abd">
 > > ><img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/a61d4651-3d8e-4e6a-ba4d-8e9b3e1b74e7">
 > > ><img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/0ded7a25-8772-4760-a911-1a6ed173d052">

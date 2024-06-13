@@ -18,7 +18,7 @@
 			display: block;
 		}
 		
-		.imgView {
+		.gallery {
 		    margin: auto;
 		    text-align: center;
 		    width: 100px;
@@ -50,65 +50,38 @@
                             
                             <div class="form-group">
                                 <div class="atta">
-                                    <label>첨부파일</label>        
-                                    	
-                                   		<c:set var="attachCnt" value='${attFiles.size()}'/>
-                                        
-                                        <c:if test='${attFiles.size() !=0}'>
-                                        	<c:forEach items='${attFiles}' var='attFile' varStatus="i">
-	                                       		<div class="drop-area" id="drop-area${i.index+1}">
-	                                       			<label>
+                                    <label>첨부파일</label>
+										<c:set var="attachCnt" value='${attFiles.size()}'/>
+										
+										<c:if test='${attFiles.size() !=0}'>
+	                                       	<c:forEach items='${attFiles}' var='attFile' varStatus="i">
+	                                       		<label class="drop-area" id="drop-area${i.index+1}">
 												    <span class="lnr lnr-paperclip"></span> 파일 추가
-													    <input type="file" name="attFile" style="display:none;" accept = "image/gif, image/png, image/jpeg" onchange="handleFiles(this.files, 'gallery${i.index}')" >
-													    <div class="gallery" id="gallery${i.index+1}">
-										                    <c:if test="${not empty attFile.savePath}">										                      
-										                      <img src="${attFile.accessUri}">
-											                </c:if>
-													    </div>
-													</label>
-											    </div>
-                                        	</c:forEach>
-                                        </c:if>               
-                                        
-                                        <!-- 첨부파일 추가기능 -->
-                                        <c:forEach var ="i" begin='${attachCnt+1}' end="3" step="1">
+												    <%-- <input type="file" name="attFile" style="display:none;" accept = "image/gif, image/png, image/jpeg" onchange="handleFiles(this.files, 'gallery${i.index}')" > --%>
+												    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery${i.index+1}')" >
+												    <div class="gallery" id="gallery${i.index+1}">
+									                    <c:if test="${not empty attFile.savePath}">										                      
+									                      <img src="${attFile.accessUri}" alt=${attFile.orgFileNm }>
+										                </c:if>
+												    </div>
+												 </label>
+	                                       </c:forEach>
+                                       </c:if>               
+                                       
+                                       <!-- 첨부파일 추가기능 -->
+                                       <c:forEach var ="i" begin='${attachCnt+1}' end="3" step="1">
 											<label class="drop-area" id="drop-area${i}">
 											    <span class="lnr lnr-paperclip"></span> 파일 추가
-											    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery3')" >
-											    <div class="gallery" id="gallery${i}"></div>
-											</label>
-		                                </c:forEach>   
-                                        
-                                        <!-- <span id="profileImg" style="background: url('file:///C:/Users/USER/pf/file/1dbb8157cf544ba09327ff5de5c9521a.jpg') 50% 37% / cover no-repeat"></span> -->         
-                      <%--                   <img src="<%=ctx%>/file/1dbb8157cf544ba09327ff5de5c9521a.jpg" alt="Image" /> --%>
-                                        
-                                        
-                                        
-<!-- 										<label class="drop-area" id="drop-area1">
-										    <span class="lnr lnr-paperclip"></span> 파일 추가
-										    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery1')" >
-										    multiple accept="*/*"
-										    <div class="gallery" id="gallery1"></div>
-										</label>
-										
-										<label class="drop-area" id="drop-area2">
-										    <span class="lnr lnr-paperclip"></span> 파일 추가
-										    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery2')" >
-										    <div class="gallery" id="gallery2"></div>
-										</label>
-										
-										<label class="drop-area" id="drop-area3">
-										    <span class="lnr lnr-paperclip"></span> 파일 추가
-										    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery3')" >
-										    <div class="gallery" id="gallery3"></div>
-										</label> -->
-                                                          
+										    	<input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery${i}')" >
+											    <div class="gallery" id="gallery${i}" style="display: none;"></div>
+										    </label>
+	                                	</c:forEach>          
                                  </div> 
                             </div>
                             
                             <div class="form-group">
                                 <button type="submit" class="btn btn--md btn-primary">등록</button>
-                            	<a href="<c:url value='/forum/board/listPage.do'/>" class="btn btn--md btn-light">취소</a>
+                            	<a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${empty board.boardTypeSeq ? boardTypeSeq : board.boardTypeSeq}'/>" class="btn btn--md btn-light">취소</a>
                             </div>
                         </form>
                     </div><!-- ends: .question-form -->
@@ -140,21 +113,22 @@
 	    // 파일 처리 함수
 	    function handleFiles(files, galleryId) {
 	        const gallery = document.getElementById(galleryId);
-	        
 	        gallery.innerHTML = '';
 	        gallery.style.display = 'block';
-	        
+	        /* ([...files]).forEach(uploadFile); */
 	        ([...files]).forEach(uploadFile.bind(null, gallery));
 	    }
 
 	    function uploadFile(gallery, file) {
 	        const reader = new FileReader();
-	        
 	        reader.readAsDataURL(file);
 	        reader.onloadend = function () {
-	        	$('.imgView').attr('src', reader.result);
-	        	$('.imgView').attr('alt', file.name);
+	            const img = document.createElement('img');
+	            img.src = reader.result;
+	            img.alt = file.name;
+	            gallery.appendChild(img);
 	        }
 	    }
+
 
     </script>

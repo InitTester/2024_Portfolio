@@ -39,10 +39,7 @@ public class BoardService {
 	private BoardRepository boardRepository;
 	
 	@Autowired
-	private BoardVoteRepository boardVoteRepository;
-	
-	@Autowired
-	private BoardAttachRepository boardattachRepository;
+	private BoardAttachService attachService;
 	
 	@Autowired
 	private FileUtil fileUtil;
@@ -70,54 +67,6 @@ public class BoardService {
 		return boardRepository.getBoardDetail(boardSeq);
 	}
 	
-	/* 좋아요/싫어요 상태*/
-	public String getVote(HashMap<String, String> params) {
-		
-		Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq").toString());
-		Integer boardSeq = Integer.parseInt(params.get("boardSeq").toString());
-		Integer memberSeq=  Integer.parseInt(params.get("memberSeq").toString());
-		
-		BoardVoteDto boardVoteDto = BoardVoteDto.getBoardVoteDto(boardTypeSeq, boardSeq, memberSeq, "", "");
-		
-		CommonUtil.getLogMessage(log, "getVote", "boardVoteDto", boardVoteDto);
-		
-		return boardVoteRepository.getVote(boardVoteDto);
-	}
-	
-	/* 좋아요/싫어요 등록/수정/삭제 */
-	@Transactional
-	public int setVote(BoardVoteDto boardVoteDto) {
-		
-		/* 좋아요/싫어요 기능 
-		 * 1. 값이 없을 때 insert
-		 * 2. 값이 있으면서 다를때 update
-		 * 3. 값이 있으면서 같을때 delete 
-		 * */
-		
-		/* 1. 해당 정보에 값이 있는지 확인 
-		 * 2. 없다면 추가
-		 * 3. 있다면 저장 값비교 처리
-		 * */
-		
-		int resultVlue= -1;
-		
-		String beforeisList = boardVoteRepository.getVote(boardVoteDto);
-		
-		if(beforeisList == null) {
-			boardVoteRepository.addVote(boardVoteDto);
-			resultVlue = 1;
-		} else if(!beforeisList.equals(boardVoteDto.getIsLike())){
-			boardVoteRepository.updateVote(boardVoteDto);
-			resultVlue = 2;
-		} else {
-			// update
-			boardVoteRepository.deleteVote(boardVoteDto);
-			resultVlue = 3;
-		}
-		
-		return resultVlue;
-	}
-	
 	/* 게시글 등록 */
 	@Transactional
 	public boolean newBoard(BoardDto boardDto, MultipartFile[] attFiles, HttpServletRequest request) {
@@ -125,33 +74,12 @@ public class BoardService {
 		File destFile =null;
 
 		try {
-
-			/*board_seq*/
 			boardRepository.newBoard(boardDto);
-			int boardSeq = boardDto.getBoardSeq();
-			
-			CommonUtil.getLogMessage(log, "addBoard", "boardSeq", boardSeq);
 			
 			for(MultipartFile mpf : attFiles) {
 				if(!mpf.isEmpty()) {
 					destFile = fileUtil.saveFile(mpf);
-
-					CommonUtil.getLogMessage(log, "addBoard", "getPath", destFile.getPath());
-					String accessUri = "";
-					if(!destFile.getPath().contains("c:")) {
-						accessUri = accessUriPath + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();	
-					}
-					
-					BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardSeq);
-				
-					attachDto.setChngFileNm(destFile.getName());
-					attachDto.setAccessUri(accessUri);
-					attachDto.setOrgFileNm(mpf.getOriginalFilename());
-					attachDto.setFileType(mpf.getContentType());
-					attachDto.setFileSize(mpf.getSize());
-					attachDto.setSavePath(destFile.getAbsolutePath());
-					
-					boardattachRepository.addBoardAttach(attachDto);
+					attachService.addBoardAttach(destFile,boardDto,mpf);
 				}
 			}
 			
@@ -170,7 +98,7 @@ public class BoardService {
 	}
 	
 	/* 게시글 수정 */
-	public int editBoard(BoardDto boardDto,  MultipartFile[] attFiles) {
+	public int editBoard(BoardDto boardDto, MultipartFile[] attFiles) {
 		
 		int cnt = -1;
 
@@ -180,30 +108,21 @@ public class BoardService {
 			cnt = boardRepository.editBoard(boardDto);
 			CommonUtil.getLogMessage(log, "editBoard", "title", boardDto.getTitle());
 			
+//			BoardAttachDto attachDtoDel = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardDto.getBoardSeq());
+//			boardattachRepository.deleteBoardAttachAll(attachDtoDel);
+			
 			for(MultipartFile mpf : attFiles) {
 				if(!mpf.isEmpty()) {
-					destFile = fileUtil.saveFile(mpf);
-
 					CommonUtil.getLogMessage(log, "editBoard", "isEmpty", 1);
-					String accessUri = accessUriPath + destFile.getPath().split("/app/")[1];// + destFile.getName();
-					BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardDto.getBoardSeq());
-
-					attachDto.setChngFileNm(destFile.getName());
-					attachDto.setAccessUri(accessUri);
-					attachDto.setOrgFileNm(mpf.getOriginalFilename());
-					attachDto.setFileType(mpf.getContentType());
-//					CommonUtil.getLogMessage(log, "editBoard", "isEmpty", 3);
-					attachDto.setFileSize(mpf.getSize());
-					attachDto.setSavePath(destFile.getAbsolutePath());
 					
-					boardattachRepository.addBoardAttach(attachDto);
+					attachService.editBoardAttach(destFile, boardDto, mpf);
 				}
 			}
 			
 			return cnt;
 		}catch(DataAccessException dae) {
 			CommonUtil.getLogMessage(log, "editBoard", "DataAccessException", dae.getMessage());
-			return cnt;
+			throw dae;
 		}catch(Exception e) {
 			if(!ObjectUtils.isEmpty(destFile)) {
 				destFile.delete();
@@ -215,73 +134,12 @@ public class BoardService {
 	
 	/* 게시글 삭제 */
 	public int deleteBoard(BoardDto boardDto) {
-		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardDto.getBoardSeq());
-		boolean empty = boardattachRepository.getBoardAttachEmpty(attachDto) > 0 ? false : true;
 		
-		if(!empty) {
-			int cnt = boardattachRepository.deleteBoardAttachAll(attachDto);
-			
-			// 첨부파일 삭제가 안되었다
-			if(cnt!=1) {
-				FileDeleteException fde = new FileDeleteException("deleteBoard Fail");
-				CommonUtil.getLogMessage(log, "deleteBoard", "FileDeleteException", fde.getMessage());
-				throw fde;
-			}
-		}
+		attachService.deleteBoardAttach(boardDto);
+
 		return boardRepository.deletetBoard(boardDto);
 	}
 
-	
-	
-	/* 게시글 첨부파일 리스트 */
-	public List<BoardAttachDto> getBoardAttachAll(BoardAttachDto attachDto){
-		return boardattachRepository.getBoardAttachAll(attachDto);
-	}
-	
-	/* 게시글 첨부파일 리스트 */
-	public BoardAttachDto getBoardAttach(Integer attachSeq){
-		boardattachRepository.viewsDownloadHit(attachSeq);
-		return boardattachRepository.getBoardAttach(attachSeq);
-	}
-	
-	/* 다운로드 전체 파일 */
-	public File getBoardAttachFileAll(Integer boardTypeSeq, Integer boardSeq ){
-		
-		List<BoardAttachDto> attachDtos = boardattachRepository.getBoardAttachAll(BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq));
-		
-		for(BoardAttachDto attachDto : attachDtos) {
-			boardattachRepository.viewsDownloadHit(attachDto.getAttachSeq());
-		}
-
-		return fileUtil.makeZipFiles(attachDtos);
-	}	
-	
-	/* 다운로드 전체 이름 */
-	public String getDownloadAllName() {
-		String savePathDay = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE);		
-		return savePathDay + ".zip";
-	}
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/* Util */	
 	/* 페이징 처리를 위한 전체 페이지 */
 	public HashMap<String, Integer> getBoardPageInfo(Integer boardTypeSeq, Integer size, Integer page) {
 
