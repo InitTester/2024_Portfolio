@@ -20,8 +20,18 @@ public class BoardCommentService {
 	}
 
 	/* 게시글 댓글 추가 */
-	public int addComment(BoardCommentDto boardCommentDto) {
-		return CommentRepository.addComment(boardCommentDto);
+	public int newComment(BoardCommentDto boardCommentDto) {
+		return CommentRepository.newComment(boardCommentDto);
+	}
+
+	/* 게시글 댓글 수정 */
+	public int editComment(BoardCommentDto boardCommentDto) {
+		return CommentRepository.editComment(boardCommentDto);
+	}
+	
+	/* 게시글 댓글 삭제 */
+	public int deleteComment(BoardCommentDto boardCommentDto) {
+		return CommentRepository.deleteComment(boardCommentDto);
 	}
 	
 	

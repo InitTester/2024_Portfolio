@@ -5,10 +5,58 @@
 <%
 String ctx = request.getContextPath();
 %>
-<<style>
+<style>
 	.content{
 		min-height: 100px; 
 	}
+	
+	.editBtn{
+		display: flex;
+		justify-content: flex-end;
+		padding-left: 10px;
+	}
+	
+	.parentComment{	
+		  color: #0674ec;
+   		  border: 1px solid #0674ec;
+		  font-size: 12px;
+		  line-height: 15px;
+		  display: inline-block;
+		  padding: 0 10px;
+		  -webkit-border-radius: 200px;
+		          border-radius: 200px;
+		  padding: 4px 3px;
+	}
+	
+	.regMember{
+		  color: #F53535;  		 
+   		  border: 1px solid #F53535;
+		  font-weight: 300;
+		  font-size: 10px;
+		  line-height: 10px;
+		  display: inline-block;
+		  margin-left: 10px;
+		  -webkit-border-radius: 180px;
+		          border-radius: 180px;
+		  padding: 5px;	
+	}
+	
+	.contentContainer{
+		padding-top : 10px;
+		display: flex;
+		text-align: center;
+		  /* height:17px; */
+	}
+	
+	.commentContent{
+		margin: auto 0;
+		
+	}
+	
+	.btn btn--sm btn--round cancel{
+		padding: 
+	}
+	
 </style>
 
     <!--================================
@@ -93,38 +141,48 @@ String ctx = request.getContextPath();
 		                            <div class="forum_single_reply" data-commentSeq="${comment.commentSeq}">
 		                                <div class="reply_content" style="padding-left: ${18 + 30 * comment.lvl}px">
 		                                    <div class="name_vote">
-		                                        <div class="pull-left">
-		                                            <h4><span>${comment.memberNm}</span></h4>
-		                                            
+		                                        <div class="pull-left">	
+		                                        	<div class="contentContainer">
+													    <b style="display: inline-bloack; text-align:center;">${comment.memberNm}</b>  
+													    <c:if test="${boardDetail.regMemberSeq eq comment.memberSeq}">
+													        <span class="regMember">작성자</span>
+													    </c:if>
+												    </div>
+		                                            &emsp;  
+		                                            <div class="contentContainer">
+			                                            <c:if test="${comment.pMemberNm ne ''}">
+			                                            	<b class="parentComment">@${comment.pMemberNm}</b>
+			                                            </c:if>
+			                                            &emsp;  
+		                         		       			 <div class="commentContent">  ${comment.content}</div>
+	                                				</div>
+	                         		       			&emsp;  
 		                                            <div style="display: flex; padding-right:20px">
-		                                            
-		                                            	<p><fmt:formatDate value="${comment.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
-		                                            	
-		                                                 <c:if test='${sessionScope.memberSeq eq boardDetail.regMemberSeq }'>
+		                                            <p>${comment.formatRegDtm}</p>		                                            
+		                                            	<%-- <p><fmt:formatDate value="${comment.formatRegDtm}" pattern="yyyy-MM-dd HH:mm:ss" /></p>	 --%>	                                            	
+		                                                 <c:if test='${sessionScope.memberSeq eq comment.memberSeq }'>
 								                            <!-- 수정버튼 -->	                               
 							                        		<a style="padding-left: 6px" href="#" onClick="editCommentBox(this);">수정</a>                          
 								                    	    <!-- 삭제버튼 -->
-								                    	    <a style="padding-left: 6px" href="#" onClick="deleteComment(${comment.commentSeq}, ${board.boardTypeSeq}, ${board.boardSeq});">삭제</a>
+								                    	    <a style="padding-left: 6px" href="#" onClick="deleteComment(${comment.commentSeq}, ${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq});">삭제</a>
 							                    	    </c:if>
 							                    	    
-							                    	    <a style="padding-left: 6px" href="#" data-sommemtSeq="${comment.commentSeq}" data-commentLvl="${comment.lvl }" onclick="openReplyCommentWindow(this)">답글</a>
-							                    	    
+							                    	    <a style="padding-left: 6px" href="#" data-commentSeq="${comment.commentSeq}" data-commentLvl="${comment.lvl }" onclick="openReplyCommentWindow(this)">답글</a>							                    	    
 		                                            </div>	                                            
 		                                        </div>
 		                                        <!-- end .pull-left -->
 		
 												<!-- 댓글 별 좋아요/싫어요 -->
-		                                        <div class="vote">
+	<!-- 	                                        <div class="vote">
 		                                            <a href="#" class="active">
 		                                                <span class="lnr lnr-thumbs-up"></span>
 		                                            </a>
 		                                            <a href="#" class="">
 		                                                <span class="lnr lnr-thumbs-down"></span>
 		                                            </a>
-		                                        </div>
+		                                        </div> -->
 		                                    </div>
 		                                    <!-- end .vote -->
-	                         		       <div class="commentContent"> ${comment.content}</div>
 		                                </div>
 		                                <!-- end .reply_content -->
 		                            </div>
@@ -132,8 +190,8 @@ String ctx = request.getContextPath();
                             </c:if>
                             
 							<!-- 댓글 추가 창 -->
-                            <div class="comment-form-area">
-                                <h4>댓글을 남겨보세요</h4>
+                            <div class="comment-form-area reply" >
+                                <h4><span>${cookie.memberNm.value}</span></h4>
                                 
                                 <!-- comment reply -->
                                 <div class="media comment-form support__comment">
@@ -143,33 +201,38 @@ String ctx = request.getContextPath();
                                         </a>
                                     </div>
                                     <div class="media-body">
-                                       <div id="trumbowyg-demo"></div>
+                                       <textarea placeholder="댓글을 남겨보세요" id ="commentContent" rows="1" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 17px;" ></textarea>
 									    <button class="btn btn--sm btn--round submit" 
-									            onClick="addComment(${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq}, this);">댓글 등록</button>
-                                        <button type="button" class="btn btn--sm btn--round"
-                                                 onclick="location.href='<%=ctx %>/forum/board/readPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'">취소</button>
+									            onClick="newComment(${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq}, this);">댓글 등록</button>
+                                        <button type="button" class="btn btn--sm btn--round cancel_btn"
+                                        				     onclick="cancelComment(this);">취소</button>
+                                                 <%-- onclick="location.href='<%=ctx %>/forum/board/readPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'">취소</button> --%>
                                     </div>
                                 </div>
                                 <!-- comment reply -->
                                 
                                	<!-- 댓글 수정 창 -->
 	                            <div class="comment-form-area edit" style="display:none">
-	                                <h4>댓글을 수정하세요</h4>
+	                            	<h4><span>${cookie.memberNm.value}</span></h4>
 	                                <!-- comment reply -->
 	                                <div class="media comment-form support__comment">
 	                                    <div class="media-left">
 	                                        <a href="#">
-	                                            <img class="media-object" src="<%=ctx%>/resources/template/images/m7.png" alt="Commentator Avatar">
+	                                            <img class="media-object" src="<%=ctx%>/assest/template/images/m7.png" alt="Commentator Avatar">
 	                                        </a>
 	                                    </div>
 	                                    
 	                                   <div class="media-body">
 	                                       <div class="comment-reply-form">
-	                                           <div id="comment-edit"></div>
-	                                           <button type="button" class="btn btn--sm btn--round edit"
-	                                                   onclick="editComment(${boardDetail.boardSeq}, ${boardDetail.boardSeq}, this);">댓글 수정</button>
-	                                           <button type="button" class="btn btn--sm btn--round cancel"
-	                                           		onclick="location.href='<%=ctx %>/forum/board/readPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'">취소</button>
+	                                       	<textarea placeholder="댓글을 남겨보세요" rows="1" id="commentContent" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 17px;" ></textarea>
+	                                           <!-- <div id="comment-edit"></div> -->
+	                                           <div class="editBtn">
+		                                           <button type="button" class="btn btn--sm btn--round cancel_btn"
+		                                           		<%-- onclick="location.href='<%=ctx %>/forum/board/readPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'">취소</button> --%>
+		                                           		onclick="cancelComment(this);">취소</button>
+		                                           <button type="button" class="btn btn--sm btn--round edit"
+		                                                   onclick="editComment(${boardDetail.boardSeq}, ${boardDetail.boardSeq}, this);">댓글 수정</button>
+                                               </div>	                                           		
 	                                       </div>
 	                                   </div>
 	                                </div>
@@ -196,16 +259,7 @@ String ctx = request.getContextPath();
 	    $('#trumbowyg-demo').trumbowyg({
 	        lang: 'kr'
 	    });
-	    
-     	$('#comment-edit').trumbowyg({
-     		lang: 'kr'
-     	})	    
-	   
-	    /* 새로고침 */ 
-       window.addEventListener('popstate', function(event) {
-            window.location.reload();
-        });	    
-	    
+
        /* 게시글 (좋아요/싫어요) */
      	function vote(boardTypeSeq, boardSeq, thisElement) {
     	    let url = `<%=ctx%>/forum/board/vote.do`;
@@ -264,9 +318,7 @@ String ctx = request.getContextPath();
     	    		success : function(response) {   
     	    			var page = response.page;
     	    			
-    	    			/* alert(page); */
 	    				location.href='<%=ctx%>'+page;
-        				/* alert(response.msg);  */        	
     	    		},
     	    		// 결과 에러 콜백함수
     	    		error : function(request, status, error) {
@@ -278,8 +330,8 @@ String ctx = request.getContextPath();
     		}
     	}
     	
-    	/* 게시글 댓글 */
-    	function addComment(boardTypeSeq, boardSeq, elem){
+    	/* 댓글 추가 */
+    	function newComment(boardTypeSeq, boardSeq, elem){
     		
     		var url = '<%=ctx%>/forum/board/comment.do';
     		
@@ -294,8 +346,8 @@ String ctx = request.getContextPath();
     			data : JSON.stringify ({
     				boardTypeSeq : boardTypeSeq,
     				boardSeq : boardSeq,
-	    			content: $('#trumbowyg-demo').trumbowyg('html'),
-	    			parentCommentSeq: elem.getAttribute("data-parentCommentSeq"),
+    				content : $('#commentContent')[0].value,
+	    			parentCommentSeq: elem.getAttribute("data-parentCommentSeq") == null ? null :  elem.getAttribute("data-parentCommentSeq"),
 	    			lvl: elem.getAttribute("data-commentLvl") == null ? 0 : elem.getAttribute("data-commentLvl")
     			}),
     			success : function(result){
@@ -311,34 +363,51 @@ String ctx = request.getContextPath();
     		});
     	}
     
-    	/* 댓글 수정창 */
+    	/* 댓글 수정 창 */
     	function editCommentBox(elem){
-	    	let commentContent = document.querySelector('.commentContent').innerText;
-	    	$('#comment-edit').trumbowyg('html', commentContent);
-	    	
-	    	let commentArea = elem.closest('div.forum_single_reply');
-	    	let editForm = document.querySelector('div.comment-form-area.edit');
-	    	commentArea.append(editForm);
-	    	editForm.style.display = "block";
-	    	
-	    	//2-2. 이전의 다른 댓글의 수정버튼을 누른 상태라면, 그 댓글의 수정창은 닫혀야 한다.
-	    /* 	let hiddenElem = document.querySelector('div.contentBtn.hiddenComment');
-	    	console.log(hiddenElem);
-	    	
-	    	if(hiddenElem != null) {
-	    		hiddenElem.classList.remove("hiddenComment");
-	    	}
-	    	contentBox.classList.add("hiddenComment"); */
-	    	
-	    	let editBtn = editForm.querySelector('button.edit');
-	    	editBtn.setAttribute('data-commentSeq', commentArea.getAttribute('data-commentSeq'));    		
+    		
+    	    let commentContent = elem.closest('div.forum_single_reply').querySelector('.commentContent').innerText;
+    	    let reply_content = elem.closest('div.forum_single_reply').querySelector('.reply_content');
+    	    document.querySelector('.comment-form-area.edit textarea').value = commentContent;
+
+    	    let commentArea = elem.closest('div.forum_single_reply');
+    	    let editForm = document.querySelector('div.comment-form-area.edit');
+    	    /* commentArea.style.display="none"; */
+    	    reply_content.style.display = "none";
+    	    
+    	    // 1. 기존에 다른 댓글의 수정 버튼이 눌려서 열린 수정창을 닫기
+    	    let previousEditForm = document.querySelector('div.comment-form-area.edit[data-open="true"]');
+    	    if (previousEditForm) {
+    	    	
+    	    	let parentElement = previousEditForm.parentElement;
+    	    	
+    	    	parentElement.querySelector('.reply_content').style.display = "block";    	    	
+    	        previousEditForm.style.display = "none";
+    	        previousEditForm.removeAttribute('data-open');
+    	    }
+    	    
+    	    // 2. 현재 클릭된 댓글의 수정창 열기
+    	    commentArea.append(editForm);
+    	    editForm.style.display = "block";
+    	    editForm.setAttribute('data-open', 'true');
+    	    
+    	    // 3. 수정할 댓글의 ID를 데이터 속성에 저장
+    	    let editBtn = editForm.querySelector('button.edit');
+    	    editBtn.setAttribute('data-commentSeq', commentArea.getAttribute('data-commentSeq'));
+    	}
+    	/* 댓글 삭제 버튼 */
+    	function cancelComment(elem){
+    	    let editForm = document.querySelector('div.comment-form-area.edit');
+    	    let reply_content = elem.closest('div.forum_single_reply').querySelector('.reply_content');
+
+    	    reply_content.style.display="block";	
+    	    editForm.style.display="none";    	    	
     	}
     	
-	    /* 대댓글 등록 */
+	    /* 대댓글 추가 창 */
 	    function openReplyCommentWindow(elem){
-	    	
-	    	$('#trumbowyg-demo').trumbowyg('html', '');
-	    	
+	    	let currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+	    	 
 	    	let ReplyArea = elem.closest('div.forum_single_reply');
 	    	let commentForm = document.querySelector('div.comment-form-area.reply');
 	    	
@@ -347,53 +416,59 @@ String ctx = request.getContextPath();
 	    	let submitBtn = commentForm.querySelector('button.submit');
 	    	
 	    	console.dir(elem);
-	    	
-	    	console.log("data :" + elem.getAttribute('data-commentSeq'));
-	    	console.log("commentLvl :" + elem.getAttribute('data-commentLvl'));
+
+	    	console.log('ddd' +currentScrollPos);
 	    	
 	    	submitBtn.setAttribute('data-parentCommentSeq', elem.getAttribute('data-commentSeq'));
 	    	submitBtn.setAttribute('data-commentLvl', parseInt(elem.getAttribute('data-commentLvl'))+1);	    	
+
+	    	window.scrollTo(0, currentScrollPos);
+	    	
 	    }    	
-    	
+	    
     	/* 댓글 수정 */
     	function editComment(boardTypeSeq, boardSeq, elem) {
 
-    		let url = '<%=ctx%>/forum/board/modifyComment.do?';
-		    	url += 'commentSeq='+ elem.getAttribute("data-commentSeq")
-		    	url += '&boardSeq='+boardSeq
-		    	url += '&boardTypeSeq='+boardTypeSeq
-		    	url += '&content=' + $('#comment-edit').trumbowyg('html');
-		    	
-   			$.ajax({
-   	            type: 'post',
-   	            url: url,
-   	            headers: {
-   	                "Accept": "application/json",  // 요청에 대한 Accept 헤더를 설정
-   	                "Content-Type": "application/json"
-   	    		},
-   	    		// 결과 성공 콜백함수 
-   	    		success : function(response) {   
-   	    			var page = response.page;
-   	    			
-   	    			/* alert(page); */
-    				location.href='<%=ctx%>'+page;
-       				/* alert(response.msg);  */        	
-   	    		},
-   	    		// 결과 에러 콜백함수
-   	    		error : function(request, status, error) {
-   	    			console.log(error)
-   	    		}
-   	    	});
+    		var url = '<%=ctx%>/forum/board/modifyComment.do';
+    		
+    		$.ajax({
+    			type : 'post',
+    			url : url,    			
+    			headers : {
+    				'Content-Type' : 'application/json',
+	    			"accept" : "application/json"
+    			},
+    			dataType : 'JSON',
+    			data : JSON.stringify ({
+    				commentSeq : elem.getAttribute("data-commentSeq"),
+    				boardTypeSeq : boardTypeSeq,
+    				boardSeq : boardSeq,
+    				content : $('#commentContent')[0].value,
+	    			parentCommentSeq: elem.getAttribute("data-parentCommentSeq") == null ? null :  elem.getAttribute("data-parentCommentSeq"),
+	    			lvl: elem.getAttribute("data-commentLvl") == null ? 0 : elem.getAttribute("data-commentLvl")
+    			}),
+    			success : function(result){
+    				if(result){
+    					window.location.reload();
+    				} else{
+    					alert('실패!');
+    				}
+    			},
+    			error : function(request, status, error){
+    				console.log(error);
+    			}
+    		});
     	}        	
     	
     	/* 댓글 삭제 */
     	function deleteComment(commentSeq, boardTypeSeq, boardSeq) {
     		var result = confirm("정말 현재 댓글을 삭제 하시겠습니까?");
 
-    		let url = '<%=ctx%>/forum/board/deleteComment.do?';
-		    	url += 'commentSeq='+commentSeq
-		    	url += '&boardSeq='+boardSeq
-		    	url += '&boardTypeSeq='+boardTypeSeq;
+    		let url = '<%=ctx%>/forum/board'
+    			url += '/' + boardTypeSeq
+    			url += '/' + boardSeq
+    			url += '/' + commentSeq
+		    	url += '/deleteComment.do';
 		    	
     		if(result){    			
     			$.ajax({
@@ -404,12 +479,12 @@ String ctx = request.getContextPath();
     	                "Content-Type": "application/json"
     	    		},
     	    		// 결과 성공 콜백함수 
-    	    		success : function(response) {   
-    	    			var page = response.page;
-    	    			
-    	    			/* alert(page); */
-	    				location.href='<%=ctx%>'+page;
-        				/* alert(response.msg);  */        	
+    	    		success : function(result) {   
+        				if(result){
+        					window.location.reload();
+        				} else{
+        					alert('실패!');
+        				}    	
     	    		},
     	    		// 결과 에러 콜백함수
     	    		error : function(request, status, error) {

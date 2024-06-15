@@ -13,6 +13,11 @@ public interface BoardCommentRepository {
 	public List<BoardCommentDto> getBoardCommentList(BoardCommentDto CommentDto);
 	
 	/* 게시글 댓글 추가 */
-	public int addComment(BoardCommentDto boardCommentDto);
+	public int newComment(BoardCommentDto boardCommentDto);
 	
+	/* 게시글 댓글 수정 */
+	public int editComment(BoardCommentDto boardCommentDto);
+	
+	/* 게시글 댓글 삭제 */
+	public int deleteComment(BoardCommentDto boardCommentDto);
 }

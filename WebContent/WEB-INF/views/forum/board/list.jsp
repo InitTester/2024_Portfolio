@@ -53,19 +53,19 @@ String ctx = request.getContextPath();
 			                            <div class="nav-links">
 			                            	<!-- prev page -->
 			                            	<c:if test="${pageHandler.prev ne 1 }"> <!-- ne : not equal -->
-												<a class="prev page-numbers" href="<c:url value='/forum/board/listPage.do?page=${pageHandler.begin-1}&size=${pageHandler.size}'/>">
+												<a class="prev page-numbers" href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${board.boardTypeSeq}&page=${pageHandler.begin-1}&size=${pageHandler.size}'/>">
 				                                    <span class="lnr lnr-arrow-left"></span>
 				                                </a>
 											</c:if>
 		
 			                                <!-- 1~10 page -->
 			                                <c:forEach var="i" begin="${pageHandler.begin}" end="${pageHandler.end}">
-			                                	<a class="page-numbers" href="<c:url value='/forum/board/listPage.do?page=${i}&size=${pageHandler.size}'/>">${i}</a>
+			                                	<a class="page-numbers" href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${board.boardTypeSeq}&page=${i}&size=${pageHandler.size}'/>">${i}</a>
 			                                </c:forEach>
 			                                
 			                                <!-- next page -->
 		                                             <c:if test="${pageHandler.next ne pageHandler.totalPageSize}">
-												<a class="next page-numbers" href="<c:url value='/forum/board/listPage.do?page=${pageHandler.end+1}&size=${pageHandler.size}'/>">
+												<a class="next page-numbers" href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${board.boardTypeSeq}&page=${pageHandler.end+1}&size=${pageHandler.size}'/>">
 				                                    <span class="lnr lnr-arrow-right"></span>
 				                                </a>
 											</c:if>
