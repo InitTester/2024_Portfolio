@@ -25,7 +25,7 @@ public class BoardCommentController {
 	@Autowired
 	private BoardCommentService commentService;
 	
-	@PostMapping("/forum/board/comment.do")
+	@PostMapping("/forum/board/newComment.do")
 	public ResponseEntity<Integer> newComment(@RequestBody BoardCommentDto commentDto,
 						  HttpServletRequest request) {
 		
@@ -56,16 +56,24 @@ public class BoardCommentController {
 		
 		try {
 			
-			Integer memberSeq = Integer.parseInt(session.getAttribute("memberSeq").toString());			
-			commentDto.setMemberSeq(memberSeq);
+			log.info("commentDto {}" , commentDto);
 			
+			Integer memberSeq = Integer.parseInt(session.getAttribute("memberSeq").toString());
+
+			commentDto.setMemberSeq(memberSeq);
+
+			log.info("commentDto change : {}" , commentDto);
 			int result =commentService.editComment(commentDto); 
 			
 			return ResponseEntity.ok(result);
 			
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException ne) {
 			// TODO Auto-generated catch block
-			log.info("[newComment] (NumberFormatException : {}) ",e.getMessage());
+			log.info("[editComment] (NumberFormatException : {}) ",ne.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			log.info("[editComment] (Exception : {}) ",e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
 		}
 	}

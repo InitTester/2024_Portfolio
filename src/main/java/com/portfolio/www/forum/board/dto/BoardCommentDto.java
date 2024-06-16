@@ -87,17 +87,13 @@ public class BoardCommentDto {
             Date changeDtm = originalFormat.parse(regDtm);
             long changeTimeMillis = changeDtm.getTime();
 
-            log.info("changeTimeMillis :",changeTimeMillis);
             long nowTimeMillis = Calendar.getInstance().getTimeInMillis();
 
-            log.info("nowTimeMillis :",nowTimeMillis);
             long formatTimeMillis = nowTimeMillis - changeTimeMillis;
             
             long timeMillis = 0;
             String time = "";
             int seconds = 60, minutes = 60, hours = 24;
-            
-            log.info("formatTimeMillis :",formatTimeMillis);
             
             if(formatTimeMillis < seconds * 1000) {
                 timeMillis = formatTimeMillis / 1000;
@@ -156,5 +152,13 @@ public class BoardCommentDto {
 		commentDto.setBoardSeq(boardSeq);
 		
 		return commentDto;
+	}
+	@Override
+	public String toString() {
+		return "BoardCommentDto [commentSeq=" + commentSeq + ", lvl=" + lvl + ", content=" + content + ", boardSeq="
+				+ boardSeq + ", boardTypeSeq=" + boardTypeSeq + ", memberSeq=" + memberSeq + ", parentCommentSeq="
+				+ parentCommentSeq + ", pMemberNm=" + pMemberNm + ", regDtm=" + regDtm + ", formatRegDtm="
+				+ formatRegDtm + ", updateDtm=" + updateDtm + ", deleteDtm=" + deleteDtm + ", memberNm=" + memberNm
+				+ "]";
 	}
 }

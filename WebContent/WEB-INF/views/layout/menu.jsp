@@ -64,7 +64,7 @@
 	                                        <li>
 	                                            <a href="#">
 	                                            <!-- <a href="author.html"> -->
-	                                                <span class="lnr lnr-user"></span>Profile</a>
+	                                                <span class="lnr lnr-user"></span>프로필</a>
 	                                        </li>
 	                             <!--            <li>
 	                                            <a href="dashboard.html">
@@ -105,7 +105,7 @@
 	                                        </li> -->
 	                                        <li>
 	                                            <a href="<c:url value='/auth/logout.do'/>">
-	                                                <span class="lnr lnr-exit"></span>Logout</a>
+	                                                <span class="lnr lnr-exit"></span>로그아웃</a>
 	                                        </li>
 	                                    </ul>
 	                                </div>

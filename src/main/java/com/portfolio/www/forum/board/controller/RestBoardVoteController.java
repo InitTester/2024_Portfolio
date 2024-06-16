@@ -6,7 +6,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,27 +20,36 @@ import com.portfolio.www.forum.board.service.BoardVoteService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
+@Controller
 public class RestBoardVoteController {
 	
 	@Autowired
 	private BoardVoteService voteService;
 
 	@PostMapping("/forum/board/vote.do")
-//	@ResponseBody
-	public ResponseEntity<Integer> vote(@RequestBody BoardVoteDto voteDto, HttpServletRequest request) {
+	public ResponseEntity<Boolean> vote(@RequestBody BoardVoteDto voteDto, HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
-		Integer memberSeq = Integer.parseInt(session.getAttribute("memberSeq").toString());//CommonUtil.getCookieValue(request, "memberSeq"));
-		String Ip = request.getRemoteAddr();
+		int result = -1;
+		
+		try {
+			Integer memberSeq = Integer.parseInt(session.getAttribute("memberSeq").toString());//CommonUtil.getCookieValue(request, "memberSeq"));
+			String Ip = request.getRemoteAddr();
 
-		voteDto.setmemberSeq(memberSeq);
-		voteDto.setIp(Ip);
+			voteDto.setmemberSeq(memberSeq);
+			voteDto.setIp(Ip);
+			
+			result = voteService.setVote(voteDto);
+			
+			return ResponseEntity.ok().body(true);
+			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+		}
 		
-		int result = voteService.setVote(voteDto);
-		
-		return ResponseEntity.ok().body(result);
 
 	}
 }

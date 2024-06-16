@@ -68,4 +68,13 @@
    		        AND comment_seq = #{commentSeq}
     </delete>
     
+    <update id="editComment" parameterType="BoardCommentDto">
+    	UPDATE board_comment
+    	   SET content = #{content},
+    	  	   update_dtm = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+ 		 WHERE board_type_seq = #{boardTypeSeq}
+ 		   AND board_seq = #{boardSeq}
+ 		   AND comment_seq = #{commentSeq}
+    </update>
+    
 </mapper>

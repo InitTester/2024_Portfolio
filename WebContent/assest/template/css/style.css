@@ -9470,7 +9470,7 @@ span.counter {
 }
 
 .comment-reply-form button, .comment-form-area .comment-form button {
-  margin-top: 20px;
+  margin: 20px 2px 0 2px;
 }
 
 .comment-form-area {

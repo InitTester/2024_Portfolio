@@ -30,12 +30,12 @@
                                 </li>
                                 <li>
                                     <span class="lnr lnr-envelope info-icon"></span>
-                                    <span class="info">initsave@gamil.com</span>
+                                    <span class="info">initsave@gmail.com</span>
                                 </li>
                                 <li>
                                     <span class="lnr lnr-map-marker info-icon"></span>
                                     
-                                    <span class="info"><a href="https://github.com/InitTester">GitHub 주소</a></span>
+                                    <span class="info"><a href="https://github.com/InitTester/2024_Portfolio">GitHub 주소</a></span>
                                 </li>
                             </ul>                        
                         </div>
@@ -46,13 +46,16 @@
                             <h4 class="footer-widget-title text--white">페이지</h4>
                             <ul>
                                 <li>
-                                    <a href="<c:url value='indexo.do'/>">홈</a>
+                                    <a href="<c:url value='index.do'/>">홈</a>
                                 </li>
                                 <li>
                                     <a href="#">프로필</a>
                                 </li>
                                 <li>
-                                    <a href="#">게시판-공지사항</a>
+                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=1'/>">게시판-공지사항</a>
+                                </li>
+                                <li>
+                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=2'/>">게시판-자유게시판</a>
                                 </li>
                             </ul>
                         </div>
