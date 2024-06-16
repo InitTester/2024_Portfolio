@@ -104,7 +104,7 @@ public class LoginController {
 				}
 				
 				mv.addObject("key", Calendar.getInstance().getTimeInMillis());	
-//				CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
+				CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
 				mv.setViewName("redirect:" + (redirectURL=="" ? "/index.do" : redirectURL));
 				
 			}
@@ -123,6 +123,14 @@ public class LoginController {
 //			e.printStackTrace();
 			mv.addObject("code",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getCode());
 			mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription());	
+			mv.addObject("dto",dto);
+			mv.setViewName("auth/login");
+			return mv;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			mv.addObject("code",e.getCause());
+			mv.addObject("msg", e.getMessage());	
 			mv.addObject("dto",dto);
 			mv.setViewName("auth/login");
 			return mv;

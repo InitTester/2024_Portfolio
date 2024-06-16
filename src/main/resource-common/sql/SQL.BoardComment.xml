@@ -14,6 +14,7 @@
     	       a.board_type_seq,
     	       a.member_seq,
     	       a.parent_seq,
+    	       pm.member_nm AS pMember_Nm,
     	       a.reg_dtm,
     	       a.update_dtm,
     	       a.delete_dtm,
@@ -24,13 +25,18 @@
     	              p.board_seq,
     	              p.board_type_seq,
     	              p.member_seq,
-    	              IFNULL(p.parent_comment_seq, s.parent_comment_seq) AS parent_seq,
+    	              IFNULL(p.parent_comment_seq, p.comment_seq) AS parent_seq,
     	              p.reg_dtm,
     	              p.update_dtm,
     	              p.delete_dtm
     	         FROM board_comment p
     	    LEFT JOIN board_comment s on s.parent_comment_seq = p.comment_seq) a
     	         JOIN member m on a.member_seq = m.member_seq
+			LEFT JOIN (SELECT bc.comment_seq,
+		     			  bc.member_seq,
+		     			  CASE WHEN bc.parent_comment_seq IS NULL THEN '' ELSE m.member_nm END AS member_nm	  
+		     	   	FROM board_comment bc 
+		     	   	LEFT JOIN member m ON bc.member_seq = m.member_seq) pm ON a.parent_seq = pm.comment_seq     	         
     	        WHERE a.board_type_seq = #{boardTypeSeq}
     	          AND a.board_seq = #{boardSeq}
     	     GROUP BY a.comment_seq
@@ -38,7 +44,7 @@
     </select>
     
     <!-- 게시글 댓글 추가 -->
-    <insert id ="addComment" parameterType="BoardCommentDto">
+    <insert id ="newComment" parameterType="BoardCommentDto">
     	INSERT INTO board_comment (lvl,
     	   						   content,
     	   						   board_seq,
@@ -54,5 +60,21 @@
     	   			               #{parentCommentSeq},
     	   			               DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'))
     </insert>
+    
+    <delete id="deleteComment" parameterType="BoardCommentDto">
+    	DELETE FROM board_comment
+   		      WHERE board_type_seq = #{boardTypeSeq}
+   		        AND board_seq = #{boardSeq}
+   		        AND comment_seq = #{commentSeq}
+    </delete>
+    
+    <update id="editComment" parameterType="BoardCommentDto">
+    	UPDATE board_comment
+    	   SET content = #{content},
+    	  	   update_dtm = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+ 		 WHERE board_type_seq = #{boardTypeSeq}
+ 		   AND board_seq = #{boardSeq}
+ 		   AND comment_seq = #{commentSeq}
+    </update>
     
 </mapper>

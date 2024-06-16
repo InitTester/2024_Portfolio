@@ -9470,7 +9470,7 @@ span.counter {
 }
 
 .comment-reply-form button, .comment-form-area .comment-form button {
-  margin-top: 20px;
+  margin: 20px 2px 0 2px;
 }
 
 .comment-form-area {
@@ -11291,7 +11291,7 @@ span.counter {
   background: #7347c1;
   line-height: 40px;
   color: #fff;
-  margin-left: 10px;
+  margin: 0 10px;
   padding: 0 36px;
 }
 
@@ -12401,6 +12401,7 @@ span.counter {
   padding: 0 10px;
   -webkit-border-radius: 200px;
           border-radius: 200px;
+   padding: 3px;
 }
 
 .forum_detail_area .forum--replays .forum_single_reply .name_vote p {

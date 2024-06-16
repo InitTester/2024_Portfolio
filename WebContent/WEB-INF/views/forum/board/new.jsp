@@ -73,7 +73,7 @@
                             
                             <div class="form-group">
                                 <button type="submit" class="btn btn--md btn-primary">등록</button>
-                            	<a href="<c:url value='/forum/board/listPage.do'/>" class="btn btn--md btn-light">취소</a>
+                            	<a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${empty board.boardTypeSeq ?boardTypeSeq : board.boardTypeSeq}'/>" class="btn btn--md btn-light">취소</a>
                             </div>
                         </form>
                     </div><!-- ends: .question-form -->
