@@ -30,7 +30,7 @@
    - 비밀번호
      - [x]  공백 또는 빈칸 불가능, 8~20자, 영문, 숫자, 특수 문자 혼합하여 입력
      - [x]  비밀번호 확인
-      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/65dbd2d8-ac94-4958-9d30-ca7fe83fd428">
+      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/980cde11-b67f-48fc-b80d-e3a13761c316">
       <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/e4fbd4ed-a42f-4c10-a8da-8239572523ca">
 
 ### 2. 로그인
@@ -45,37 +45,48 @@
     - 로그인 시 입력된 암호와 DB에 저장된 암호화된 정보와 비교 하여 보안성 높임
 3. 아이디 저장
     - 쿠키를 통해 아이디 저장, 사용자의 편의성을 높임    
-      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/ac6ab488-a2dc-4b74-a346-800b362d1f90">
+      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/f0656aa0-3ebb-4b4b-b649-df2753073a55">
       <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/4a8ebe5d-1bdd-45b2-9c9f-fe6456d1616b">
 4. 아이디 찾기
     - 데이터베이스에 저장된 사용자의 이름과 이메일 정보로 아이디를 확인    
       <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/a61d4651-3d8e-4e6a-ba4d-8e9b3e1b74e7">
-      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/0ded7a25-8772-4760-a911-1a6ed173d052">
+      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/98b554e8-a029-4e27-9fdf-bdad13cd6e0f">
 5. 비밀번호 변경
    비밀번호 재설정 (계정확인 -> 이메일 전송링크 -> 비밀번호 변경)   
     - 데이터베이스에 저장된 사용자의 이메일로 비밀번호 변경 이메일 전송(사용자인증)  
       <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/559d998a-c846-4f72-852c-faa51dbe68d0">
-      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/a457ef13-ad6b-44ec-b403-7b1018fe4441">
+      <img height="250" width="250" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/e924b7e5-5d1a-4ffa-9c82-557ac6002d17">
     - 전송된 이메일 비밀번호 변경 url을 통해 비밀번호 변경  
-      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/39194c46-04f2-467d-9fd6-1706a6d318c9">
-      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/8b750f39-4d58-445b-bf9d-c0a882427509">
-      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/ad1ec4ce-a124-4ff6-a9eb-e8200a70d13d">
+      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/357b4b41-6661-4c90-99da-7cf9fffaf29c">
+      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/2142b6bc-61f6-49f1-b4e3-606f2059028a">
+
 
 ### 3. 게시판
  사용자가 로그인인 후 자유롭게 게시글을 작성합니다.
  게시글은 첨부파일도 추가/다운로드, 게시글에 대한 좋아요/싫어요, 댓글 기능이 가능합니다.
  
 1. 게시판 조회
-    - 게시글별 첨부파일여부, 댓글, 조회수 표시
-    - 페이징을 통한 게시글 조회  
-      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/6dc052d8-c07c-49f1-ac17-4f9245bf1d8b">
-
+    - 게시글 첨부파일여부, 댓글, 조회수 표시
+    - 페이징을 통해 게시글 목록을 이동  
+      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/5e997f22-09b9-4f5e-8abd-ed3af7cc26d0">
 2. 게시글 등록
-3. 게시글 수정
-4. 게시글 삭제
+    - [trumbowyg](https://alex-d.github.io/Trumbowyg/) 텍스트 에디터를 이용한 게시물 내용 입력
+    - 첨부파일 (3개로 제한) 등록/미리보기 확인 가능  
+      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/5521bcc3-ba2e-4a6a-bed5-cd13a16ff7b2">  
+      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/5bbd0bce-d9c8-4225-b451-7315b8159565">
+3. 게시글 상세조회
+    - 게시글에 좋아요/싫어요 
+    - 게시글 수정/삭제 
+    - 게시글 첨부파일 다운로드
+      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/0be91b6b-92ee-4078-a12a-79f90b87b357">
+    - 게시글 댓글  
+      <img height="220" width="220" alt="image" src="">
+4. 게시글 수정
+    - 게시글에 수정
+    - 게시글 첨부파일 미리보기(EC2 폴더 권한 문제로 인해.. 진행중)  
+      <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/445628f4-29dc-44a8-be90-405ba384fb2b">
+5. 게시글 삭제
 
-<img height="350" width="350" alt="image" src="">
-<img height="350" width="350" alt="image" src="">
 
 
 
