@@ -77,13 +77,13 @@
 3. 게시글 상세조회
     - 게시글에 좋아요/싫어요 
     - 게시글 수정/삭제 
-    - 게시글 첨부파일 다운로드
+    - 게시글 첨부파일 다운로드  
       <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/0be91b6b-92ee-4078-a12a-79f90b87b357">
     - 게시글 댓글  
       <img height="220" width="220" alt="image" src="">
 4. 게시글 수정
     - 게시글에 수정
-    - 게시글 첨부파일 미리보기(EC2 폴더 권한 문제로 인해.. 진행중)  
+    - 게시글 첨부파일 미리보기(진행중)
       <img height="220" width="220" alt="image" src="https://github.com/InitTester/2024_Portfolio/assets/143479869/445628f4-29dc-44a8-be90-405ba384fb2b">
 5. 게시글 삭제
 
