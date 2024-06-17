@@ -49,7 +49,7 @@ public class JoinController {
 		String passwd = params.get("passwd");
 		
 		int result = memberService.join(params, request);	
-		MemberDto dto = new MemberDto().getMemberDto(params);
+		MemberDto dto = MemberDto.getMemberDto(params);
 		dto.setPasswd(passwd);
 		
 		mv.addObject("result", result);
