@@ -18,11 +18,12 @@ String ctx = request.getContextPath();
         .reset--header{
           border-bottom: 1px solid #ececec;
 		  text-align: center;
-		  padding: 0 50px 26px;
     	  color: #000;
 		  font-size: 26px;
-		  padding-bottom: 20px;
-		  padding: 0 35px 25px;
+		  }
+		  
+		  .form-group{
+            margin-top: 20px;
 		  }
     </style>
     <!--================================
@@ -69,9 +70,9 @@ String ctx = request.getContextPath();
 
                          <div class="login--form">
                              <div class="form-group">
-                             
-                             	<h4 class="sub"><br>안녕하세요 <strong id='nickname'></strong>님! 비밀번호가 변경되었습니다.</h4><br>
-                             	<p class="text">변경된 비밀번호로 다시 로그인 해주세요.<br>고객님의 소중한 개인정보 보안을 위해 최선을 다하겠습니다.</p>
+                             	안녕하세요	<b><strong id='nickname' style="font-size: 35px;"></strong></b>님! 비밀번호가 변경되었습니다.
+                             	<p class="text">변경된 비밀번호로 다시 로그인 해주세요.
+                             	고객님의 소중한 개인정보 보안을 위해 최선을 다하겠습니다.</p>
                              </div>
 
                              <button class="btn btn--md btn--round register_btn" type="submit" onclick="goToLogin();">로그인</button>
@@ -193,7 +194,7 @@ String ctx = request.getContextPath();
 	            if (!regex.test(inputElement.value) && inputElement.value.length !== 0) {
 	                setMessage(errorMessage, inputElement.id, msgElement, "red");
 	            } else {
-	                setMessage('', inputElement.id, msgElement, "black");
+	                setMessage('', inputElement.id, msgElement, "#00000000");
 	            }
 	        });
 	    }

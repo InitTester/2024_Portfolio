@@ -175,7 +175,7 @@ public class LoginController {
 	@GetMapping("/auth/recoverPassPage.do")
 	public ModelAndView recoverPassPage(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
+		mv.addObject("key", Calendar.getInstance().getTimeInMillis());		
 		mv.setViewName("auth/recover-pass");
 		
 		return mv;
@@ -186,6 +186,9 @@ public class LoginController {
 	public ModelAndView resetPassPage(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
+
+		log.info("params :",params);
+		
 		mv.setViewName("auth/reset-password");
 		
 		return mv;

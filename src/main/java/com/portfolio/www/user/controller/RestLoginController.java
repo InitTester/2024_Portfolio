@@ -35,20 +35,27 @@ public class RestLoginController {
 	public ResponseEntity<MemberDto> findId(@RequestParam("memberNm") String memberNm,
 			@RequestParam("email") String email) {
 
-		CommonUtil.getLogMessage(log, "findId", "memberNm", memberNm);
-
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("memberNm", memberNm);
 		params.put("email", email);
 		
+		MemberDto dto = MemberDto.getMemberDto(params);
+		
 		try {
-			MemberDto dto = memberService.findmemberID(params);
-			CommonUtil.getLogMessage(log, "findId", "memberIsd", dto.getMemberId());
+			dto = memberService.findmemberID(params);
+			
+//			CommonUtil.getLogMessage(log, "findId", "memberIsd", dto.getMemberId());
 			return ResponseEntity.ok(dto);
 		} catch (EmptyResultDataAccessException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//			e.printStackTrace();
+			log.info("EmptyResultDataAccessException : {}",e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			log.info("Exception : {}",e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
 		}
 	}
 
@@ -79,8 +86,10 @@ public class RestLoginController {
 		
 		MemberDto result = new MemberDto();
 		 
-		CommonUtil.getLogMessage(log, "resetPass", "uri", uri);
-		CommonUtil.getLogMessage(log, "resetPass", "passwd", passwd);
+		/*
+		 * CommonUtil.getLogMessage(log, "resetPass", "uri", uri);
+		 * CommonUtil.getLogMessage(log, "resetPass", "passwd", passwd);
+		 */
 
 		try {
 			result = memberService.emailAuth(uri, passwd);
@@ -88,7 +97,13 @@ public class RestLoginController {
 			return ResponseEntity.ok(result);
 		} catch (TimeoutException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
+			log.info("[resetPass] (TimeoutException) : {}",e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			log.info("[resetPass] (Exception) : {}",e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
