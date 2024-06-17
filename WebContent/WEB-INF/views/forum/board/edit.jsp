@@ -80,7 +80,7 @@
                             </div>
                             
                             <div class="form-group">
-                                <button type="submit" class="btn btn--sm btn--round submit">등록</button>         
+                                <button type="submit" class="btn btn--sm btn--round submit">수정</button>         
                             	<a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${empty board.boardTypeSeq ?boardTypeSeq : board.boardTypeSeq}'/>" class="btn btn--sm btn--round btn_cancel">취소</a>
                             </div>
                         </form>
