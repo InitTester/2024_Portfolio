@@ -22,8 +22,7 @@ String ctx = request.getContextPath();
                         <div class="cardify signup_form">
                             <div class="login--header">
                                 <h3>회원가입</h3>
-                                <p>새 PortfolioHome 계정을 등록하려면 다음 필드에 적절한 정보를 입력하십시오.
-                                </p>
+                                <p>새 PortfolioHome 계정을 등록하려면 아래의 정보를 입력해 주세요</p>
                             </div>
                             <!-- end .login_header -->
 
@@ -32,7 +31,7 @@ String ctx = request.getContextPath();
                                 <div class="form-group">
                                     <label for="memberId">아이디</label>
                                     
-                                    <input id="memberId" name= "memberId" type="text" class="text_field" value="${dto.memberId}" placeholder="사용하실 ID를 입력해주세요">
+                                    <input id="memberId" name= "memberId" type="text" class="text_field" value="${dto.memberId}" placeholder="사용하실 아이디를 입력해주세요">
                                     <div id="msgId" class="msg"></div>
                                 </div>
 
@@ -119,7 +118,7 @@ String ctx = request.getContextPath();
 	            if (!regex.test(inputElement.value) && inputElement.value.length !== 0) {
 	                setMessage(errorMessage, inputElement.id, msgElement, "red");
 	            } else {
-	                setMessage('', inputElement.id, msgElement, "black");
+	                setMessage('', inputElement.id, msgElement, "#00000000");
 	            }
 	        });
 	    }
