@@ -1,17 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <!--================================
 	    START FOOTER AREA
 	=================================-->
     <footer class="footer-area">
-        <div class="footer-big section--padding">
+        <div class="footer-big foot--section--padding">
             <!-- start .container -->
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
                         <div class="info-footer">
-                            <div class="info__logo">
+                            <div class="info__logo" style="margin-top: 30px;">
                                 <img src="<c:url value='/images/logo.png'/> " alt="footer logo" />
                             </div>
                             <p class="info--text">포트폴리오를 위한 개인 홈페이지 입니다.</p>
@@ -43,11 +42,12 @@
                     
                     <div class="col-lg-5 col-md-6">
                         <div class="footer-menu">
-                            <h4 class="footer-widget-title text--white">페이지</h4>
-                            <ul>
-                                <li>
+                            <!-- <h4 class="footer-widget-title text--white">페이지</h4> -->
+                            
+							<ul class="info-contact">
+<%--                                 <li>
                                     <a href="<c:url value='index.do'/>">홈</a>
-                                </li>
+                                </li> --%>
                                 <li>
                                     <a href="#">프로필</a>
                                 </li>

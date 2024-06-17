@@ -23,16 +23,6 @@ String ctx = request.getContextPath();
 	    border-radius: 4px;
 	}
 	
-	.btn_cancel, .btn_cancel:hover{
-		  background: #fff;
-		  color: #0674ec;
-	}
-	
-	.btn-list, .btn-list:hover{
-	  	background: #58c9e9;
-	    color: #fff;
-	}
-	
 	.parentComment{	
 		  color: #0674ec;
    		  border: 1px solid #0674ec;
@@ -225,10 +215,10 @@ String ctx = request.getContextPath();
 	                                       <textarea placeholder="댓글을 남겨보세요" id ="commentContent" rows="1" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 17px;" ></textarea>
 										    <button class="btn btn--sm btn--round submit" 
 										            onClick="newComment(${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq}, this);">댓글 등록</button>
-	                                        <button type="button" class="btn btn--sm btn--round btn_cancel"
-	                                        				     onclick="cancelComment(this);">취소</button>
-	                                        <button type="button" class="btn btn--sm btn--round btn-list"
-	                                        				     onclick=""  style="float:right;">목록</button>	                                        				     
+<!-- 	                                        <button type="button" class="btn btn--sm btn--round btn_cancel"
+	                                        				     onclick="cancelComment(this);">취소</button> -->
+											<a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}'/>" 
+											   class="btn btn--sm btn--round btn-list" style="float:right; margin: 20px 2px 0 2px;">목록</a>                                				     
                                         </div>
                                     </div>
                                 </div>
