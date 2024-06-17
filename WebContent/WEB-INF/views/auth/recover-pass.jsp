@@ -18,7 +18,7 @@ String ctx = request.getContextPath();
                 <div class="col-lg-6 offset-lg-3">
                         <div class="cardify recover_pass">
                             <div class="login--header">
-                                <p>귀하의 계정에 대한 ID, 이메일 주소를 입력하십시오. 인증 코드가 전송됩니다. 인증 코드를 받으면 계정에 대한 새 비밀번호를 선택할 수 있습니다.</p>
+                                <p>귀하의 계정에 대한 아이디, 이메일 주소를 입력하십시오. 비밀번호 재설정 페이지가 입력된 이메일 주소로 전송됩니다. 메일을 받으면 계정에 대한 새 비밀번호를 입력할 수 있습니다.</p>
                             </div>
                             <!-- end .login_header -->
 
@@ -35,7 +35,7 @@ String ctx = request.getContextPath();
                                     <div id="msgEmail" class="msg"></div>
                                 </div>
 
-                                <button class="btn btn--md btn--round register_btn" type="submit" onclick="findPass();">비밀번호 찾기</button>
+                                <button class="btn btn--md btn--round register_btn" type="submit" onclick="findPass();">비밀번호 재설정</button>
                             </div>
                             <!-- end .login--form -->
                         </div>

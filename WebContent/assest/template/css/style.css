@@ -8673,6 +8673,10 @@ span.counter {
   color: #ababab;
 }
 
+.foot--section--padding{
+    padding: 20px 0;
+}
+
 .info-contact {
   margin-top: 21px;
 }
@@ -16110,6 +16114,18 @@ span.counter {
     width: 280px;
     right: -56px;
   }
+}
+
+
+/* add style */
+.btn_cancel, .btn_cancel:hover{
+	  background: #fff;
+	  color: #0674ec;
+}
+
+.btn-list, .btn-list:hover{
+  	background: #58c9e9;
+    color: #fff;
 }
 
 /*# sourceMappingURL=src/map/style.css.map */

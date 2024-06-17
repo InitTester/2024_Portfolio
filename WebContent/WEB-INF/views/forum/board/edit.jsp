@@ -80,8 +80,8 @@
                             </div>
                             
                             <div class="form-group">
-                                <button type="submit" class="btn btn--md btn-primary">등록</button>
-                            	<a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${empty board.boardTypeSeq ? boardTypeSeq : board.boardTypeSeq}'/>" class="btn btn--md btn-light">취소</a>
+                                <button type="submit" class="btn btn--sm btn--round submit">등록</button>         
+                            	<a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${empty board.boardTypeSeq ?boardTypeSeq : board.boardTypeSeq}'/>" class="btn btn--sm btn--round btn_cancel">취소</a>
                             </div>
                         </form>
                     </div><!-- ends: .question-form -->
