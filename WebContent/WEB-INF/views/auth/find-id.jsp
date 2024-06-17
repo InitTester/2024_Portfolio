@@ -45,7 +45,7 @@ String ctx = request.getContextPath();
                                  <div id="msgEmail" class="msg"></div>
                              </div>
 
-                             <button class="btn btn--md btn--round register_btn" type="button" onclick="findId();">아이디 찾기</button>
+                             <button class="btn btn--md btn--round register_btn" type="button" onclick="findId(this);">아이디 찾기</button>
                          </div>
                          <!-- end .login--form -->
                      </div>
@@ -56,15 +56,14 @@ String ctx = request.getContextPath();
                          <div class="login--header">
                      		<p id="resultheader"></p>
                          </div>
-                         <!-- end .login_header -->
-
+                         
                          <div class="login--form">
                              <div class="form-group">
                        			<ul id="resultList" class="text_field"></ul>
                              </div>
 
                              	<button class="btn btn--md btn--round register_btn" type="button"onclick="goToLogin()">로그인</button>
-		                       <button class="btn btn--md btn--round register_btn"  type="button" onclick="resetPassword()">비밀번호 찾기</button>
+		                       <button class="btn btn--md btn--round register_btn"  type="button" onclick="resetPassword()">비밀번호 재설정</button>
                          </div>
                          <!-- end .login--form -->
                      </div>
@@ -93,7 +92,7 @@ String ctx = request.getContextPath();
 	    validateInput(user_name, name, "msgName", "이름을 입력해주세요");
 	    validateInput(user_email,email,"msgEmail","올바른 이메일 주소를 입력해주세요");
     
-		function findId() {
+		function findId(elem) {
 			
 			if(user_name === null || user_name.value ===''){
 	            setMessage("이름을 입력해주세요", "memberNm", "msgName", "red");
@@ -123,8 +122,7 @@ String ctx = request.getContextPath();
 				/* dataType : 'text', */
 				// 결과 성공 콜백함수 
 				success : function(result) {
-				
-					displayResult(result);
+					displayResult(result,elem);
 		            
 				},
 				// 결과 에러 콜백함수
@@ -136,26 +134,24 @@ String ctx = request.getContextPath();
 			});
 		}
 		
-		function displayResult(result){ 
-			const recoverPass = document.querySelector('.recover_pass');
-		    const resultSection = document.querySelector('.result-section');
-		    const resultList = document.getElementById('resultList');
-		    const resultHeader = document.getElementById('resultheader');
+		function displayResult(result, elem){ 
+			
+			const recover_id = document.querySelector('div.cardify.recover_pass');
+			const text_id = document.querySelector('div.cardify.result-section');
+			
+			recover_id.style.display = 'none';
+			text_id.style.display = 'block';
 
-		    recoverPass.style.display = 'none';
-		    resultSection.style.display = 'block';
 
-		    resultList.innerHTML = '';
+		    //resultList.innerHTML = '';
 		    
-		    if (result.memberNm) {
+		    /* if (result.memberNm) { */
 		    	
-		        resultHeader.innerHTML = `<b>`+result.memberNm+`</b>님의 정보와 일치하는 아이디입니다.`;
+		    	text_id.querySelector('#resultheader').innerHTML = `<b>`+result.memberNm+`</b>님의 정보와 일치하는 아이디입니다.`;
 		    
 		        // 주어진 문자열
 		        let dateString = result.joinDtm;
 
-		        console.log(dateString);
-		        
 		        // 문자열에서 연, 월, 일 추출
 		        let year = dateString.substring(0, 4);
 		        let month = dateString.substring(4, 6);
@@ -166,11 +162,11 @@ String ctx = request.getContextPath();
 		        
 	            const li = document.createElement('li');
 	            li.innerHTML = `<br>아이디: ` + result.memberId + `<br> 가입일: ` + formattedDate + `<br><br>`;
-	            resultList.appendChild(li);
+	            text_id.querySelector('#resultheader').appendChild(li);
 	            
-		    } else {
+		    /* } else {
 		        resultHeader.textContent = '일치하는 사용자를 찾을 수 없습니다.';
-		    }
+		    } */
 		}
 		
 		function goToLogin() {
@@ -187,7 +183,7 @@ String ctx = request.getContextPath();
 	            if (!regex.test(inputElement.value) && inputElement.value.length !== 0) {
 	                setMessage(errorMessage, inputElement.id, msgElement, "red");
 	            } else {
-	                setMessage('', inputElement.id, msgElement, "black");
+	                setMessage('', inputElement.id, msgElement, "#00000000");
 	            }
 	        });
 	    }

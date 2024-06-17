@@ -105,7 +105,7 @@ String ctx = request.getContextPath();
 	            if (!regex.test(inputElement.value) && inputElement.value.length !== 0) {
 	                setMessage(errorMessage, inputElement.id, msgElement, "red");
 	            } else {
-	                setMessage('', inputElement.id, msgElement, "black");
+	                setMessage('', inputElement.id, msgElement, "#00000000");
 	            }
 	        });
 	    }

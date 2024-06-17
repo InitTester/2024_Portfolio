@@ -11,6 +11,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,9 @@ public class MemberService {
 	@Autowired
 	private EmailUtil emailUtil;
 
+	@Value("#{config['access.host']}")
+	private String accessHost;
+	
 	/* 회원가입 */
 	public int join(HashMap<String, String> params, HttpServletRequest request) {
 
@@ -91,10 +95,18 @@ public class MemberService {
 			// from 가져오기, 실제 값 가져오기			
 			String from = CommonUtil.getPropertiesValue("application.properties", "app.username") + "@naver.com";
 			
-			CommonUtil.getLogMessage(log, "join", "from( ",from+ " )");
-			CommonUtil.getLogMessage(log, "join", "contextroot", request.getContextPath());
+//			CommonUtil.getLogMessage(log, "join", "from( ",from+ " )");
+//			CommonUtil.getLogMessage(log, "join", "contextroot", request.getContextPath());
+			
+			
 
-			String html = "<a href='http://localhost:8080" + request.getContextPath() + "/emailAuth.do?uri="
+			/*
+			 * String html = "<a href='http://localhost:8080" + request.getContextPath() +
+			 * "/emailAuth.do?uri="
+			 */
+			
+			log.info("[join] (accessHost) : {}",accessHost);
+			String html = "<a href='"+ accessHost + request.getContextPath() + "/emailAuth.do?uri="
 					+ authDto.getAuthUri() + "'>인증하기</a>";
 
 			CommonUtil.getLogMessage(log, "join", "html", html);
@@ -163,6 +175,10 @@ public class MemberService {
 		long expireDtm = dto.getExpireDtm();
 		String authNum = dto.getAuthNum();
 
+		if(authNum.equals("Y")) {
+			throw new TimeoutException("유효시간이 지났습니다"); 
+		}
+		
 		log.info("getMemberSeq : " + memberSeq + ", getAuthYn : " + dto.getAuthYn() + ", getExpireDtm : " + expireDtm);
 
 		long now = Calendar.getInstance().getTimeInMillis(); // long
@@ -236,7 +252,13 @@ public class MemberService {
 	}
 	
 	public MemberDto findmemberID(HashMap<String, String> params) {
-		return memberRepository.findmemberID(params);
+		
+		MemberDto memberDto = memberRepository.findmemberID(params);
+		
+		if(memberDto == null) {
+			throw new EmptyResultDataAccessException(0);
+		}
+		return memberDto;
 	}
 	
 	/* 회원 번호 */
@@ -277,10 +299,15 @@ public class MemberService {
 
 			String from = CommonUtil.getPropertiesValue("application.properties", "app.username") + "@naver.com";
 			
-			CommonUtil.getLogMessage(log, "recoverPassSend", "from( ",from + " )");
-			CommonUtil.getLogMessage(log, "recoverPassSend", "contextroot", request.getContextPath());
-		
-			String html = "<a href='http://localhost:8080" + request.getContextPath() + "/auth/resetPassPage.do?uri="
+			/*
+			 * CommonUtil.getLogMessage(log, "recoverPassSend", "from( ",from + " )");
+			 * CommonUtil.getLogMessage(log, "recoverPassSend", "contextroot",
+			 * request.getContextPath());
+			 */
+
+			//String html = "<a href='http://localhost:8080" + request.getContextPath() + "/auth/resetPassPage.do?uri="
+			log.info("[join] (accessHost) : {}",accessHost);
+			String html = "<a href='"+ accessHost + request.getContextPath() + "/auth/resetPassPage.do?uri="
 					+ authDto.getAuthUri() + "'>비밀번호 재설정하기</a>";
 
 			CommonUtil.getLogMessage(log, "recoverPassSend", "html", html);
