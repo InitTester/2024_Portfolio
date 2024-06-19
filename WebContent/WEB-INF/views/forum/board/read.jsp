@@ -60,10 +60,6 @@ String ctx = request.getContextPath();
 		
 	}
 	
-	.btn btn--sm btn--round cancel{
-		padding: 
-	}
-	
 </style>
 
     <!--================================
@@ -166,18 +162,19 @@ String ctx = request.getContextPath();
 												    </div>
 		                                            &emsp;  
 		                                            <div class="contentContainer">
-			                                            <c:if test="${comment.pMemberNm ne ''}">
+			             <%--                                <c:if test="${comment.pMemberNm ne ''}">
 			                                            	<b class="parentComment">@${comment.pMemberNm}</b>
 			                                            </c:if>
-			                                            &emsp;  
+			                                            &emsp;   --%>
 		                         		       			 <div class="commentContent">  ${comment.content}</div>
 	                                				</div>
+	                                				<%-- ${comment.parentSeq} --%>
 	                         		       			&emsp;  
 		                                            <div style="display: flex; padding-right:20px">
 			                                            <p>${comment.formatRegDtm}</p>
 			                                            &emsp;           							                    	    
 							                    	    <a style="padding-left: 6px color" href="#" data-commentSeq="${comment.commentSeq}" data-commentLvl="${comment.lvl }" 
-							                    	       onclick="openReplyCommentBox(event, this)">답글</a>	
+							                    	       data-parentSeq="${comment.parentSeq}" onclick="openReplyCommentBox(event, this)">답글</a>	
 		                                            	                                            								                    	                                                                               	
 		                                                 <c:if test='${sessionScope.memberSeq eq comment.memberSeq }'>
 								                            <!-- 수정버튼 -->	                               
@@ -189,8 +186,6 @@ String ctx = request.getContextPath();
 						                    	    </div>	                                           
 		                                        </div>
 		                                        <!-- end .pull-left -->
-		
-
 		                                    </div>
 		                                    <!-- end .vote -->
 		                                </div>
@@ -215,8 +210,6 @@ String ctx = request.getContextPath();
 	                                       <textarea placeholder="댓글을 남겨보세요" id ="commentContent" rows="1" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 17px;" ></textarea>
 										    <button class="btn btn--sm btn--round submit" 
 										            onClick="newComment(${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq}, this);">댓글 등록</button>
-<!-- 	                                        <button type="button" class="btn btn--sm btn--round btn_cancel"
-	                                        				     onclick="cancelComment(this);">취소</button> -->
 											<a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}'/>" 
 											   class="btn btn--sm btn--round btn-list" style="float:right; margin: 20px 2px 0 2px;">목록</a>                                				     
                                         </div>
@@ -265,7 +258,6 @@ String ctx = request.getContextPath();
                                            <!-- <div id="comment-edit"></div> -->
                                            <div class="editBtn">
 	                                           <button type="button" class="btn btn--sm btn--round btn_cancel"
-	                                           		<%-- onclick="location.href='<%=ctx %>/forum/board/readPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'">취소</button> --%>
 	                                           		onclick="cancelComment(this,'edit');">취소</button>
 	                                           <button type="button" class="btn btn--sm btn--round edit"
 	                                                   onclick="editComment(${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq}, this);">댓글 수정</button>
@@ -304,8 +296,6 @@ String ctx = request.getContextPath();
    	    		         boardSeq : boardSeq,
    	    		         isLike : thisElement.getAttribute("data-isLike")};
     	    
-    	    console.log(voteDto);
-    	    
     	    $.ajax({
     	    	type : 'POST',
     	    	url : url,
@@ -314,8 +304,6 @@ String ctx = request.getContextPath();
     	    	data: JSON.stringify(voteDto),
     	    	success : function(result){    	    		
 	   	    		let thumb = thisElement.getAttribute("data-isLike")==='Y' ? 'Up' : 'Down';
-	   	    		
-	   	    		/* console.log('a#vote'+thumb + ', result : ' + result); */
 	   	    		
 	   	    		/* 1.추가 2.수정 3.삭제 */
 	    			if (result == 1) {   		
@@ -400,7 +388,7 @@ String ctx = request.getContextPath();
 	    	
 	    	/* 댓글 추가시 필요 데이터 설정 */
 	    	let submitBtn = commentForm.querySelector('button.submit');
-	    	submitBtn.setAttribute('data-parentCommentSeq', elem.getAttribute('data-commentSeq'));
+	    	submitBtn.setAttribute('data-parentSeq', parseInt(elem.getAttribute('data-commentSeq')));
 	    	submitBtn.setAttribute('data-commentLvl', parseInt(elem.getAttribute('data-commentLvl'))+1);
 	    }    
 	    
@@ -486,7 +474,7 @@ String ctx = request.getContextPath();
     				boardTypeSeq : boardTypeSeq,
     				boardSeq : boardSeq,
     				content : elem.parentElement.querySelector('#commentContent').value,
-	    			parentCommentSeq: elem.getAttribute("data-parentCommentSeq") == null ? null :  elem.getAttribute("data-parentCommentSeq"),
+    				parentSeq: elem.getAttribute("data-parentSeq") == null ? null :  elem.getAttribute("data-parentSeq"),
 	    			lvl: elem.getAttribute("data-commentLvl") == null ? 0 : elem.getAttribute("data-commentLvl")
     			}),
     			success : function(result){
@@ -520,7 +508,7 @@ String ctx = request.getContextPath();
     				boardTypeSeq : boardTypeSeq,
     				boardSeq : boardSeq,
     				content : elem.parentElement.parentElement.querySelector('#commentContent').value,
-	    			parentCommentSeq: elem.getAttribute("data-parentCommentSeq") == null ? null :  elem.getAttribute("data-parentCommentSeq"),
+    				parentSeq: elem.getAttribute("data-parentSeq") == null ? null :  elem.getAttribute("data-parentSeq"),
 	    			lvl: elem.getAttribute("data-commentLvl") == null ? 0 : elem.getAttribute("data-commentLvl")
     			}),
     			success : function(result){
@@ -537,7 +525,10 @@ String ctx = request.getContextPath();
     	}        	
     	
     	/* 댓글 삭제 */
-    	function deleteComment(commentSeq, boardTypeSeq, boardSeq) {
+    	function deleteComment(commentSeq, boardTypeSeq, boardSeq, event) {
+    	    // 현재 스크롤 위치 저장
+    	    let currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+
     		var result = confirm("정말 현재 댓글을 삭제 하시겠습니까?");
 
     		let url = '<%=ctx%>/forum/board'
@@ -557,7 +548,11 @@ String ctx = request.getContextPath();
     	    		// 결과 성공 콜백함수 
     	    		success : function(result) {   
         				if(result){
-        					window.location.reload();
+        	                // 스크롤 위치를 부드럽게 복원
+                            scrollToSmoothly(0, currentScrollPos);
+
+                            // 페이지 리로드
+                            window.location.reload();
         				} else{
         					alert('실패!');
         				}    	

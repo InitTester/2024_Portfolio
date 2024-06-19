@@ -9,7 +9,6 @@ import org.apache.ibatis.type.Alias;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Alias("BoardCommentDto")
 public class BoardCommentDto {
 	private Integer commentSeq;
@@ -18,7 +17,7 @@ public class BoardCommentDto {
 	private Integer boardSeq;
 	private Integer boardTypeSeq;
 	private Integer memberSeq;
-	private Integer parentCommentSeq;
+	private Integer parentSeq;
 	private String pMemberNm;
 	private String regDtm;
 	private String formatRegDtm;
@@ -62,11 +61,11 @@ public class BoardCommentDto {
 	public void setMemberSeq(Integer memberSeq) {
 		this.memberSeq = memberSeq;
 	}
-	public Integer getParentCommentSeq() {
-		return parentCommentSeq;
+	public Integer getParentSeq() {
+		return parentSeq;
 	}
-	public void setParentCommentSeq(Integer parentCommentSeq) {
-		this.parentCommentSeq = parentCommentSeq;
+	public void setParentSeq(Integer parentSeq) {
+		this.parentSeq = parentSeq;
 	}
 	
 	public String getpMemberNm() {
@@ -141,6 +140,13 @@ public class BoardCommentDto {
 	public String getMemberNm() {
 		return memberNm;
 	}
+	@Override
+	public String toString() {
+		return "BoardCommentDto [commentSeq=" + commentSeq + ", lvl=" + lvl + ", content=" + content + ", boardSeq="
+				+ boardSeq + ", boardTypeSeq=" + boardTypeSeq + ", memberSeq=" + memberSeq + ", parentSeq=" + parentSeq
+				+ ", pMemberNm=" + pMemberNm + ", regDtm=" + regDtm + ", formatRegDtm=" + formatRegDtm + ", updateDtm="
+				+ updateDtm + ", deleteDtm=" + deleteDtm + ", memberNm=" + memberNm + "]";
+	}
 	public void setMemberNm(String memberNm) {
 		this.memberNm = memberNm;
 	}
@@ -152,13 +158,5 @@ public class BoardCommentDto {
 		commentDto.setBoardSeq(boardSeq);
 		
 		return commentDto;
-	}
-	@Override
-	public String toString() {
-		return "BoardCommentDto [commentSeq=" + commentSeq + ", lvl=" + lvl + ", content=" + content + ", boardSeq="
-				+ boardSeq + ", boardTypeSeq=" + boardTypeSeq + ", memberSeq=" + memberSeq + ", parentCommentSeq="
-				+ parentCommentSeq + ", pMemberNm=" + pMemberNm + ", regDtm=" + regDtm + ", formatRegDtm="
-				+ formatRegDtm + ", updateDtm=" + updateDtm + ", deleteDtm=" + deleteDtm + ", memberNm=" + memberNm
-				+ "]";
 	}
 }

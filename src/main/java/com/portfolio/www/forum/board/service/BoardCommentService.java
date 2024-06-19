@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.portfolio.www.forum.board.dao.mybatis.BoardCommentRepository;
 import com.portfolio.www.forum.board.dto.BoardCommentDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class BoardCommentService {
 	
@@ -21,7 +24,16 @@ public class BoardCommentService {
 
 	/* 게시글 댓글 추가 */
 	public int newComment(BoardCommentDto boardCommentDto) {
-		return CommentRepository.newComment(boardCommentDto);
+
+		CommentRepository.newComment(boardCommentDto);
+		Integer commemtSeq = boardCommentDto.getCommentSeq();
+		log.info("commemtSeq : {}",commemtSeq);
+		
+//		if(boardCommentDto.getParentSeq() == null) {
+//			return CommentRepository.updateParentComment(commemtSeq);
+//		}
+		
+		return commemtSeq;
 	}
 
 	/* 게시글 댓글 수정 */

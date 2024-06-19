@@ -7,44 +7,59 @@
 
     <!-- 게시글 첨부파일 리스트 -->
     <select id="getBoardCommentList" parameterType="BoardCommentDto" resultType="BoardCommentDto">
-    	SELECT a.comment_seq,
-    	       a.lvl,
-    	       a.content,
-    	       a.board_seq,
-    	       a.board_type_seq,
-    	       a.member_seq,
-    	       a.parent_seq,
-    	       pm.member_nm AS pMember_Nm,
-    	       a.reg_dtm,
-    	       a.update_dtm,
-    	       a.delete_dtm,
-    	       m.member_nm 
-    	 FROM (SELECT p.comment_seq,
-    	              p.lvl,
-    	              p.content,
-    	              p.board_seq,
-    	              p.board_type_seq,
-    	              p.member_seq,
-    	              IFNULL(p.parent_comment_seq, p.comment_seq) AS parent_seq,
-    	              p.reg_dtm,
-    	              p.update_dtm,
-    	              p.delete_dtm
-    	         FROM board_comment p
-    	    LEFT JOIN board_comment s on s.parent_comment_seq = p.comment_seq) a
-    	         JOIN member m on a.member_seq = m.member_seq
-			LEFT JOIN (SELECT bc.comment_seq,
-		     			  bc.member_seq,
-		     			  CASE WHEN bc.parent_comment_seq IS NULL THEN '' ELSE m.member_nm END AS member_nm	  
-		     	   	FROM board_comment bc 
-		     	   	LEFT JOIN member m ON bc.member_seq = m.member_seq) pm ON a.parent_seq = pm.comment_seq     	         
-    	        WHERE a.board_type_seq = #{boardTypeSeq}
-    	          AND a.board_seq = #{boardSeq}
-    	     GROUP BY a.comment_seq
-    	     ORDER BY IFNULL(parent_seq, 999999999), a.reg_dtm, a.comment_seq
+		WITH RECURSIVE commentSort AS (
+		    SELECT CAST(LPAD(comment_seq, 5, '0') AS CHAR(100)) AS cs,
+			       comment_seq,
+			       parent_comment_seq,
+			       content,
+			       board_seq,
+			       board_type_seq,
+			       reg_dtm,
+			       update_dtm,
+			       delete_dtm,
+			       member_seq,
+			       0 AS lvl
+			  FROM board_comment
+			 WHERE parent_comment_seq IS NULL        
+	     UNION ALL
+		    SELECT CONCAT(cs.cs, '.', LPAD(bc.comment_seq, 5, '0')) AS cs,
+			       bc.comment_seq,
+			       bc.parent_comment_seq,
+			       bc.content,
+			       bc.board_seq,
+			       bc.board_type_seq,
+			       bc.reg_dtm,
+			       bc.update_dtm,
+			       bc.delete_dtm,
+			       bc.member_seq,
+			       cs.lvl + 1
+			  FROM board_comment bc
+	    INNER JOIN commentSort cs ON bc.parent_comment_seq = cs.comment_seq)
+		    SELECT cs.comment_seq,
+				   cs.lvl,
+				   cs.content,
+				   cs.board_seq,
+				   cs.board_type_seq,
+				   cs.member_seq,
+				   cs.parent_comment_seq AS parent_seq,
+				   cs.content,
+				   cs.update_dtm,
+				   cs.delete_dtm,
+				   m.member_nm
+			  FROM commentSort cs
+		      JOIN member m ON cs.member_seq = m.member_seq
+			 WHERE cs.board_type_seq = #{boardTypeSeq}
+		      AND cs.board_seq = #{boardSeq}
+		 ORDER BY cs.cs;
     </select>
     
     <!-- 게시글 댓글 추가 -->
     <insert id ="newComment" parameterType="BoardCommentDto">
+    	
+    	<selectKey order="AFTER" keyProperty="commentSeq" keyColumn="comment_seq" resultType = "int">
+    		SELECT LAST_INSERT_ID()
+    	</selectKey>
+    	    
     	INSERT INTO board_comment (lvl,
     	   						   content,
     	   						   board_seq,
@@ -57,9 +72,18 @@
     	   			               #{boardSeq},
     	   			               #{boardTypeSeq},
     	   			               #{memberSeq},
-    	   			               #{parentCommentSeq},
+    	   			               #{parentSeq},
     	   			               DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'))
     </insert>
+    
+    <update id ="updateParentComment">
+    	UPDATE board_comment
+    	   SET parent_comment_seq = #{commentSeq}
+    	 WHERE comment_seq = #{commentSeq}
+<!--  		 WHERE board_type_seq = #{boardTypeSeq}
+ 		   AND board_seq = #{boardSeq}
+ 		   AND comment_seq = #{commentSeq}  -->
+    </update>
     
     <delete id="deleteComment" parameterType="BoardCommentDto">
     	DELETE FROM board_comment

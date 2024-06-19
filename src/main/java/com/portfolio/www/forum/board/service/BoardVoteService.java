@@ -40,6 +40,8 @@ public class BoardVoteService {
 		
 		String beforeisList = boardVoteRepository.getVote(boardVoteDto);
 		
+		log.info("beforeisList : {}",beforeisList);
+		
 		if(beforeisList == null) {
 			boardVoteRepository.addVote(boardVoteDto);
 			resultVlue = 1;
