@@ -104,16 +104,6 @@ public class BoardAttachService {
 	public void deleteBoardAttach(Integer attachSeq) {
 
 		boardattachRepository.deleteBoardAttach(attachSeq);
-//		Integer boardSeq = boardDto.getBoardSeq();
-//		Integer boardTypeSeq = boardDto.getBoardTypeSeq();
-//
-//		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);
-//		
-//		boolean empty = boardattachRepository.getBoardAttachEmpty(attachDto) > 0 ? false : true;
-//		
-//		if(!empty) {
-//			boardattachRepository.deleteBoardAttach(attachDto);
-//		}
 	}
 	
 	/* 게시글 첨부파일 전체삭제 */

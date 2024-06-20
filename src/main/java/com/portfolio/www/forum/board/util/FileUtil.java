@@ -141,16 +141,5 @@ public class FileUtil {
 		
 		log.info("saveType + savePathDay : {} ",saveType + savePathDay);
 		return saveType + savePathDay;
-		
-		/* windows, mac 허용하기 위한 폴더경로 */
-//		 Path root = Paths.get(System.getProperty("user.name"));
-		 
-//		if(root.toString().contains("c:")) {
-//			return "/" + root + saveType + savePathDay;
-//		}
-//		else {
-//			return saveType + savePathDay;
-//		}
-	}
-	
+	}	
 }
