@@ -39,8 +39,10 @@ public class FileUtil {
 	public File saveFile(MultipartFile mpf) {
 		
 		SAVE_PATH = setSAVE_PATH(imgPath);		
+		log.info("[saveFile] (SAVE_PATH : {}) ",SAVE_PATH);
 		File destFile = new File(SAVE_PATH);
 
+		log.info("[saveFile] (destFile.getPath() : {}, destFile.getAbsolutePath()  : {}) ",destFile.getPath(),destFile.getAbsolutePath());
 		if(!destFile.exists()) {
 			destFile.mkdirs();
 		}
@@ -136,16 +138,19 @@ public class FileUtil {
 	public String setSAVE_PATH(String saveType) {
 
 		String savePathDay = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE);
-
+		
+		log.info("saveType + savePathDay : {} ",saveType + savePathDay);
+		return saveType + savePathDay;
+		
 		/* windows, mac 허용하기 위한 폴더경로 */
-		 Path root = Paths.get(System.getProperty("user.name"));
+//		 Path root = Paths.get(System.getProperty("user.name"));
 		 
-		if(root.toString().contains("c:")) {
-			return "/" + root + saveType + savePathDay;
-		}
-		else {
-			return saveType + savePathDay;
-		}
+//		if(root.toString().contains("c:")) {
+//			return "/" + root + saveType + savePathDay;
+//		}
+//		else {
+//			return saveType + savePathDay;
+//		}
 	}
 	
 }

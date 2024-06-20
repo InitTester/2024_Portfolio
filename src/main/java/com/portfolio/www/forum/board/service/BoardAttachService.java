@@ -15,7 +15,6 @@ import com.portfolio.www.common.util.CommonUtil;
 import com.portfolio.www.forum.board.dao.mybatis.BoardAttachRepository;
 import com.portfolio.www.forum.board.dto.BoardAttachDto;
 import com.portfolio.www.forum.board.dto.BoardDto;
-import com.portfolio.www.forum.board.exception.FileDeleteException;
 import com.portfolio.www.forum.board.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(rollbackFor = {Exception.class})
 public class BoardAttachService {
 
 	@Autowired
@@ -33,48 +32,54 @@ public class BoardAttachService {
 	@Autowired
 	private FileUtil fileUtil;
 
-	@Value("#{config['img.access.host']}")
+	@Value("#{config['access.host']}")
 	private String accessUriPath;
 	
 	/* 게시글 첨부파일 추가 */
+	@Transactional
 	public void addBoardAttach(File destFile, BoardDto boardDto, MultipartFile mpf) {
 		
-		CommonUtil.getLogMessage(log, "BoardAttachService", "addBoardAttach", destFile.getPath());
-		
-		Integer boardSeq = boardDto.getBoardSeq();
-		Integer boardTypeSeq = boardDto.getBoardTypeSeq();
+		try {
+			CommonUtil.getLogMessage(log, "BoardAttachService", "addBoardAttach", destFile.getPath());
+			
+			Integer boardSeq = boardDto.getBoardSeq();
+			Integer boardTypeSeq = boardDto.getBoardTypeSeq();
 
-		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);
-	
-		String accessUri = "";
-		
-		if(!destFile.getPath().contains("c:")) {
-			accessUri = accessUriPath + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();	
+			BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);
+
+			String accessUri = "";
+			
+			if(!destFile.getPath().contains("c:")) {
+				accessUri = accessUriPath +"/" + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();
+				log.info("accessUri : {}",accessUri);
+			}
+			
+			attachDto.setChngFileNm(destFile.getName());
+			attachDto.setAccessUri(accessUri);
+			attachDto.setOrgFileNm(mpf.getOriginalFilename());
+			attachDto.setFileType(mpf.getContentType());
+			attachDto.setFileSize(mpf.getSize());
+			attachDto.setSavePath(destFile.getAbsolutePath());
+			
+			boardattachRepository.addBoardAttach(attachDto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			log.info("[addBoardAttach] Exception : {}",e.getMessage());
+			throw e;
 		}
-		
-		attachDto.setChngFileNm(destFile.getName());
-		attachDto.setAccessUri(accessUri);
-		attachDto.setOrgFileNm(mpf.getOriginalFilename());
-		attachDto.setFileType(mpf.getContentType());
-		attachDto.setFileSize(mpf.getSize());
-		attachDto.setSavePath(destFile.getAbsolutePath());
-		
-		boardattachRepository.addBoardAttach(attachDto);
 	}
 
 	/* 게시글 첨부파일 수정시 */
-	public void editBoardAttach(File destFile, BoardDto boardDto, MultipartFile mpf) {
+	public void editBoardAttach(File destFile, BoardAttachDto attachDto, Integer attachSeq, MultipartFile mpf) {
 		
-		Integer boardSeq = boardDto.getBoardSeq();
-		Integer boardTypeSeq = boardDto.getBoardTypeSeq();
+		try {
+			boardattachRepository.deleteBoardAttach(attachSeq);
 
-		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);
-		attachDto.setOrgFileNm(mpf.getOriginalFilename());
-		
-		if(boardattachRepository.getBoardAttachOneEmpty(attachDto)!=0) {
-			destFile = fileUtil.saveFile(mpf);
-
+			attachDto.setOrgFileNm(mpf.getOriginalFilename());
+			
 			String accessUri = "";
+			
+			log.info("[editBoardAttach] (destFile.getPath().split(\"app\")[1]) : {}",destFile.getPath().split("app")[1]);
 			
 			if(!destFile.getPath().contains("c:")) {
 				accessUri = accessUriPath + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();	
@@ -88,21 +93,48 @@ public class BoardAttachService {
 			attachDto.setSavePath(destFile.getAbsolutePath());
 			
 			boardattachRepository.addBoardAttach(attachDto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			log.info("[editBoardAttach] Exception {} ",e.getMessage());
+			throw e;
 		}
 	}
 	
 	/* 게시글 첨부파일 삭제 */
-	public void deleteBoardAttach(BoardDto boardDto) {
+	public void deleteBoardAttach(Integer attachSeq) {
 
-		Integer boardSeq = boardDto.getBoardSeq();
-		Integer boardTypeSeq = boardDto.getBoardTypeSeq();
+		boardattachRepository.deleteBoardAttach(attachSeq);
+//		Integer boardSeq = boardDto.getBoardSeq();
+//		Integer boardTypeSeq = boardDto.getBoardTypeSeq();
+//
+//		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);
+//		
+//		boolean empty = boardattachRepository.getBoardAttachEmpty(attachDto) > 0 ? false : true;
+//		
+//		if(!empty) {
+//			boardattachRepository.deleteBoardAttach(attachDto);
+//		}
+	}
+	
+	/* 게시글 첨부파일 전체삭제 */
+	
+	public void deleteBoardAttachAll(BoardDto boardDto) {
 
-		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);
-		
-		boolean empty = boardattachRepository.getBoardAttachEmpty(attachDto) > 0 ? false : true;
-		
-		if(!empty) {
-			boardattachRepository.deleteBoardAttachAll(attachDto);
+		try {
+			Integer boardSeq = boardDto.getBoardSeq();
+			Integer boardTypeSeq = boardDto.getBoardTypeSeq();
+
+			BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);
+			log.info("attachDto : {}",attachDto);
+			boolean empty = boardattachRepository.getBoardAttachEmpty(attachDto) > 0 ? true : false;
+			log.info("empty : {}",empty);
+			if(empty) {
+				boardattachRepository.deleteBoardAttachAll(attachDto);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			log.info("e : {}",e.getMessage());
+			throw e;
 		}
 	}
 	

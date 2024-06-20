@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(rollbackFor = {Exception.class})
 public class BoardService {
 	
 	@Autowired
@@ -44,7 +44,7 @@ public class BoardService {
 	@Autowired
 	private FileUtil fileUtil;
 	
-	@Value("#{config['img.access.host']}")
+	@Value("#{config['access.host']}")
 	private String accessUriPath;
 
 	/* 게시판 이름 */
@@ -66,7 +66,7 @@ public class BoardService {
 	public BoardDto getBoardDetail(Integer boardSeq) {
 		return boardRepository.getBoardDetail(boardSeq);
 	}
-	
+		
 	/* 게시글 등록 */
 	@Transactional
 	public boolean newBoard(BoardDto boardDto, MultipartFile[] attFiles, HttpServletRequest request) {
@@ -110,13 +110,32 @@ public class BoardService {
 			
 //			BoardAttachDto attachDtoDel = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(), boardDto.getBoardSeq());
 //			boardattachRepository.deleteBoardAttachAll(attachDtoDel);
+			BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardDto.getBoardTypeSeq(),boardDto.getBoardSeq());
+			List<BoardAttachDto> boardAttachList = attachService.getBoardAttachAll(attachDto);
+			int idx = 0;
 			
-			for(MultipartFile mpf : attFiles) {
-				if(!mpf.isEmpty()) {
-					CommonUtil.getLogMessage(log, "editBoard", "isEmpty", 1);
+			for(MultipartFile mpf : attFiles) {				
+				log.info("boardAttachList :  {}", boardAttachList);
+				log.info("mpf : {}", mpf);
+				
+				if(!mpf.getOriginalFilename().equals("")) {
+//					
+					destFile = fileUtil.saveFile(mpf);
 					
-					attachService.editBoardAttach(destFile, boardDto, mpf);
+					log.info("boardAttachList.size() : {}", boardAttachList.size());
+					log.info("idx : {}", idx);
+					
+					if(boardAttachList.size() > idx) {
+						log.info("editBoardAttach");
+//						log.info("boardAttachList.get(idx) :  {}", boardAttachList.get(idx));
+//						log.info("boardAttachList.get(idx).getOrgFileNm() :  {}", boardAttachList.get(idx).getOrgFileNm());
+						attachService.editBoardAttach(destFile, attachDto, boardAttachList.get(idx).getAttachSeq(), mpf);
+					}else {
+						log.info("addBoardAttach");
+						attachService.addBoardAttach(destFile,boardDto,mpf);
+					}
 				}
+				idx++;
 			}
 			
 			return cnt;
@@ -133,11 +152,19 @@ public class BoardService {
 	}
 	
 	/* 게시글 삭제 */
+//	@Transactional(rollbackFor = Exception.class)
 	public int deleteBoard(BoardDto boardDto) {
-		
-		attachService.deleteBoardAttach(boardDto);
-
-		return boardRepository.deletetBoard(boardDto);
+		try {
+			attachService.deleteBoardAttachAll(boardDto);
+			log.info("boardDto : {}",boardDto);
+			
+			return boardRepository.deletetBoard(boardDto);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.info("[deleteBoard] Exception : {} ",e.getMessage());
+			throw e;
+		}
 	}
 	
 	public int getBoardTotalCnt(Integer boardTypeSeq) {

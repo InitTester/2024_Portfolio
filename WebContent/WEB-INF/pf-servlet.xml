@@ -58,5 +58,8 @@
     <!-- <mvc:resources mapping="/localimg/**" location="file:///C:/app/" /> -->
 
 	<mvc:annotation-driven />
-
+	
+	<!-- transaction annotation -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
 </beans>

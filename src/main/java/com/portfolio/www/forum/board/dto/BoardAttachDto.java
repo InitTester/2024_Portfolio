@@ -6,7 +6,10 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
+import lombok.ToString;
+
 @Alias("BoardAttachDto")
+@ToString
 public class BoardAttachDto {
 	
 	private Integer attachSeq;

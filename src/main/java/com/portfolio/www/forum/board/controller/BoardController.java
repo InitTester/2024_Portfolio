@@ -1,5 +1,6 @@
 package com.portfolio.www.forum.board.controller;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -185,15 +186,13 @@ public class BoardController {
 		mv.addObject("boardTypeSeq", boardTypeSeq);
 		mv.setViewName("forum/board/edit");
 
-		CommonUtil.getLogMessage(log, "boardEditPage", "boardSeq", boardSeq);
-		CommonUtil.getLogMessage(log, "boardEditPage", "boardTypeSeq", boardTypeSeq);
+		log.info("[boardEditPage] (boardTypeSeq : {} ) (boardSeq : {})",boardTypeSeq,boardSeq);
 		
 		BoardDto boardDto = boardService.getBoardDetail(boardSeq);
 		
 		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);		
 		List<BoardAttachDto> attFiles = attachService.getBoardAttachAll(attachDto);
 		
-//		CommonUtil.getLogMessage(log, "boardEditPage", "getAccessUri", attachDto.getAccessUri());
 		mv.addObject("board", boardDto);
 		mv.addObject("attFiles", attFiles);
 		
@@ -218,10 +217,9 @@ public class BoardController {
 		
 		BoardDto boardDto = BoardDto.setBoardDto(boardTypeSeq, boardSeq, title, content, memberSeq);
 		
-		System.out.println(params);
-		CommonUtil.getLogMessage(log, "edit", "boardDto.title", boardDto.getTitle());
-		System.out.println(attFiles);
-		
+		log.info("boardDto : {} ",boardDto);
+		log.info("[edit] (boardDto.title) : {} ",boardDto.getTitle());
+		log.info("attFiles : {} ", Arrays.toString(attFiles));
 		
 		int result = boardService.editBoard(boardDto, attFiles);
 
@@ -235,7 +233,7 @@ public class BoardController {
 			mv.addObject("code",BoardMessageEnum.EDIT_FAIL.getCode());
 			mv.addObject("msg",BoardMessageEnum.EDIT_FAIL.getDescription());
 			mv.addObject("board", boardDto);
-			mv.setViewName("forum/board/edit");
+			mv.setViewName("forum/board/editPage.do?boardTypeSeq="+boardTypeSeq+"&boardSeq="+params.get("boardSeq"));
 		}
 		return mv;
 	}

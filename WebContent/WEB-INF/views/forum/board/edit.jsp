@@ -57,8 +57,8 @@
 	                                       	<c:forEach items='${attFiles}' var='attFile' varStatus="i">
 	                                       		<label class="drop-area" id="drop-area${i.index+1}">
 												    <span class="lnr lnr-paperclip"></span> 파일 추가
-												    <%-- <input type="file" name="attFile" style="display:none;" accept = "image/gif, image/png, image/jpeg" onchange="handleFiles(this.files, 'gallery${i.index}')" > --%>
-												    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery${i.index+1}')" >
+												    <input type="file" name="attFile" style="display:none;" accept = "image/gif, image/png, image/jpeg"
+												    	   onchange="handleFiles(this.files, 'gallery${i.index+1}')" >
 												    <div class="gallery" id="gallery${i.index+1}">
 									                    <c:if test="${not empty attFile.savePath}">										                      
 									                      <img src="${attFile.accessUri}" alt=${attFile.orgFileNm }>
@@ -72,7 +72,8 @@
                                        <c:forEach var ="i" begin='${attachCnt+1}' end="3" step="1">
 											<label class="drop-area" id="drop-area${i}">
 											    <span class="lnr lnr-paperclip"></span> 파일 추가
-										    	<input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery${i}')" >
+										    	<input type="file" name="attFile" style="display:none;" accept = "image/gif, image/png, image/jpeg" 
+										    		   onchange="handleFiles(this.files, 'gallery${i}')" >
 											    <div class="gallery" id="gallery${i}" style="display: none;"></div>
 										    </label>
 	                                	</c:forEach>          
@@ -129,6 +130,5 @@
 	            gallery.appendChild(img);
 	        }
 	    }
-
-
+	    
     </script>

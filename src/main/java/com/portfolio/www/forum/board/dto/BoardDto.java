@@ -6,7 +6,10 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
+import lombok.ToString;
+
 @Alias("BoardDto")
+@ToString
 public class BoardDto {
 	
 	private int boardSeq;
@@ -118,7 +121,7 @@ public class BoardDto {
 		this.updateMemberSeq = updateMemberSeq;
 	}
 	
-	public static BoardDto setBoardDto(Integer boardTypeSeq,Integer boardSeq, String title, String content, Integer memberSeq) {
+	public static BoardDto setBoardDto(Integer boardTypeSeq, Integer boardSeq, String title, String content, Integer memberSeq) {
 		
 		BoardDto boardDto = new BoardDto();
 		boardDto.setBoardTypeSeq(boardTypeSeq);

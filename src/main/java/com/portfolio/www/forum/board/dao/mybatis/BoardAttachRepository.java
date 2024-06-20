@@ -22,11 +22,14 @@ public interface BoardAttachRepository {
 	public int viewsDownloadHit(Integer attachSeq);
 	
 	/* 선택 게시글 첨부파일 여부 */
-	public int getBoardAttachEmpty(BoardAttachDto boardDto);
+	public int getBoardAttachEmpty(BoardAttachDto attachDto);
 
 	/* 선택 게시글 첨부파일 중복체크 */
-	public int getBoardAttachOneEmpty(BoardAttachDto boardDto);
+	public int getBoardAttachOneEmpty(BoardAttachDto attachDto);
 	
 	/* 선택 게시글 첨부파일 전체 삭제 */
-	public int deleteBoardAttachAll(BoardAttachDto boardDto);
+	public int deleteBoardAttachAll(BoardAttachDto attachDto);
+
+	/* 선택 게시글 첨부파일 전체 삭제 */
+	public int deleteBoardAttach(Integer attachSeq);
 }

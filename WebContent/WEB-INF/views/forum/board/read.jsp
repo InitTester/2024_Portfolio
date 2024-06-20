@@ -104,7 +104,7 @@ String ctx = request.getContextPath();
 		                            <!-- 수정버튼 -->	                               
 		                            <a href="<c:url value='/forum/board/editPage.do?boardTypeSeq=${boardDetail.boardTypeSeq}&boardSeq=${boardDetail.boardSeq}'/>" >수정 </a>	                            
 		                    	    <!-- 삭제버튼 -->
-		                    	    <a href="#" onClick="deleteClick(${boardDetail.boardSeq}, ${boardDetail.boardTypeSeq});">삭제</a>
+		                    	    <a href="#" onClick="deleteClick(${boardDetail.boardTypeSeq}, ${boardDetail.boardSeq});">삭제</a>
 	                    	    </c:if>
 	                    	    
                             </div>
@@ -340,13 +340,18 @@ String ctx = request.getContextPath();
     	    		},
     	    		// 결과 성공 콜백함수 
     	    		success : function(response) {   
+    	    			/* 정상적으로 삭제되었습니다 메세지 전송 이후 화면 이동 */
     	    			var page = response.page;
+    	    			var msg = response.msg;
     	    			
+    	    			alert(msg);
 	    				location.href='<%=ctx%>'+page;
     	    		},
     	    		// 결과 에러 콜백함수
     	    		error : function(request, status, error) {
-    	    			console.log(error)
+    	    			/* exception으로 인한 에러 처리하고 기존 read page 데이터 보여주기 */
+    	    			alert(error);
+	    				location.href='<%=ctx%>'+page;
     	    		}
     	    	});
     		}else{
