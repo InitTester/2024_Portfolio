@@ -1,5 +1,6 @@
 package com.portfolio.www.forum.board.controller;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portfolio.www.common.util.CommonUtil;
 import com.portfolio.www.forum.board.dto.BoardAttachDto;
@@ -25,6 +27,8 @@ import com.portfolio.www.forum.board.service.BoardAttachService;
 import com.portfolio.www.forum.board.service.BoardCommentService;
 import com.portfolio.www.forum.board.service.BoardService;
 import com.portfolio.www.forum.board.service.BoardVoteService;
+import com.portfolio.www.forum.board.util.PageHandler;
+import com.portfolio.www.user.message.MemberMessageEnum;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,12 +53,12 @@ public class BoardController {
 	public ModelAndView boardListPage(@RequestParam HashMap<String, Object> params, 
 								 @RequestParam(name="boardTypeSeq", defaultValue = "1") Integer boardTypeSeq,
 								 @RequestParam(defaultValue = "1") Integer page,
-								 @RequestParam(defaultValue = "10") Integer size) {
+								 @RequestParam(defaultValue = "10") Integer size,
+								 RedirectAttributes redirectAttributes) {
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
-		mv.setViewName("forum/board/list");
-		
+
 		/* 게시글 타입 */
 		params.put("type", boardTypeSeq);
 		params.put("page", page);
@@ -63,20 +67,24 @@ public class BoardController {
 		int start = (page-1)*size;	
 		params.put("start", start);
 		
-		HashMap<String, Integer> pageHandler = boardService.getBoardPageInfo(boardTypeSeq, size, page);
+		Integer totalPage = boardService.getBoardTotalCnt(boardTypeSeq);
 		
-		/* 잘못된 페이지 접근 처리 */
-	  	if(page <0 || page > (int)pageHandler.get("totalPageSize")) {
-			mv.addObject("code", BoardMessageEnum.PAGEING_ERROR.getCode());
-			mv.addObject("msg", BoardMessageEnum.PAGEING_ERROR.getDescription());	
-	  	}		
+		PageHandler ph = new PageHandler(size, page, totalPage);
 
-//	  	mv.addObject("list", boardService.getList(params,page,size));
-	  	mv.addObject("boardTypeSeq", boardTypeSeq);
-	  	mv.addObject("boardTypeNm", boardService.getBoardTypeNm(boardTypeSeq));	  	
-		mv.addObject("board",boardService.getBoardList(params));		
-		mv.addObject("pageHandler", pageHandler);
-		
+		/* 잘못된 페이지 접근 처리 */
+	  	if(size > 10 || page < 0 || page > ph.getTotalPageSize()) {
+			redirectAttributes.addFlashAttribute("code", BoardMessageEnum.PAGEING_ERROR.getCode());
+			redirectAttributes.addFlashAttribute("msg", BoardMessageEnum.PAGEING_ERROR.getDescription());
+			mv.setViewName("redirect:/forum/board/listPage.do");
+	  	} else {
+//		  	mv.addObject("list", boardService.getList(params,page,size));
+		  	mv.addObject("boardTypeSeq", boardTypeSeq);
+		  	mv.addObject("boardTypeNm", boardService.getBoardTypeNm(boardTypeSeq));	  	
+			mv.addObject("board",boardService.getBoardList(params));		
+			mv.addObject("pageHandler", ph);
+
+			mv.setViewName("forum/board/list");	
+	  	}
 		return mv;
 	}
 
@@ -178,15 +186,13 @@ public class BoardController {
 		mv.addObject("boardTypeSeq", boardTypeSeq);
 		mv.setViewName("forum/board/edit");
 
-		CommonUtil.getLogMessage(log, "boardEditPage", "boardSeq", boardSeq);
-		CommonUtil.getLogMessage(log, "boardEditPage", "boardTypeSeq", boardTypeSeq);
+		log.info("[boardEditPage] (boardTypeSeq : {} ) (boardSeq : {})",boardTypeSeq,boardSeq);
 		
 		BoardDto boardDto = boardService.getBoardDetail(boardSeq);
 		
 		BoardAttachDto attachDto = BoardAttachDto.setBoardAttachDto(boardTypeSeq, boardSeq);		
 		List<BoardAttachDto> attFiles = attachService.getBoardAttachAll(attachDto);
 		
-//		CommonUtil.getLogMessage(log, "boardEditPage", "getAccessUri", attachDto.getAccessUri());
 		mv.addObject("board", boardDto);
 		mv.addObject("attFiles", attFiles);
 		
@@ -211,10 +217,9 @@ public class BoardController {
 		
 		BoardDto boardDto = BoardDto.setBoardDto(boardTypeSeq, boardSeq, title, content, memberSeq);
 		
-		System.out.println(params);
-		CommonUtil.getLogMessage(log, "edit", "boardDto.title", boardDto.getTitle());
-		System.out.println(attFiles);
-		
+		log.info("boardDto : {} ",boardDto);
+		log.info("[edit] (boardDto.title) : {} ",boardDto.getTitle());
+		log.info("attFiles : {} ", Arrays.toString(attFiles));
 		
 		int result = boardService.editBoard(boardDto, attFiles);
 
@@ -228,7 +233,7 @@ public class BoardController {
 			mv.addObject("code",BoardMessageEnum.EDIT_FAIL.getCode());
 			mv.addObject("msg",BoardMessageEnum.EDIT_FAIL.getDescription());
 			mv.addObject("board", boardDto);
-			mv.setViewName("forum/board/edit");
+			mv.setViewName("forum/board/editPage.do?boardTypeSeq="+boardTypeSeq+"&boardSeq="+params.get("boardSeq"));
 		}
 		return mv;
 	}

@@ -27,7 +27,7 @@ public class RestBoardVoteController {
 	private BoardVoteService voteService;
 
 	@PostMapping("/forum/board/vote.do")
-	public ResponseEntity<Boolean> vote(@RequestBody BoardVoteDto voteDto, HttpServletRequest request) {
+	public ResponseEntity<Integer> vote(@RequestBody BoardVoteDto voteDto, HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
@@ -42,12 +42,12 @@ public class RestBoardVoteController {
 			
 			result = voteService.setVote(voteDto);
 			
-			return ResponseEntity.ok().body(true);
+			return ResponseEntity.ok().body(result);
 			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
 		}
 		
 

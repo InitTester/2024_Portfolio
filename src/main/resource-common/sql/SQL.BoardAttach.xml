@@ -40,8 +40,8 @@
     		   access_uri,
     		   reg_dtm
     	  FROM board_attach
-    	 WHERE board_seq = #{boardSeq}
-    	   AND board_type_seq = #{boardTypeSeq}
+    	 WHERE board_type_seq = #{boardTypeSeq}
+    	   AND board_seq = #{boardSeq}
     </select>
     
     <!-- 게시글 첨부파일 정보(개별) -->
@@ -80,6 +80,12 @@
     	DELETE FROM board_attach
 	    	  WHERE board_type_seq = #{boardTypeSeq}
 	    	    AND board_seq = #{boardSeq}
+    </delete>
+        
+    <!-- 선택 게시글 첨부파일 전체 삭제 -->
+    <delete id="deleteBoardAttach" >
+    	DELETE FROM board_attach
+	    	  WHERE attach_seq = #{attachSeq}
     </delete>
     
     <delete id="getBoardAttachOneEmpty" parameterType="BoardAttachDto">

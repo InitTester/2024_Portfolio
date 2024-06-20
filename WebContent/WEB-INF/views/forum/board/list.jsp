@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="com.portfolio.www.forum.board.message.BoardMessageEnum" %>
 <%
 String ctx = request.getContextPath();
 %>
@@ -53,7 +54,7 @@ String ctx = request.getContextPath();
 			                            <div class="nav-links">
 			                            	<!-- prev page -->
 			                            	<c:if test="${pageHandler.prev ne 1 }"> <!-- ne : not equal -->
-												<a class="prev page-numbers" href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${boardTypeSeq}&page=${pageHandler.begin-1}&size=${pageHandler.size}'/>">
+												<a class="prev page-numbers" href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${boardTypeSeq}&page=${pageHandler.begin-1==pageHandler.naviSize ? 1 : pageHandler.begin-1}&size=${pageHandler.size}'/>">
 				                                    <span class="lnr lnr-arrow-left"></span>
 				                                </a>
 											</c:if>
@@ -64,7 +65,7 @@ String ctx = request.getContextPath();
 			                                </c:forEach>
 			                                
 			                                <!-- next page -->
-		                                             <c:if test="${pageHandler.next ne pageHandler.totalPageSize}">
+		                                    <c:if test="${pageHandler.next ne pageHandler.totalPageSize}">
 												<a class="next page-numbers" href="<c:url value='/forum/board/listPage.do?boardTypeSeq=${boardTypeSeq}&page=${pageHandler.end+1}&size=${pageHandler.size}'/>">
 				                                    <span class="lnr lnr-arrow-right"></span>
 				                                </a>
@@ -82,8 +83,13 @@ String ctx = request.getContextPath();
         </div>
         <!-- end .container -->
     </section>
-<!--     <script>
-       window.addEventListener('popstate', function(event) {
-            window.location.reload();
-        });	    
-    </script> -->
+    <script>
+		window.onload=function(){
+			var code = '${code}';
+			var msg = '${msg}';
+	
+			if(code !== '' && code !== '<%= BoardMessageEnum.SUCCESS.getCode() %>'){
+				alert(msg);
+			}
+		} 		
+    </script>

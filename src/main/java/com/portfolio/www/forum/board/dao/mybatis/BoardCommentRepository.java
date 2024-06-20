@@ -15,6 +15,9 @@ public interface BoardCommentRepository {
 	/* 게시글 댓글 추가 */
 	public int newComment(BoardCommentDto boardCommentDto);
 	
+	/* 게시글 parentComment 업데이트 */
+	public int updateParentComment(Integer commentSeq);
+	
 	/* 게시글 댓글 수정 */
 	public int editComment(BoardCommentDto boardCommentDto);
 	

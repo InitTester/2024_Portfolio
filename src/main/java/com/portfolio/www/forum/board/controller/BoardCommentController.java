@@ -32,6 +32,8 @@ public class BoardCommentController {
 		HttpSession session = request.getSession();
 		
 		try {
+
+			log.info("commentDto {}" , commentDto);
 			
 			Integer memberSeq = Integer.parseInt(session.getAttribute("memberSeq").toString());			
 			commentDto.setMemberSeq(memberSeq);

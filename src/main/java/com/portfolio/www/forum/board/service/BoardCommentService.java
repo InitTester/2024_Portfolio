@@ -4,11 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.portfolio.www.forum.board.dao.mybatis.BoardCommentRepository;
 import com.portfolio.www.forum.board.dto.BoardCommentDto;
 
-@Service
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service	
+@RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class BoardCommentService {
 	
 	@Autowired
@@ -21,7 +28,16 @@ public class BoardCommentService {
 
 	/* 게시글 댓글 추가 */
 	public int newComment(BoardCommentDto boardCommentDto) {
-		return CommentRepository.newComment(boardCommentDto);
+
+		CommentRepository.newComment(boardCommentDto);
+		Integer commemtSeq = boardCommentDto.getCommentSeq();
+		log.info("commemtSeq : {}",commemtSeq);
+		
+//		if(boardCommentDto.getParentSeq() == null) {
+//			return CommentRepository.updateParentComment(commemtSeq);
+//		}
+		
+		return commemtSeq;
 	}
 
 	/* 게시글 댓글 수정 */

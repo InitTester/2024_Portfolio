@@ -48,26 +48,15 @@
                             
                             <div class="form-group">
                                 <div class="atta">
-                                    <label>첨부파일</label>                                    
-										<label class="drop-area" id="drop-area1">
-										    <span class="lnr lnr-paperclip"></span> 파일 추가
-										    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery1')" >
-										    <!-- multiple accept="*/*" -->
-										    <div class="gallery" id="gallery1"></div>
-										</label>
-										
-										<label class="drop-area" id="drop-area2">
-										    <span class="lnr lnr-paperclip"></span> 파일 추가
-										    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery2')" >
-										    <div class="gallery" id="gallery2"></div>
-										</label>
-										
-										<label class="drop-area" id="drop-area3">
-										    <span class="lnr lnr-paperclip"></span> 파일 추가
-										    <input type="file" name="attFile" style="display:none;" onchange="handleFiles(this.files, 'gallery3')" >
-										    <div class="gallery" id="gallery3"></div>
-										</label>
-                                                          
+                                    <label>첨부파일 (이미지만파일 저장 가능합니다)</label>        
+                                        <c:forEach var ="i" begin="1" end="3" step="1">
+											<label class="drop-area" id="drop-area${i}">
+											    <span class="lnr lnr-paperclip"></span> 파일 추가
+										    	<input type="file" name="attFile" style="display:none;" accept = "image/gif, image/png, image/jpeg" 
+										    	onchange="handleFiles(this.files, 'gallery${i}')" >
+											    <div class="gallery" id="gallery${i}" style="display: none;"></div>
+										    </label>
+	                                	</c:forEach>                    
                                  </div> 
                             </div>
                             
