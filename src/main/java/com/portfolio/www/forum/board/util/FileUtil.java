@@ -56,6 +56,7 @@ public class FileUtil {
 		
 		try {
 			mpf.transferTo(destFile);
+			destFile.setReadable(true,false);
 		} catch (IllegalStateException ise) {	
 			CommonUtil.getLogMessage(log, "saveFile", "IllegalStateException", ise.getMessage());
 			throw ise;
