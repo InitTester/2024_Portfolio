@@ -15,7 +15,7 @@ String ctx = request.getContextPath();
     <meta name="description" content="MartPlace - Complete Online Multipurpose Marketplace HTML Template">
     <meta name="keywords" content="marketplace, easy digital download, digital product, digital, html5">
 
-    <title>포트폴리오</title>
+    <title>InitSave 개인 포트폴리오</title>
 
     <!-- inject:css -->
     <link rel="stylesheet" href="<%=ctx%>/assest/template/css/animate.css">
@@ -40,7 +40,6 @@ String ctx = request.getContextPath();
 </head>
 
 <body class="preload home1 mutlti-vendor">
-
 
     <tiles:insertAttribute name="menu" />
     
