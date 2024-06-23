@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.www.index.dao.mybatis.IndexRepository">
+
+	<!-- 첨부파일 다운로드 수 TOP 10 -->
+    <select id="getIndexAttachView" parameterType="IndexAttachViewDto" resultType="IndexAttachViewDto">
+    	SELECT attach_seq,
+    		   board_seq,
+    		   board_type_seq,
+    		   org_file_nm,
+    		   save_path,
+    		   chng_file_nm,
+    		   file_size,
+    		   file_type,
+    		   access_uri,
+    		   reg_dtm,
+    		   hit
+    	  FROM board_attach
+         WHERE org_file_nm IN (SELECT org_file_nm 
+                                 FROM board_attach 
+                             GROUP BY org_file_nm)
+      ORDER BY hit DESC LIMIT 10;
+    </select>
+	
+</mapper>
