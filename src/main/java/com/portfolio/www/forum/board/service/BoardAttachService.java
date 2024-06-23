@@ -106,8 +106,7 @@ public class BoardAttachService {
 		boardattachRepository.deleteBoardAttach(attachSeq);
 	}
 	
-	/* 게시글 첨부파일 전체삭제 */
-	
+	/* 게시글 첨부파일 전체삭제 */	
 	public void deleteBoardAttachAll(BoardDto boardDto) {
 
 		try {
