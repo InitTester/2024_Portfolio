@@ -6,9 +6,34 @@
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://jlk.cb46oiyiaxtm.ap-northeast-2.rds.amazonaws.com:3306/forum?serverTimezone=Asia/Seoul" />
-		<property name="username" value="admin"/>
-		<property name="password" value="jj123456"/>
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}"/>
+		<property name="password" value="${datasource.password}"/>
 	</bean>
+	
+	<!-- Jasypt Start -->		
+   <bean id="encryptorConfig"
+      class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+	      <!-- 사용할 암호화 알고리즘 -->
+	      <property name="algorithm" value="PBEWithMD5AndDES" />
+	      <!-- PBE (패스워드 기반 암호화) 암호 설정 -->	
+	      <property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD" />		
+   </bean>
 
+   <bean id="encryptor"
+      class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+      <property name="config" ref="encryptorConfig" />
+   </bean>
+
+   <bean id="propertyConfigurer"
+      class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+      <constructor-arg ref="encryptor" />
+      <property name="locations">
+         <list>
+            <!-- application.properties 파일 경로 -->
+            <value>classpath:/dbConfig.properties</value>
+         </list>
+      </property>
+   </bean>
+   <!-- Jasypt End -->	
 </beans>
