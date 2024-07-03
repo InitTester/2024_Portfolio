@@ -27,4 +27,12 @@ public class IndexController {
 		mv.addObject("attachList", attachViewDtos);
 		return mv;
 	}	
+	
+
+	@GetMapping("/aboutMe.do")
+	public ModelAndView aboutMe(@RequestParam HashMap<String, String> params) {
+		ModelAndView mv = new ModelAndView();		
+		mv.setViewName("aboutMe");
+		return mv;
+	}	
 }
