@@ -16253,7 +16253,6 @@ span.counter {
     -ms-transform: translateY(-50%);
     width: 3rem;
     height: 3rem;
-    opacity: .5;
     cursor: pointer;
 }
 
@@ -16358,13 +16357,13 @@ span.counter {
 }
 
 .skills_content{
-	box-sizing: border-box;
+	  box-sizing: border-box;
     -webkit-box-sizing: border-box;
     width: 100%;
     max-width: 71.25rem;
-    padding: 4rem 2rem;
+    padding: 2rem 2rem;
     margin: 0 auto;
-    height: 80rem;
+    height: 85rem;
 }
 
 .skills_tech-stacks-container {
@@ -16373,14 +16372,14 @@ span.counter {
     flex-flow: column wrap;
     align-content: space-around;
     -ms-flex-line-pack: distribute;
-    height: calc(100% - (7rem + 1px));
+    height: calc(100% - (12rem + 1px));
 }
 
 .skills_tech-stacks {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     flex-shrink: 0;
-    width: 14rem;
+    width: 15rem;
     padding: 1.5rem;
     margin: 0 auto 1rem;
     border-radius: 1rem;
@@ -16408,18 +16407,46 @@ span.counter {
     color: #f4623a
 }
 
+.skills_img_container{
+	display: flex;
+	align-items: center;
+	flex-flow:column wrap; 
+	gap: 5px;
+}
+
 .skills_img {
-    display: block;
-    width: 100%
+/*     display: block;
+    width: 100% */
+   /* width: 100px;  동일한 너비 */
+    height: 80px; /* 동일한 높이 */
+	object-fit: contain; /* 이미지 비율 유지 */
+	background-color: white; /* 이미지가 채워지지 않은 부분을 하얀색으로 */
+	margin: auto;    
+}
+
+@media(max-width: 1070px){
+	
+	.skills_tech-stacks-container{
+	    height: calc(100% -(10rem + 1px));
+	}
+	
+	.skills_tech-stacks{
+		width : 13rem;
+	}
+	
 }
 
 @media(max-width: 992px) {
-    .skills {
-        height:133rem;
+    .artSkills {
+        height:85rem;
     }
 
     .skills_tech-stacks-container {
-        height: calc(100% - (7rem + 1px))
+        height: calc(100% - (10rem + 1px))
+    }
+    
+    .skills_img_cs{
+        height: 200px;
     }
 
     .skills_tech-stacks {
@@ -16436,35 +16463,75 @@ span.counter {
     } */
 }
 
-@media(max-width: 768px) {
+@media(max-width: 800px) {
+	
+	.artSkills {
+        height: 60rem;
+    }
+    
     .skills_content {
-        height:70rem
+        height:80rem;
+    }
+    
+    .skills_tech-stacks-container {
+        height: calc(100% - (30rem + 1px));
     }
 
     .skills_tech-stacks {
-        width: 10rem
+        width: 9.5rem;
+    }
+    
+    .skills_img {
+    	height:40px;
+    }
+    
+    .skills_img_cs {
+    	height:120px;
     }
 
     .skills_title {
-        font-size: 1.25rem
+        font-size: 18px;
+    }
+}
+
+@media(max-width: 700px){
+	
+    .skills_content {
+        height:60rem;
+    }
+    
+    .skills_tech-stacks-container {
+        height: calc(100% - (5rem + 1px));
+    }
+    
+    .skills_tech-stacks {
+        width: 6rem;
+    }
+    
+    .skills_img {
+    	height:45px;
+    }
+    
+    .skills_img_cs {
+        height: 80px;
+    }
+	
+    .skills_title {
+        font-size: 10px;
     }
 }
 
 @media(max-width: 576px) {
     .skills_content {
-        height:75rem
+        height:55rem;
     }
 
     .skills_tech-stacks-container {
-        height: calc(100% - (2rem + 1px))
+        height: calc(100% - (12rem + 1px));
     }
 
     .skills_tech-stacks {
-        width: 8.5rem
-    }
-
-    .skills_tech-stacks:nth-child(3) {
-        margin-bottom: 2rem
+        width: 6rem
     }
 
     .skills_tech-stacks:hover {
@@ -16474,7 +16541,17 @@ span.counter {
     }
 
     .skills_title {
-        font-size: 1rem
+        font-size: 11px;
+        padding-bottom: .5rem;
+    	margin-bottom: 1rem;
+    }
+    
+    .skills_img_cs{
+    	height : 85px;
+    }
+    
+    .skills_img{
+       height: 30px;
     }
 }
 
@@ -16912,7 +16989,8 @@ documenting_img_wrapper {
 
 
 .modalAboutMe {
-	position: fixed;
+	  display: none;
+	  position: fixed;
     padding: 0 20px;
     font-family: sans-serif;
     font-weight: 400;
@@ -16960,6 +17038,12 @@ documenting_img_wrapper {
     color: red;
 }
 
+@media(min-width: 1450px){
+	
+	.modalAboutMe {
+		display: block;
+}
+
 @media(max-width: 992px) {
 	.modalAboutMe{
 		font-size : 14px;
@@ -16968,7 +17052,6 @@ documenting_img_wrapper {
 }
 
 @media(max-width: 768px) {
-
     .modalAboutMe{
         /* position: fixed; */
         display :none;
