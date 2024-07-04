@@ -16253,7 +16253,6 @@ span.counter {
     -ms-transform: translateY(-50%);
     width: 3rem;
     height: 3rem;
-    /* opacity: .5; */
     cursor: pointer;
 }
 
@@ -16358,7 +16357,7 @@ span.counter {
 }
 
 .skills_content{
-	box-sizing: border-box;
+	  box-sizing: border-box;
     -webkit-box-sizing: border-box;
     width: 100%;
     max-width: 71.25rem;
@@ -16374,7 +16373,6 @@ span.counter {
     align-content: space-around;
     -ms-flex-line-pack: distribute;
     height: calc(100% - (12rem + 1px));
-    /* height: calc(100% - (12rem + 1px)); */
 }
 
 .skills_tech-stacks {
@@ -16991,8 +16989,8 @@ documenting_img_wrapper {
 
 
 .modalAboutMe {
-	display: none;
-	position: fixed;
+	  display: none;
+	  position: fixed;
     padding: 0 20px;
     font-family: sans-serif;
     font-weight: 400;
@@ -17054,9 +17052,6 @@ documenting_img_wrapper {
 }
 
 @media(max-width: 768px) {
-	
-	
-
     .modalAboutMe{
         /* position: fixed; */
         display :none;

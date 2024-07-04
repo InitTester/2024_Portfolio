@@ -6,7 +6,7 @@
     START FEATURE AREA
 =================================-->
    <section class="features section--padding">
-   
+
    	<article class="artAboutMe" id="about-me">
  		<div class="aboutMe_content">
    			<div class="aboutMeTitle">
@@ -93,12 +93,11 @@
 		<div class="skills_content">
 		
    			<div class="aboutMeTitle">
-				<div class="aboutMeTitle_text">SKILLS</div>
-				<div class="aboutMeTitle_link-wrapper">
-				<img class="aboutMeTitle_link" alt=""
-					 <%-- src="<c:url value='/images/black-link.png'/>" > --%>
-					 src="https://img.icons8.com/?size=48&id=Z9LL7UhM6A2a&format=png">
-				</div>				
+				  <div class="aboutMeTitle_text">SKILLS</div>
+          <div class="aboutMeTitle_link-wrapper">
+            <img class="aboutMeTitle_link" alt=""
+               src="https://img.icons8.com/?size=48&id=Z9LL7UhM6A2a&format=png">
+          </div>				
    			</div>
 			
 			<div class="skills_tech-stacks-container">
@@ -110,7 +109,6 @@
 	   					<img class="skills_img" src="<c:url value='/images/skills/languages/javascript.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/languages/csharp.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/languages/vb.png'/>" alt="">	   				
-	   				<%-- <img class="skills_img" src="<c:url value='/images/skills/Languages.png'/>" alt=""> --%>
 	   				</div>
 	   			</div>
 	   			
@@ -119,7 +117,6 @@
 	   				 <div class="skills_img_container" >
 	   					<img class="skills_img" src="<c:url value='/images/skills/webserver/nginx.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/webserver/tomcat.png'/>" alt="">   				
-	   				<%-- <img class="skills_img" src="<c:url value='/images/skills/WS.png'/>" alt=""> --%>
 	   				</div>
 	   			</div>
 	   				   				   			
@@ -128,18 +125,14 @@
 	   				 <div class="skills_img_container" >
 	   					<img class="skills_img" src="<c:url value='/images/skills/frameworks/mybatis.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/frameworks/spring.png'/>" alt=""> 
-	   				</div>	   				
-	   				<!--  <img class="skills_img" src="<c:url value='/images/skills/FL.png'/>" alt=""> -->
+	   				</div>	   			
 	   			</div>
 
 	   			<div class="skills_tech-stacks">
 	   				<div class="skills_title">Cloud Services</div>
 	   				 <div class="skills_img_container" >
 	   					<img class="skills_img_cs" src="<c:url value='/images/skills/cloudservices/ec2_rds.png'/>" alt="" height="230px">
-	   					<%-- <img class="skills_img" src="<c:url value='/images/skills/cloudservices/ec2.png'/>" alt="">
-	   					<img class="skills_img" src="<c:url value='/images/skills/cloudservices/rds.png'/>" alt="">  --%>
-	   				</div>	   		   				
-	   				<%-- <img class="skills_img" src="<c:url value='/images/skills/CS.png'/>" alt=""> --%>
+	   				</div>	   		   
 	   			</div>
 	   				   			
 	   			<div class="skills_tech-stacks">
@@ -149,8 +142,7 @@
 	   					<img class="skills_img" src="<c:url value='/images/skills/database/mssql.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/database/oracle.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/database/dbeaver.png'/>" alt="">
-	   				</div>	   		   				
-	   				<%-- <img class="skills_img" src="<c:url value='/images/skills/Database.png'/>" alt=""> --%>
+	   				</div>	   		   		
 	   			</div>
 	   			
 	   			<div class="skills_tech-stacks">
@@ -158,8 +150,7 @@
 	   				 <div class="skills_img_container" >
 	   					<img class="skills_img" src="<c:url value='/images/skills/versioncontrol/github.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/versioncontrol/svn.png'/>" alt=""> 
-	   				</div>	   		   				
-	   				<%-- <img class="skills_img" src="<c:url value='/images/skills/VC.png'/>" alt=""> --%>
+	   				</div>	   		   
 	   			</div>
 	   			
 	   			<div class="skills_tech-stacks">
@@ -171,7 +162,6 @@
 	   					<img class="skills_img" src="<c:url value='/images/skills/ide/intellij.png'/>" alt="">
 	   					<img class="skills_img" src="<c:url value='/images/skills/ide/vscode.png'/>" alt="">	 
 	   				</div>	   		   				
-	   				<%-- <img class="skills_img" src="<c:url value='/images/skills/ide.png'/>" alt=""> --%>
 	   			</div>
 	   			
 	   			<div class="skills_tech-stacks">
@@ -188,9 +178,8 @@
 	   					<img class="skills_img" src="<c:url value='/images/skills/etc/sourcetree.png'/>" alt=""> 
 	   					<img class="skills_img" src="<c:url value='/images/skills/etc/devexpress.png'/>" alt=""> 
 	   					<img class="skills_img" src="<c:url value='/images/skills/etc/mobaxterm.png'/>" alt=""> 
-	   					<img class="skills_img" src="<c:url value='/images/skills/etc/virtualbox.png'/>" alt=""> 
-	   				</div>	   		   			
-	   				<%-- <img class="skills_img" src="<c:url value='/images/skills/tu.png'/>" alt=""> --%>
+	   					<img class="skills_img" src="<c:url value='/images/skills/etc/virtualbox.png'/>" alt="">    		   			
+            </div>
 	   			</div>		
 			</div> 
 		</div>
@@ -422,7 +411,6 @@
 						</div>
 					</div>
 				</div>		
-				
 			</div>
 		</div>
 	 </article>	
