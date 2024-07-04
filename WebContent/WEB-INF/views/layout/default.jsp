@@ -15,7 +15,7 @@ String ctx = request.getContextPath();
     <meta name="description" content="MartPlace - Complete Online Multipurpose Marketplace HTML Template">
     <meta name="keywords" content="marketplace, easy digital download, digital product, digital, html5">
 
-    <title>InitSave 개인 포트폴리오</title>
+    <title>JeonLK 포트폴리오</title>
 
     <!-- inject:css -->
     <link rel="stylesheet" href="<%=ctx%>/assest/template/css/animate.css">
@@ -29,10 +29,16 @@ String ctx = request.getContextPath();
     <link rel="stylesheet" href="<%=ctx%>/assest/template/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="<%=ctx%>/assest/template/css/style.css">
 	<link rel="stylesheet" href="<%=ctx%>/assest/template/css/trumbowyg.min.css">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css2?family=Jua&display=swap" type="text/css">
     <!-- endinject -->
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="<%=ctx%>/assest/template/images/favicon.png">    
+    <link rel="icon" type="image/png" sizes="16x16" 
+    	<%-- href="<%=ctx%>/assest/template/images/favicon.png"> --%>    
+    	href="https://img.icons8.com/?size=80&id=BcWr8NBOsovH&format=png">
 	<script type="text/javascript">
 		var ctx = '<%= request.getContextPath() %>';
 	</script>	

@@ -31,14 +31,14 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resource-${env}">
+	<classpathentry kind="src" path="target/generated-sources/annotations">
 		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="target/generated-sources/annotations">
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resource-${env}">
 		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>

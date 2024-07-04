@@ -55,8 +55,8 @@
 	</bean>
 	
 	<mvc:resources mapping="/assest/**" location="/assest/" />
-    <!-- <mvc:resources mapping="/localimg/**" location="file:///C:/app/" /> -->
-
+	<mvc:resources mapping="/app/img/**" location="file:///C:/app/img/" />
+	
 	<mvc:annotation-driven />
 	
 	<!-- transaction annotation -->
