@@ -2,165 +2,73 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 	
-		
-	<!--================================
-            START SIGNUP AREA
-    =================================-->
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="testimonial-slider">
-                        <div class="testimonial">
-                            <div class="testimonial__about">
-                                <div class="avatar v_middle">
-                                    <img src="images/test1.jpg" alt="Testimonial Avatar">
-                                </div>
-                                <div class="name-designation v_middle">
-                                    <h4 class="name">Tubeda Pagla</h4>
-                                    <span class="desig">Product Designer</span>
-                                </div>
-                                <span class="lnr lnr-bubble quote-icon"></span>
-                            </div>
-                            <div class="testimonial__text">
-                                <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattis,
-                                    leo quam aliquet diam congue is the laoreet elit metus. Nunc placerat mi is id nisi interdum
-                                    is mollis. Praesent the pharetra, justo ut scelerisque.</p>
-                            </div>
-                        </div>
-                        <!-- end /.testimonial -->
-
-                        <div class="testimonial">
-                            <div class="testimonial__about">
-                                <div class="avatar v_middle">
-                                    <img src="images/test2.jpg" alt="Testimonial Avatar">
-                                </div>
-                                <div class="name-designation v_middle">
-                                    <h4 class="name">Tarashi Hamada</h4>
-                                    <span class="desig">Quality Ninja</span>
-                                </div>
-                                <span class="lnr lnr-bubble quote-icon"></span>
-                            </div>
-                            <div class="testimonial__text">
-                                <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattis,
-                                    leo quam aliquet diam congue is the laoreet elit metus. Nunc placerat mi is id nisi interdum
-                                    is mollis. Praesent the pharetra, justo ut scelerisque.</p>
-                            </div>
-                        </div>
-                        <!-- end /.testimonial -->
-
-                        <div class="testimonial">
-                            <div class="testimonial__about">
-                                <div class="avatar v_middle">
-                                    <img src="images/test1.jpg" alt="Testimonial Avatar">
-                                </div>
-                                <div class="name-designation v_middle">
-                                    <h4 class="name">Tubeda Pagla</h4>
-                                    <span class="desig">Product Designer</span>
-                                </div>
-                                <span class="lnr lnr-bubble quote-icon"></span>
-                            </div>
-                            <div class="testimonial__text">
-                                <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattis,
-                                    leo quam aliquet diam congue is the laoreet elit metus. Nunc placerat mi is id nisi interdum
-                                    is mollis. Praesent the pharetra, justo ut scelerisque.</p>
-                            </div>
-                        </div>
-                        <!-- end /.testimonial -->
-
-                        <div class="testimonial">
-                            <div class="testimonial__about">
-                                <div class="avatar v_middle">
-                                    <img src="images/test2.jpg" alt="Testimonial Avatar">
-                                </div>
-                                <div class="name-designation v_middle">
-                                    <h4 class="name">Tarashi Hamada</h4>
-                                    <span class="desig">Quality Ninja</span>
-                                </div>
-                                <span class="lnr lnr-bubble quote-icon"></span>
-                            </div>
-                            <div class="testimonial__text">
-                                <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattis,
-                                    leo quam aliquet diam congue is the laoreet elit metus. Nunc placerat mi is id nisi interdum
-                                    is mollis. Praesent the pharetra, justo ut scelerisque.</p>
-                            </div>
-                        </div>
-                        <!-- end /.testimonial -->
-                    </div>
-                    <!-- end /.testimonial_slider -->
-                </div>
-            </div>
-            <!-- end .row -->
-        </div>
-        <!-- end .container -->
-    <!--================================
-            END SIGNUP AREA
-    =================================-->
-    
 	<!--================================
 	    START FEATURE AREA
 	=================================-->
     <section class="features section--padding">
+	    
         <!-- start container -->
-        <div class="container">
-            <!-- start row -->
-            <div class="row">
-                <!-- start search-area -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature">
-                        <div class="feature__img">
-                            <img src="<c:url value='/assest/template/images/feature1.png'/>" alt="feature" />
-                        </div>
-                        <div class="feature__title">
-                            <h3>Best UX Research</h3>
-                        </div>
-                        <div class="feature__desc">
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattis,
-                                leo quam aliquet diam congue is laoreet elit metus.</p>
-                        </div>
-                    </div>
-                    <!-- end /.feature -->
-                </div>
-                <!-- end /.col-lg-4 col-md-6 -->
-
-                <!-- start search-area -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature">
-                        <div class="feature__img">
-                            <img src="<c:url value='/assest/template/images/feature2.png'/>" alt="feature" />
-                        </div>
-                        <div class="feature__title">
-                            <h3>Fully Responsive</h3>
-                        </div>
-                        <div class="feature__desc">
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattis,
-                                leo quam aliquet diam congue is laoreet elit metus.</p>
-                        </div>
-                    </div>
-                    <!-- end /.feature -->
-                </div>
-                <!-- end /.col-lg-4 col-md-6 -->
-
-                <!-- start search-area -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature">
-                        <div class="feature__img">                        
-                            <img src="<c:url value='/assest/template/images/feature3.png'/>" alt="feature" />
-                        </div>
-                        <div class="feature__title">
-                            <h3>Buy & Sell Easily</h3>
-                        </div>
-                        <div class="feature__desc">
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattis,
-                                leo quam aliquet diam congue is laoreet elit metus.</p>
-                        </div>
-                    </div>
-                    <!-- end /.feature -->
-                </div>
-                <!-- end /.col-lg-4 col-md-6 -->
-            </div>
-            <!-- end /.row -->
-        </div>
+		<div class="container mt-5">
+		    <div class="row">		
+			    <div class="col-lg-12 text-center mb-4">
+		            <p class="h2 font-weight-bold">게시글 조회수 TOP 3</p> 
+		        </div>		            
+			     <c:forEach items="${boardList}" var="board" varStatus="i">		     	
+			        <div class="col-lg-4 col-md-6 mb-4">
+				        <a href="<c:url value='/forum/board/readPage.do?boardTypeSeq=${board.boardTypeSeq}&boardSeq=${board.boardSeq}'/>">
+				            <div class="feature card h-100">
+				                <div class="feature__img card-img-top">			                
+						            <div class="feature card h-100">
+						                <%-- <div class="feature__img card-img-top">
+						                    <img src="<c:url value='/assest/template/images/feature3.png'/>" alt="feature" class="img-fluid">
+						                </div> --%>
+						                <div class="card-body">
+						                    <h3 class="feature__title card-title">${board.title}</h3>
+						                    <p class="feature__desc card-text">${board.content}</p>
+						                </div>
+						            </div>		
+				            	</div>
+				            </div>
+		       			</a>         
+			        </div>     
+			     </c:forEach>
+		   </div>
+		</div>
         <!-- end /.container -->
+            
+    	<!--================================
+            START testimonial AREA
+    	=================================-->
+    	
+		<div class="container mt-5">
+		    <div class="row">
+		        <div class="col-lg-12 text-center mb-4">
+		            <p class="h2 font-weight-bold">다운로드 이미지 조회수 TOP 10</p> 
+		        </div>
+		        <div class="testimonial-slider_">
+		            <c:forEach items="${attachList}" var="attach" varStatus="i">
+		                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+		                    <div class="testimonial_ card h-100">
+		                        <div class="card-body text-center">
+		                            <p class="testimonial__text display-4 text-primary font-weight-bold">${i.index+1}위</p>
+		                            <div class="testimonial__about">
+		                                <a href="<c:url value='/forum/board/readPage.do?boardTypeSeq=${attach.boardTypeSeq}&boardSeq=${attach.boardSeq}'/>">
+		                                    <img src="${attach.accessUri}" alt="Testimonial Avatar" class="img-fluid rounded shadow">
+		                                </a>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </c:forEach>
+		        </div>
+		    </div>
+		</div>
+        <!-- end .container -->
+        
+	    <!--================================
+	            END testimonial AREA
+	    =================================-->
+
     </section>
     <!--================================
 	    END FEATURE AREA

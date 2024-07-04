@@ -42,7 +42,7 @@ public class LogFilter implements Filter {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			log.info("[LogFilter] Exception ({})", e.getMessage());
+			log.info("[LogFilter] Exception ({},{})", e.getStackTrace(), e.getMessage());
 //			CommonUtil.getLogMessage(log, "doFilter", "Exception", e.getMessage());
 		} finally{
 

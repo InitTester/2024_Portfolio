@@ -74,9 +74,7 @@
 	      <!-- 사용할 암호화 알고리즘 -->
 	      <property name="algorithm" value="PBEWithMD5AndDES" />
 	      <!-- PBE (패스워드 기반 암호화) 암호 설정 -->
-	      <!-- <property name="password" value="BASIC" /> -->		
-	      <!-- <property name="password" value="APP_ENCRYPTION_PASSWORD" />		 -->
-	      <property name="password" value="BASIC" />		
+	      <property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD" />	
    </bean>
 
    <bean id="encryptor"
@@ -90,7 +88,7 @@
       <property name="locations">
          <list>
             <!-- application.properties 파일 경로 -->
-            <value>classpath:/application.properties</value>
+            <value>classpath:/emailconfig.properties</value>
          </list>
       </property>
    </bean>

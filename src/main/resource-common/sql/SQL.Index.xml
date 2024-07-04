@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.www.index.dao.mybatis.IndexRepository">
+
+	<!-- 첨부파일 다운로드 수 TOP 10 -->
+    <select id="getIndexAttachView" resultType="IndexAttachViewDto">
+		SELECT a.attach_seq,
+		       a.board_seq, 
+		       a.board_type_seq, 
+		       a.org_file_nm, 
+		       a.save_path, 
+		       a.chng_file_nm, 
+		       a.file_size, 
+		       a.file_type, 
+		       a.access_uri, 
+		       a.reg_dtm, 
+		       a.hit
+		FROM board_attach a
+		JOIN ( SELECT org_file_nm,
+		              MAX(hit) as max_hit
+			   FROM board_attach
+			   GROUP BY org_file_nm
+			   ORDER BY max_hit DESC
+			   LIMIT 10
+			 ) b ON a.org_file_nm = b.org_file_nm AND a.hit = b.max_hit;
+    </select>
+    
+    <select id="getIndexBoardView" resultType="IndexBoardViewDto" >
+		SELECT b.board_seq, 
+		       b.board_type_seq, 
+		       b.title, 
+		       b.content, 
+		       b.hit, 
+		       b.del_yn,
+		       b.reg_dtm,
+		       b.reg_member_seq, 
+		       m.member_id AS regMemberId,
+		       m.member_nm AS regMemberNm, 
+		       b.update_dtm, 
+		       b.update_member_seq, 
+		       bt.board_type_nm
+		  FROM board b  
+		  JOIN board_type bt ON bt.board_type_seq  = b.board_type_seq  
+		  JOIN member m ON m.member_seq  = b.reg_member_seq  
+		 ORDER BY b.hit DESC LIMIT 3;    
+    </select>
+    
+    <insert id="addContactMe" parameterType="IndexContactMeDto">
+    	INSERT INTO contact_me (name,
+    							email,
+    							inquiry,
+    							message,
+    							reg_dtm)
+	    				VALUES (#{name},
+	    						#{email},
+	    						#{inquiry},
+	    						#{message},
+	    						DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'))	
+    </insert>
+</mapper>

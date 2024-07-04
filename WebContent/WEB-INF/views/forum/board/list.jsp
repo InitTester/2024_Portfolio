@@ -5,7 +5,22 @@
 <%
 String ctx = request.getContextPath();
 %>
+
     <section class="section--padding2">
+<!-- 		<div class="search_box">
+            <form action="#">
+                <input type="text" class="text_field" placeholder="Search your products...">
+                <div class="search__select select-wrap">
+                    <select name="category" class="select--field" id="blah">
+                        <option value="">제목</option>
+                        <option value="">내용</option>
+                        <option value="">글쓴이</option>
+                    </select>
+                    <span class="lnr lnr-chevron-down"></span>
+                </div>
+                <button type="submit" class="search-btn btn--lg">조회</button>
+            </form>
+        </div>     -->    
         <div class="container">
             <div class="row">
                 <div class="col-md-12">

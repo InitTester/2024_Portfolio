@@ -93,7 +93,7 @@ public class MemberService {
 			}
 			
 			// from 가져오기, 실제 값 가져오기			
-			String from = CommonUtil.getPropertiesValue("application.properties", "app.username") + "@naver.com";
+			String from = CommonUtil.getPropertiesValue("email_config.properties", "app.username") + "@naver.com";
 			
 //			CommonUtil.getLogMessage(log, "join", "from( ",from+ " )");
 //			CommonUtil.getLogMessage(log, "join", "contextroot", request.getContextPath());
