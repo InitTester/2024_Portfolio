@@ -69,6 +69,13 @@
 		</property>
 	</bean>	
 	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+	</bean>
+	
 	<!-- Jasypt Start -->		
    <bean id="encryptorConfig"
       class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
@@ -88,8 +95,9 @@
       <constructor-arg ref="encryptor" />
       <property name="locations">
          <list>
-            <!-- application.properties 파일 경로 -->
-            <value>classpath:/emailConfig.properties</value>
+            <!-- .properties 파일 경로 -->
+            <value>classpath:/email_config.properties</value>
+            <value>classpath:/db_config.properties</value>
          </list>
       </property>
    </bean>

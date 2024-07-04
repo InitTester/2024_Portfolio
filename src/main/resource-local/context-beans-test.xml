@@ -88,7 +88,7 @@
       <property name="locations">
          <list>
             <!-- application.properties 파일 경로 -->
-            <value>classpath:/application.properties</value>
+            <value>classpath:/emailconfig.properties</value>
          </list>
       </property>
    </bean>

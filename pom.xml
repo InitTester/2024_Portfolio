@@ -239,9 +239,9 @@
 		    <groupId>org.mybatis.spring.boot</groupId>
 		    <artifactId>mybatis-spring-boot-starter</artifactId>
 		    <version>2.2.0</version> 
-		</dependency>	-->	
-		
-  </dependencies>
+		</dependency>	-->
+
+ 	</dependencies>
   
    <profiles>
 	   <profile>
@@ -301,7 +301,7 @@
 		    <artifactId>tomcat7-maven-plugin</artifactId>
 		    <version>2.2</version>
 		    <configuration>
-		        <url>http://ec2-13-125-9-234.ap-northeast-2.compute.amazonaws.com:8080/manager/text</url>
+		        <url>http://ec2-54-180-139-162.ap-northeast-2.compute.amazonaws.com:8080/manager/text</url>
 		        <server>TomcatServer</server>
 		        <path>/${project.build.finalName}</path>
 		        <username>admin</username>

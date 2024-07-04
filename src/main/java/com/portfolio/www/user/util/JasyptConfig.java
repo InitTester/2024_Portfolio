@@ -17,7 +17,7 @@ public class JasyptConfig {
 
 
 	/*
-	 * application.properties 생성 프로그램 JASYPT_ENCRYPTION_EMAIL : naver 계정
+	 * *.properties 생성 프로그램 JASYPT_ENCRYPTION_EMAIL : naver 계정
 	 * JASYPT_ENCRYPTION_PWD : naver 계정 비밀번호 APP_ENCRYPTION_PASSWORD : encryption
 	 * password DATA_USER : Datasource 계정 DATA_PWD : Datasource 비밀번호
 	 * 
@@ -26,53 +26,9 @@ public class JasyptConfig {
 	 */
 	public static void main(String[] args) {
 
-		/*
-		 * 저장할 properties Properties properties = new Properties();
-		 * 
-		 * 필요한 변수 선언 String evnEmail = System.getenv("JASYPT_ENCRYPTION_EMAIL"); String
-		 * evnEmailPwd = System.getenv("JASYPT_ENCRYPTION_PWD"); String evnKey =
-		 * System.getenv("APP_ENCRYPTION_PASSWORD"); String evndbUrl =
-		 * System.getenv("DB_URL"); String evndbUserName = System.getenv("DB_USERNAME");
-		 * String evndbPassWord = System.getenv("DB_USERPASSWORD");
-		 * 
-		 * StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); //
-		 * // CommonUtil.getLogMessage(log, "properties 생성", "evnKey", evnKey); //
-		 * CommonUtil.getLogMessage(log, "properties 생성", "evnEmail", evnEmail); //
-		 * CommonUtil.getLogMessage(log, "properties 생성", "evnEmailPwd", evnEmailPwd);
-		 * 
-		 * 암호화에 쓰일 key 값 지정 encryptor.setPassword(evnKey);
-		 * 
-		 * String encryptEmail = encryptor.encrypt(evnEmail); String encryptEmailPwd =
-		 * encryptor.encrypt(evnEmailPwd); String encryptDBurl =
-		 * encryptor.encrypt(evndbUrl); String encryptDBusername =
-		 * encryptor.encrypt(evndbUserName); String encryptDBpassword =
-		 * encryptor.encrypt(evndbPassWord);
-		 * 
-		 * // CommonUtil.getLogMessage(log, "properties 생성", "encryptEmail",
-		 * encryptEmail); // CommonUtil.getLogMessage(log, "properties 생성",
-		 * "encryptEmailPwd", encryptEmailPwd); // // CommonUtil.getLogMessage(log,
-		 * "properties 생성", "encryptEmail -> decrypt", encryptor.decrypt(encryptEmail));
-		 * // CommonUtil.getLogMessage(log, "properties 생성",
-		 * "encryptEmailPwd -> decrypt", encryptor.decrypt(encryptEmailPwd));
-		 * 
-		 * 변환한 encrypt 값을 properties 값을 지정하고 저장하기 encrypt 값에는 "ENC(변환값)"으로 지정해 주어야 한다.
-		 * 
-		 * 
-		 * properties.setProperty("app.username", "ENC("+encryptEmail+")");
-		 * properties.setProperty("app.password", "ENC("+encryptEmailPwd+")");
-		 * properties.setProperty("datasource.url", "ENC("+encryptDBurl+")");
-		 * properties.setProperty("datasource.username", "ENC("+encryptDBusername+")");
-		 * properties.setProperty("datasource.password", "ENC("+encryptDBpassword+")");
-		 * 
-		 * 지정값 저장 try { properties.store(new
-		 * FileOutputStream("src/main/resource-local/application.properties"), null); }
-		 * catch (IOException e) { // TODO Auto-generated catch block //
-		 * e.printStackTrace(); log.info(e.getMessage()); }
-		 */
-
 //		setProperties("resource-common", evnKey);
 //		setProperties("resource-dev", evnKey);
-		setProperties("resource-local", evnKey);
+		setProperties("resource-dev", evnKey);
 		
 		
 	}
@@ -88,7 +44,7 @@ public class JasyptConfig {
 		String fileName = "";
 		
 		if(type.equals("resource-common")) {	
-			fileName = "emailConfig";
+			fileName = "email_config";
 			String evnEmail = System.getenv("JASYPT_ENCRYPTION_EMAIL");
 			String evnEmailPwd = System.getenv("JASYPT_ENCRYPTION_PWD");
 
@@ -100,7 +56,7 @@ public class JasyptConfig {
 
 //		}else if(type.equals("resource-local")) {
 		}else {
-			fileName = "dbConfig";
+			fileName = "db_config";
 			String evndbUrl = System.getenv("DB_URL");
 			String evndbUserName = System.getenv("DB_USERNAME");
 			String evndbPassWord = System.getenv("DB_USERPASSWORD");
@@ -109,9 +65,9 @@ public class JasyptConfig {
 			String encryptDBusername = encryptor.encrypt(evndbUserName);
 			String encryptDBpassword = encryptor.encrypt(evndbPassWord);
 
-			properties.setProperty("datasource.url", "ENC(" + encryptDBurl + ")");
-			properties.setProperty("datasource.username", "ENC(" + encryptDBusername + ")");
-			properties.setProperty("datasource.password", "ENC(" + encryptDBpassword + ")");
+			properties.setProperty("db.url", "ENC(" + encryptDBurl + ")");
+			properties.setProperty("db.username", "ENC(" + encryptDBusername + ")");
+			properties.setProperty("db.password", "ENC(" + encryptDBpassword + ")");
 		}
 
 		try {
