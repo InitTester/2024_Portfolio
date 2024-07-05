@@ -23,7 +23,6 @@ public class LogFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		log.info("[LogFilter] init ({})", "log filter init");
-//		CommonUtil.getLogMessage(log, "LogFilter", "init", "log filter init");
 	}
 	
 	@Override
@@ -37,24 +36,19 @@ public class LogFilter implements Filter {
 		
 		try {
 			log.info("[LogFilter] REQUEST (uuid : {} , requestURI : {})", uuid, requestURI);
-//			CommonUtil.getLogMessage(log, "doFilter", "REQUEST [session]", session.);
 			chain.doFilter(request, response);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.info("[LogFilter] Exception ({},{})", e.getStackTrace(), e.getMessage());
-//			CommonUtil.getLogMessage(log, "doFilter", "Exception", e.getMessage());
 		} finally{
 
 			log.info("[LogFilter] RESPONSE (uuid : {} , requestURI : {})", uuid, requestURI);
-//			CommonUtil.getLogMessage(log, "doFilter", "RESPONSE [uuid]", uuid);
-//			CommonUtil.getLogMessage(log, "doFilter", "RESPONSE [requestURI]", requestURI);
 		}
 	}
 	
 	@Override
 	public void destroy() {
 		log.info("[LogFilter] destroy ({})", "log filter destroy");
-//		CommonUtil.getLogMessage(log, "LogFilter", "destroy", "log filter destroy");
 	}
 }
