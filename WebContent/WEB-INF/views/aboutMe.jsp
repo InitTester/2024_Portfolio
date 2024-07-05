@@ -30,8 +30,8 @@
 		   			<div class="aboutMe_info">
 			   			<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img"  alt=""
-			   				     <%-- src="<c:url value='/images/about-me/person-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=48&id=YI3iUUls6qvv&format=png">
+			   				     src="<c:url value='/images/aboutme/id-card.png'/>">
+			   				     <!-- Icons made by Freepik FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">
@@ -44,8 +44,8 @@
 		   			<div class="aboutMe_info">
 		   				<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img" alt=""
-			   				     <%-- src="<c:url value='/images/about-me/calendar-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=48&id=O4nOoRjqFf8k&format=png">
+			   				     src="<c:url value='/images/aboutme/calendar.png'/>">
+			   				     <!-- Icons made by Freepik FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">
@@ -58,8 +58,8 @@
 		   			<div class="aboutMe_info">
 			   			<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img" alt=""
-			   				     <%-- src="<c:url value='/images/about-me/telephone-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=64&id=47813&format=png">
+			   				     src="<c:url value='/images/aboutme/telephone.png'/>">
+			   				     <!-- Icons made by Freepik FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">
@@ -74,8 +74,8 @@
 		   			<div class="aboutMe_info">
 			   			<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img" alt=""
-			   				     <%-- src="<c:url value='/images/about-me/envelope-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=80&id=68415&format=png">
+			   				     src="<c:url value='/images/aboutme/email.png'/>">
+			   				     <!-- Icons made by Freepik FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">

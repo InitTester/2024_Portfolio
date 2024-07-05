@@ -23,7 +23,7 @@ String ctx = request.getContextPath();
             <!-- start .container -->
             <div class="container">
                 <!-- start .row -->
-                <div class="row">
+                <div class="row_menu">
                     <!-- start .col-md-3 -->
                     <div class="col-lg-3 col-md-3 col-6 v_middle">
                         <div class="logo">                        
@@ -34,6 +34,59 @@ String ctx = request.getContextPath();
                         </div>
                     </div>
                     <!-- end /.col-md-3 -->
+
+                    <!-- start .col-md-12 -->
+                    <div class="col-md-12">
+                        <nav class="navbar navbar-expand-md navbar-light mainmenu__menu">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav">
+                                    <li class="has_dropdown">
+                                        <a href="<c:url value='/index.do'/>">홈</a>
+                                    </li>
+                                     <li class="has_dropdown">
+                                        <a href="#">About Me</a>
+                          				<div class="dropdowns dropdown--menu">
+                                            <ul>
+                                                <li>
+                                                    <a href="<c:url value='/aboutMe.do'/>">AboutMe</a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://github.com/InitTester/2024_Portfolio" target="_blank">Portfolio Source Code</a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://initsave.tistory.com/category/Error" target="_blank">Trouble Shooting's</a>
+                                                </li>
+                                            </ul>
+                                        </div>                                        
+                                    </li>
+                                                                       
+                                    <li class="has_dropdown">
+                                        <a href="#">게시판</a>
+                                        <div class="dropdowns dropdown--menu">
+                                            <ul>
+                                                <li>
+                                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=2'/>">자유게시판</a>
+                                                </li>
+                                                <li>
+                                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=1'/>">공지사항</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>                                    
+                                    <li>
+                                        <a href="#" data-target="#myModal1" data-toggle="modal">연락하기</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </nav>
+                    </div>
+                    <!-- end /.col-md-12 -->
 
                     <!-- start .col-md-5 -->
                     <div class="col-lg-8 offset-lg-1 col-6 col-md-9 v_middle">
@@ -110,73 +163,6 @@ String ctx = request.getContextPath();
             <!-- end /.container -->
         </div>
         <!-- end  -->
-
-        <!-- start .mainmenu_area -->
-        <div class="mainmenu">
-            <!-- start .container -->
-            <div class="container">
-                <!-- start .row-->
-                <div class="row">
-                    <!-- start .col-md-12 -->
-                    <div class="col-md-12">
-                        <nav class="navbar navbar-expand-md navbar-light mainmenu__menu">
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <!-- Collect the nav links, forms, and other content for toggling -->
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav">
-                                    <li class="has_dropdown">
-                                        <a href="<c:url value='/index.do'/>">홈</a>
-                                    </li>
-                                     <li class="has_dropdown">
-                                        <a href="#">About Me</a>
-                          				<div class="dropdowns dropdown--menu">
-                                            <ul>
-                                                <li>
-                                                    <a href="<c:url value='/aboutMe.do'/>">AboutMe</a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://github.com/InitTester/2024_Portfolio" target="_blank">Portfolio Source Code</a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://initsave.tistory.com/category/Error" target="_blank">Trouble Shooting's</a>
-                                                </li>
-                                            </ul>
-                                        </div>                                        
-                                    </li>
-                                                                       
-                                    <li class="has_dropdown">
-                                        <a href="#">게시판</a>
-                                        <div class="dropdowns dropdown--menu">
-                                            <ul>
-                                                <li>
-                                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=2'/>">자유게시판</a>
-                                                </li>
-                                                <li>
-                                                    <a href="<c:url value='/forum/board/listPage.do?boardTypeSeq=1'/>">공지사항</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>                                    
-                                    <li>
-                                        <a href="#" data-target="#myModal1" data-toggle="modal">연락하기</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- /.navbar-collapse -->
-                        </nav>
-                    </div>
-                    <!-- end /.col-md-12 -->
-                </div>
-                <!-- end /.row-->
-            </div>
-            <!-- start .container -->
-        </div>
-        <!-- end /.mainmenu-->
-    </div>
-    <!-- end /.menu-area -->
     <!--================================
 	    END MENU AREA
 	=================================-->
