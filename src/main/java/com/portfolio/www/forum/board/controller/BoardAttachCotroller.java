@@ -3,6 +3,7 @@ package com.portfolio.www.forum.board.controller;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.Integer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

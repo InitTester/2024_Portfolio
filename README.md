@@ -1,6 +1,6 @@
 
 # 🖥 배포 사이트
- [Portfolio HomePage](https://bit.ly/4b5sq33)
+ [Portfolio HomePage](https://bit.ly/4blLmeh)
  
    *지속적인 ec2 서버 재구축(ec2환경설정 익숙해지기 위해) 중이므로 종종 개발 사이트 연결이 맞지 않는 경우가 생길 수도 있습니다*
     
