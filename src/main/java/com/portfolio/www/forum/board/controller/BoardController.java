@@ -96,6 +96,8 @@ public class BoardController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("key", Calendar.getInstance().getTimeInMillis());
 		
+		log.info("[boardReadPage] params : {}", params);
+		
 		try {
 			Integer boardSeq = Integer.parseInt(params.get("boardSeq"));
 			Integer boardTypeSeq = Integer.parseInt(params.get("boardTypeSeq"));

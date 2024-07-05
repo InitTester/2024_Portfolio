@@ -2,6 +2,7 @@ package com.portfolio.www.user.controller;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,9 +52,8 @@ public class LoginController {
 			String memberId = memberService.getMemberId(memberSeq);
 			
 			mv.addObject("memberId",memberId);
-		}
-//		CommonUtil.getLogMessage(log, "loginPage", "redirectURL", redirectURL);
-		mv.addObject("redirectURL", redirectURL);
+		}		
+		mv.addObject("redirectURL", request.getQueryString().split("redirectURL=")[1]);
 		mv.setViewName("auth/login");
 		
 		return mv;
@@ -71,17 +71,14 @@ public class LoginController {
 		MemberDto dto = MemberDto.getMemberDto(params);
 
 		try {
-//			CommonUtil.getLogMessage(log, "login", "로그", "login 메서드 접속");
-//			CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
-			
 			MemberDto memberDto = memberService.login(params);
 			
 			String memberId = memberDto.getMemberId();
 			String memberNm = memberDto.getMemberNm();
 			Integer memberSeq = memberService.getMemberSeq(memberId);
-			//TODO 추후 개발 예정
-//			String profileImg = memberDto.getMemberNm();
 			
+			//TODO 추후 개발 예정
+//			String profileImg = memberDto.getMemberNm();			
 //			CommonUtil.getLogMessage(log, "login", "memberSeq", memberSeq);
 			
 			if(!ObjectUtils.isEmpty(memberDto)) {
@@ -120,7 +117,6 @@ public class LoginController {
 			
 		} catch (EmptyResultDataAccessException e) {
 			// TODO Auto-generated catch block
-//			e.printStackTrace();
 			mv.addObject("code",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getCode());
 			mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription());	
 			mv.addObject("dto",dto);
@@ -128,7 +124,6 @@ public class LoginController {
 			return mv;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-//			e.printStackTrace();
 			mv.addObject("code",e.getCause());
 			mv.addObject("msg", e.getMessage());	
 			mv.addObject("dto",dto);
