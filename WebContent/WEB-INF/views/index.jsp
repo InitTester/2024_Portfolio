@@ -19,9 +19,6 @@
 				            <div class="feature card h-100">
 				                <div class="feature__img card-img-top">			                
 						            <div class="feature card h-100">
-						                <%-- <div class="feature__img card-img-top">
-						                    <img src="<c:url value='/assest/template/images/feature3.png'/>" alt="feature" class="img-fluid">
-						                </div> --%>
 						                <div class="card-body">
 						                    <h3 class="feature__title card-title">${board.title}</h3>
 						                    <p class="feature__desc card-text">${board.content}</p>
