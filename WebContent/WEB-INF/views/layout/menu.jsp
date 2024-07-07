@@ -188,14 +188,14 @@ String ctx = request.getContextPath();
                 <div class="modal-body">
                     <form id="modalForm"> <%-- action="<c:url value='/contactMe.do'/>" method="post"> --%> 
                     	<div id="nameInput" class="form-floating mb-2">
-                    	<input id="name" type="text" class="form-control" name="name" control-id="ControlID-1" placeholder="성함">
+                    	<input id="menu_name" type="text" class="form-control" name="name" control-id="ControlID-1" placeholder="성함">
                             <!-- <label for="name">성함</label> -->
-                            <div id="msgName" class="msg"></div>
+                            <div id="menu_msgName" class="msg"></div>
                         </div>
                         <div id="emailInput" class="form-floating mb-2">
                             <input id="email-input" type="text" class="form-control" name="email" control-id="ControlID-2"  placeholder="이메일">
                             <!-- <label for="email-input">이메일</label> -->
-                            <div id="msgEmail" class="msg"></div>
+                            <div id="menu_menu_msgEmail" class="msg"></div>
                         </div>
                         
                         <div class="rating_field">
@@ -229,11 +229,11 @@ String ctx = request.getContextPath();
     <script>
     
 
-    const user_email = document.getElementById("email-input");
-    const user_name = document.getElementById("name");
-    const email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    const menu_user_email = document.getElementById("menu_email-input");
+    const menu_user_name = document.getElementById("menu_name");
+    const menu_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     
-    validateInput(user_email,email,"msgEmail","유효하지 않은 이메일 형식입니다");
+    validateInput(menu_user_email,menu_email,"menu_msgEmail","유효하지 않은 이메일 형식입니다");
     
     function validateInput(inputElement, regex, msgElement, errorMessage) {
         inputElement?.addEventListener("keyup", () => {
@@ -257,19 +257,19 @@ String ctx = request.getContextPath();
 
 		    let url = `<%=ctx%>/contactMe.do`;
 		    
-	        if (user_name.value.length === 0 ) {
-	            setMessage('성함을 입력해주세요.', "name", "msgName", "red");
+	        if (menu_user_name.value.length === 0 ) {
+	            setMessage('성함을 입력해주세요.', "menu_name", "menu_msgName", "red");
 	            return false;
 	        }
 	        
-	        if(!(email.test(user_email.value))) {
-	            setMessage("유효하지 않은 이메일 형식입니다.","email-input", "msgEmail", "red");
+	        if(!(menu_email.test(menu_user_email.value))) {
+	            setMessage("유효하지 않은 이메일 형식입니다.","menu_email-input", "menu_msgEmail", "red");
 	            return false;
 	        }
 
             let contactMeDto = {
-                name: $('#name').val(),
-                email: $('#email-input').val(),
+                name: $('#menu_name').val(),
+                email: $('#menu_email-input').val(),
                 inquiry: $('#inquiryList').val(),
                 message: $('#rating_field').val()
             };
@@ -294,8 +294,8 @@ String ctx = request.getContextPath();
         });
 
         $('.modal_close').on('click', function() {
-            setMessage('', "name", "msgName", "#ced4da");
-            setMessage('', "email-input", "msgEmail", "#ced4da");
+            setMessage('', "menu_name", "menu_msgName", "#ced4da");
+            setMessage('', "menu_email-input", "menu_msgEmail", "#ced4da");
             $('#modalForm')[0].reset();
         });
     });

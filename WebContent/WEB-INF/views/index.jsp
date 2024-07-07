@@ -103,35 +103,7 @@
 			            	</div>
 		            	</div>
 	       			</a>         
-		        </div>   		        		        
-		        <%-- 
-		        
-		        <div class="trouble_list">
-			        <a href="https://initsave.tistory.com/425" target="_blank">
-			            <div class="trouble">
-			                <div class="trouble_info">
-			                	<h3 class="trouble_info_title">[MyBatis] selectKey return 값이 1만 나올때 </h3>			                
-					            <div class="trouble_info_img">		
-					   				<img class="trouble_img"  alt=""
-					   				     src="<c:url value='/images/troubleshooting/ts2.png'/>">
-					            </div>		
-			            	</div>
-			            </div>
-	       			</a>         
-		        </div>  
-		        <div class="trouble_list">
-			        <a href="https://initsave.tistory.com/452" target="_blank">
-			            <div class="trouble">
-			                <div class="trouble_info">
-			                	<h3 class="trouble_info_title">[Nginx] could not build server_names_hash, you should increase server_names_hash_bucket_size: 64 (2)</h3>			                
-					            <div class="trouble_info_img">		
-					   				<img class="trouble_img"  alt=""
-					   				     src="<c:url value='/images/troubleshooting/ts3.png'/>">
-					            </div>		
-			            	</div>
-			            </div>
-	       			</a>         
-		        </div>   --%>
+		        </div>   		
 		   </div>
 		</div>
 
