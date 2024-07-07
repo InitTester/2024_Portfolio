@@ -30,8 +30,8 @@
 		   			<div class="aboutMe_info">
 			   			<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img"  alt=""
-			   				     <%-- src="<c:url value='/images/about-me/person-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=48&id=YI3iUUls6qvv&format=png">
+			   				     src="<c:url value='/images/aboutme/id-card.png'/>">
+			   				     <!-- Icons made by nawicon FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">
@@ -44,8 +44,8 @@
 		   			<div class="aboutMe_info">
 		   				<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img" alt=""
-			   				     <%-- src="<c:url value='/images/about-me/calendar-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=48&id=O4nOoRjqFf8k&format=png">
+			   				     src="<c:url value='/images/aboutme/calendar.png'/>">
+			   				     <!-- Icons made by nawicon FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">
@@ -58,8 +58,8 @@
 		   			<div class="aboutMe_info">
 			   			<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img" alt=""
-			   				     <%-- src="<c:url value='/images/about-me/telephone-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=64&id=47813&format=png">
+			   				     src="<c:url value='/images/aboutme/telephone.png'/>">
+			   				     <!-- Icons made by nawicon FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">
@@ -74,8 +74,8 @@
 		   			<div class="aboutMe_info">
 			   			<div class="aboutMe_icon_img_wrapper">
 			   				<img class="aboutMe_icon-img" alt=""
-			   				     <%-- src="<c:url value='/images/about-me/envelope-fill.png'/>"> --%>
-			   				     src="https://img.icons8.com/?size=80&id=68415&format=png">
+			   				     src="<c:url value='/images/aboutme/email.png'/>">
+			   				     <!-- Icons made by nawicon FROM Flaticon  -->
 			   			</div>
 			   			&emsp;
 			   			<div class="aboutMe_field">
@@ -204,9 +204,9 @@
 					</div>
 					<div class="documenting_url">https://github.com/InitTester</div>
 					<div class="documenting_description">
-						<p><b>스터디/프로젝트 소스 코드 저장소</b>입니다.</p>
+						<p><b>스터디, 프로젝트 소스 코드 저장소</b>입니다.</p>
 						<ul>
-							<li>개발/깃헙에 익숙해지려고 남기는 소스 코드</li>
+							<li>개발, 깃헙에 익숙해지려고 남기는 소스 코드</li>
 							<li>지금까지 스터디, 프로젝트에서 진행한 소스, 앞으로 스터디하고자 기록을 남기는 곳입니다</li>
 						</ul>
 					</div>
@@ -217,7 +217,7 @@
 					</div>
 					<div class="documenting_url">https://initsave.tistory.com/</div>
 					<div class="documenting_description">
-						<p><b>스터디와 개발중 에러를 기록하기 위한 목적의 블로그</b>입니다.</p>
+						<p><b>스터디, 개발 중 에러를 기록하기 위한 목적의 블로그</b>입니다.</p>
 						<ul>
 							<li>공부한 것을 진정한 나의 것으로 만들기 위한 기록</li>
 							<li>개발자의 길을 걸으며 공부한 개발 관련 지식 정리</li>
@@ -266,7 +266,7 @@
 							<div class="project_main-description">
 								<b>회원가입, 로그인, 게시판, 포트폴리오를 위한 웹사이트</b>
 								입니다. 실제로 운영되는 사이트들을 참고하여 직접 개발하였고 이를 통해 웹 개발 역량을 보여주고자 합니다.
-								<p></p>스터디그룹에서 공부하고 있었던<!-- -->
+								<p></p>스터디그룹에서 공부하고 있던<!-- -->
 								<span class="project_red"> Tails</span>를 통해 header, body, footer를 나누어 구현했습니다.
 								<p></p>회원가입, 로그인에서는 
 								<span class="project_red"> Jasypt, Bcrypt</span>를 통해 보안/인증을 구현 했습니다.
@@ -283,20 +283,20 @@
 							
 							<div class="project_description">
 								<div class="project_label">주요 기능</div>
-								<div class="project_value">회원가입/로그인 회원인증, 댓글/좋아요, 게시글 수정을 통한 첨부파일 미리보기, 다운로드,게시글에 따른 조회 Rank </div>
+								<div class="project_value">회원가입/로그인 회원인증, 댓글/좋아요, 게시글 수정을 통한 첨부파일 미리보기, 다운로드, 게시글에 따른 조회 순위 </div>
 							</div>
 							
 							<div class="project_description">
 								<div class="project_label">GitHub</div>
 								<div class="project_value">
-									<a class="project_url" href="https://github.com/InitTester/2024_Portfolio"  target="_blank">github.com/InitTester/2024_Portfolio</a>
+									<a class="project_url" href="https://github.com/InitTester/2024_Portfolio" target="_blank">github.com/InitTester/2024_Portfolio</a>
 								</div>
 							</div>
 							
 							<div class="project_description">
 								<div class="project_label">URL</div>
 								<div class="project_value">
-									<a class="project_url" href="https://bit.ly/4blLmeh"  target="_blank">bit.ly/4blLmeh</a>
+									<a class="project_url" href="https://bit.ly/4blLmeh" target="_blank">bit.ly/4blLmeh</a>
 								</div>
 							</div>
 							
@@ -351,7 +351,7 @@
 							<div class="project_main-description">
 								<b>크리에이터들의 창작활동을 지원하기 위한 크라우드 펀딩 플랫폼 프로젝트</b>
 								를 진행하였습니다. 이 프로젝트는 <a href="https://tumblbug.com/">텀블벅</a> 사이트를 클론코딩하여 개발하였고, 
-								팀원들과 함께 팀프로젝트로 수행하였습니다.
+								팀원들과 함께 팀 프로젝트로 수행하였습니다.
 								
 								<p></p>스터디 중이던
 								<span class="project_red"> DB Modeling, ERD, Spring, MySQL</span>스킬을 채택했고 
@@ -363,8 +363,8 @@
 								<span class="project_red">GitHub Fork</span>를 통해 여러 명이 함께 프로젝트를 진행할 때 소스 관리 방법도 익혔습니다. 
 								이 과정을 통해 협업의 중요성과 실무와 유사한 환경에서의 프로젝트 진행 경험을 쌓을 수 있었습니다.
 								
-								<p></p>이 팀 프로젝트를 통해 얻은 귀중한 경험은 다음과 같습니다. 작은 부분부터 전반적인 사항까지 팀원들과 의논하며 진행했고, 
-								클론 코딩으로 구현된 가시적 부분과 비가시적 부분에 대해 팀원들과 의견을 취합하여 실제 운영 중인 사이트와의 차이점을 줄이기 위해 
+								<p></p>팀 프로젝트를 통해 얻은 귀중한 경험은 다음과 같습니다. 작은 부분부터 전반적인 사항까지 팀원들과 의논하며 진행했고, 
+								클론코딩으로 구현된 가시적 부분과 비가시적 부분에 대해 팀원들과 의견을 취합하여 실제 운영 중인 사이트와의 차이점을 줄이기 위해 
 								노력했습니다. 팀원들과의 연결 부위에서 발생할 수 있는 문제점을 사전에 주의하는 법도 배울 수 있었습니다.
 									
 								<p></p>

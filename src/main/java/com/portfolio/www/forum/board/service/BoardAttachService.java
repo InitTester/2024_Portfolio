@@ -49,10 +49,10 @@ public class BoardAttachService {
 
 			String accessUri = "";
 			
-			if(!destFile.getPath().contains("c:")) {
-				accessUri = accessUriPath +"/" + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();
+			/*if(!destFile.getPath().contains("c:")) {*/
+				accessUri = accessUriPath + "/" + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();
 				log.info("accessUri : {}",accessUri);
-			}
+				/* } */
 			
 			attachDto.setChngFileNm(destFile.getName());
 			attachDto.setAccessUri(accessUri);

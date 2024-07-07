@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import org.apache.ibatis.type.Alias;
 
+import lombok.ToString;
+
+@ToString
 @Alias("MemberDto")
 public class MemberDto {
 	private Integer memberSeq;

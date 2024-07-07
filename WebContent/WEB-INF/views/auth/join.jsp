@@ -5,8 +5,7 @@
 <%
 String ctx = request.getContextPath();
 %>
-	<style>
-	
+	<style>	
         .msg {
         	color: red;
         }
