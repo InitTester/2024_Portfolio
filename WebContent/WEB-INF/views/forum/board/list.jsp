@@ -37,7 +37,7 @@ String ctx = request.getContextPath();
                                              <th>제목</th>
                                              <th>등록일</th>
                                              <th>글쓴이</th>
-                                             <th>조회</th>
+                                             <th>조회수</th>
                                          </tr>
                                      </thead>
 

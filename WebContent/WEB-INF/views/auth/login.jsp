@@ -24,7 +24,7 @@ String ctx = request.getContextPath();
                     <form id="formLogin">   
                         <div class="cardify login">
                             <div class="login--header">
-                                <h3>아이디로 로그인</h3>          
+                                <h3>아이디 로그인</h3>          
                             </div>
                             <!-- end .login_header -->
                             <div class="login--form">
@@ -57,7 +57,7 @@ String ctx = request.getContextPath();
 
                                 <div class="login_assist">
                                     <p class="recover">잊어버리셨나요 ? 
-                                        <a href="<c:url value='/auth/findIdPage.do'/>">아이디 찾기</a>or<a href="<c:url value='/auth/recoverPassPage.do'/>">비밀번호 재설정</a>
+                                        <a href="<c:url value='/auth/findIdPage.do'/>">아이디 찾기</a> or <a href="<c:url value='/auth/recoverPassPage.do'/>">비밀번호 재설정</a>
                                         </br>
                                         회원이 아니신가요? <a href="<c:url value='/auth/joinPage.do'/>">회원가입</a>
                                     </p>
@@ -79,17 +79,14 @@ String ctx = request.getContextPath();
             END LOGIN AREA
     =================================-->
     <script type="text/javascript">
-
 		window.onload=function(){
-			
 			var code = '${code}';
-			var msg = '${msg}'.replace(/\\n/g,'\n');
-
-			if(code !== '' && code !== '<%= MemberMessageEnum.SUCCESS.getCode() %>' && code !== null){
-
-	            alert(msg);
+			var msg = '${msg}';
+	
+			if(code !== '' && code !== '<%= MemberMessageEnum.SUCCESS.getCode() %>'){
+				alert(msg);
 			}
-		} 
+		} 		
 		
 	    const user_id = document.getElementById("memberId");
 	    const user_pwd = document.getElementById("password");

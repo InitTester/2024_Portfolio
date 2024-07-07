@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.print.DocFlavor.READER;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.portfolio.www.user.dto.MemberDto;
 import com.portfolio.www.user.message.MemberMessageEnum;
@@ -37,7 +39,6 @@ public class LoginController {
 	/* 로그인 페이지 */
 	@GetMapping("/auth/loginPage.do")
 	public ModelAndView loginPage(@RequestParam HashMap<String, String> params,
-							      @RequestParam(name ="redirectURL", required=false) String redirectURL,
 //							      @RequestParam(required=false) String boardTypeSeq,
 								  HttpServletRequest request) {
 
@@ -53,7 +54,9 @@ public class LoginController {
 			
 			mv.addObject("memberId",memberId);
 		}		
-		mv.addObject("redirectURL", request.getQueryString().split("redirectURL=")[1]);
+		
+		log.info("request.getQueryString() : {}",request.getQueryString());
+		mv.addObject("redirectURL",(request.getQueryString()==null ? "" : request.getQueryString().split("redirectURL=")[1]));
 		mv.setViewName("auth/login");
 		
 		return mv;
@@ -63,26 +66,27 @@ public class LoginController {
 	@PostMapping("/auth/login.do")
 	public ModelAndView login(@RequestParam HashMap<String, String> params,
 			@RequestParam(name="rememberId", required = false, defaultValue = "") String rememberId,
+		    @RequestParam(name ="redirectURL", required=false) String redirectURL,
 			HttpServletRequest request,	
 			HttpServletResponse response,
-		    @RequestParam(name ="redirectURL", required=false) String redirectURL){
+		    RedirectAttributes redirectAttributes){
 		
 		ModelAndView mv = new ModelAndView();
 		MemberDto dto = MemberDto.getMemberDto(params);
 
 		try {
 			MemberDto memberDto = memberService.login(params);
-			
+
 			String memberId = memberDto.getMemberId();
 			String memberNm = memberDto.getMemberNm();
 			Integer memberSeq = memberService.getMemberSeq(memberId);
-			
+
 			//TODO 추후 개발 예정
 //			String profileImg = memberDto.getMemberNm();			
 //			CommonUtil.getLogMessage(log, "login", "memberSeq", memberSeq);
 			
 			if(!ObjectUtils.isEmpty(memberDto)) {
-				
+
 				// 세션 				
 				HttpSession session = request.getSession();
 				session.setAttribute("memberSeq", memberSeq);
@@ -103,30 +107,22 @@ public class LoginController {
 				mv.addObject("key", Calendar.getInstance().getTimeInMillis());	
 				CommonUtil.getLogMessage(log, "login", "redirectURL", redirectURL);
 				mv.setViewName("redirect:" + (redirectURL=="" ? "/index.do" : redirectURL));
-				
 			}
-			
-			/*
-			 * else { // id,pwd 틀릴 시
-			 * mv.addObject("code",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getCode());
-			 * mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription())
-			 * ; mv.addObject("dto",dto); mv.setViewName("auth/login"); }
-			 */
-			
 			return mv;
 			
 		} catch (EmptyResultDataAccessException e) {
-			// TODO Auto-generated catch block
+			//TODO 에러 처리 세분화 하기
 			mv.addObject("code",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getCode());
-			mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription());	
+			mv.addObject("msg",MemberMessageEnum.INVALID_ID_OR_PASSWORD.getDescription());
 			mv.addObject("dto",dto);
+			mv.addObject("redirectURL", redirectURL);
 			mv.setViewName("auth/login");
 			return mv;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			mv.addObject("code",e.getCause());
-			mv.addObject("msg", e.getMessage());	
-			mv.addObject("dto",dto);
+			mv.addObject("code",e.getCause()); 
+			mv.addObject("msg", e.getMessage());
+		  	mv.addObject("dto",dto);
+		  	mv.addObject("redirectURL", redirectURL);
 			mv.setViewName("auth/login");
 			return mv;
 		}

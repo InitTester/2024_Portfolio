@@ -214,21 +214,26 @@ public class MemberService {
 			String memberId = params.get("memberId");
 			CommonUtil.getLogMessage(log, "login", "memberId", memberId);
 
+			BCrypt.Result result;
+			/* try { */
 			MemberDto memberDto = memberRepository.getMemberInfo(memberId);
-
-			String passwd = params.get("passwd");
-			CommonUtil.getLogMessage(log, "login", "passwd", passwd);
-
-			String dbPasswd = memberDto.getPasswd();
-			CommonUtil.getLogMessage(log, "login", "dbPasswd", memberDto.getPasswd());
-
-			BCrypt.Result result = BCrypt.verifyer().verify(passwd.toCharArray(), dbPasswd);
-
-			if(result.verified) {
-				return memberDto;
-			}else {
+			
+			if(memberDto==null) {
 				throw new EmptyResultDataAccessException(0202);
 			}
+
+			String passwd = params.get("passwd");
+			String dbPasswd = memberDto.getPasswd();
+//			CommonUtil.getLogMessage(log, "login", "dbPasswd", memberDto.getPasswd());
+
+			result = BCrypt.verifyer().verify(passwd.toCharArray(), dbPasswd);
+
+			if(!result.verified) {
+				log.info("[login] !result.verified : 비밀번호 오류");
+				throw new EmptyResultDataAccessException(0203);
+			}
+
+			return memberDto;
 	}
 
 	/* bcry 변환 */

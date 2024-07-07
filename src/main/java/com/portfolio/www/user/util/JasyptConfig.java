@@ -28,7 +28,7 @@ public class JasyptConfig {
 
 //		setProperties("resource-common", evnKey);
 //		setProperties("resource-dev", evnKey);
-		setProperties("resource-dev", evnKey);
+		setProperties("resource-local", evnKey);
 		
 		
 	}
