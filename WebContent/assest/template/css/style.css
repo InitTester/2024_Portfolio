@@ -17376,6 +17376,16 @@ form-control:focus {
  		display: none;
  	}	
  	
+ 	    
+    .mainmenu__menu .has_dropdown .dropdowns{
+        min-width: 150px;
+    }
+    
+    .mainmenu__menu .has_dropdown .dropdowns ul li a{
+      	width: 150px;
+      	font-size: 12px;
+    }
+ 	
     .aboutMe_info {
         width:100%
     }
