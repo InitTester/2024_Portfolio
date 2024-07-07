@@ -25,7 +25,8 @@
 			   GROUP BY org_file_nm
 			   ORDER BY max_hit DESC
 			   LIMIT 3
-			 ) b ON a.org_file_nm = b.org_file_nm AND a.hit = b.max_hit;
+			 ) b ON a.org_file_nm = b.org_file_nm AND a.hit = b.max_hit
+	ORDER BY a.hit DESC;
     </select>
     
     <select id="getIndexBoardView" resultType="IndexBoardViewDto" >
