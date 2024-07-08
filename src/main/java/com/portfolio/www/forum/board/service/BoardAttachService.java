@@ -50,8 +50,8 @@ public class BoardAttachService {
 			String accessUri = "";
 			
 			/*if(!destFile.getPath().contains("c:")) {*/
-				accessUri = accessUriPath + "/" + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();
-				log.info("accessUri : {}",accessUri);
+			accessUri = accessUriPath + "/" + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();
+			log.info("accessUri : {}",accessUri);
 				/* } */
 			
 			attachDto.setChngFileNm(destFile.getName());
@@ -81,9 +81,9 @@ public class BoardAttachService {
 			
 			log.info("[editBoardAttach] (destFile.getPath().split(\"app\")[1]) : {}",destFile.getPath().split("app")[1]);
 			
-			if(!destFile.getPath().contains("c:")) {
-				accessUri = accessUriPath + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();	
-			}
+			/*if(!destFile.getPath().contains("c:")) {*/
+				accessUri = accessUriPath + "/" + destFile.getPath().split("app")[1].substring(1);// + destFile.getName();
+				/* } */
 			
 			attachDto.setChngFileNm(destFile.getName());
 			attachDto.setAccessUri(accessUri);
