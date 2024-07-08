@@ -118,11 +118,11 @@ String ctx = request.getContextPath();
 		
 		                                <div class="dropdowns dropdown--author">
 		                                    <ul>
-		                                        <li>
+<!--		                                        <li>
 		                                            <a href="#">
 		                                                <span class="lnr lnr-user"></span>프로필</a>
 		                                        </li>
-<!-- 		                                        <li>
+ 		                                        <li>
 		                                            <a href="#">
 		                                                <span class="lnr lnr-cog"></span> Setting</a>
 		                                        </li> -->
