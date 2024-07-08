@@ -302,7 +302,7 @@ public class MemberService {
 		
 		if (emailCnt == 1 && memberIdCnt==1) {
 
-			String from = CommonUtil.getPropertiesValue("application.properties", "app.username") + "@naver.com";
+			String from = CommonUtil.getPropertiesValue("email_config.properties", "app.username") + "@naver.com";
 			
 			/*
 			 * CommonUtil.getLogMessage(log, "recoverPassSend", "from( ",from + " )");
